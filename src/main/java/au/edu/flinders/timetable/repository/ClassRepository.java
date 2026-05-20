@@ -19,6 +19,18 @@ public class ClassRepository {
         store.put(c.getClassId(), c);
     }
 
+    /** Replaces the stored ClassEntry for entry.getClassId(). Does nothing if not found. */
+    public void update(ClassEntry entry) {
+        if (store.containsKey(entry.getClassId())) {
+            store.put(entry.getClassId(), entry);
+        }
+    }
+
+    /** Removes the ClassEntry with the given classId. Does nothing if not found. */
+    public void delete(String classId) {
+        store.remove(classId);
+    }
+
     /** Returns the ClassEntry with the given ID, or empty if not found. */
     public Optional<ClassEntry> findById(String classId) {
         return Optional.ofNullable(store.get(classId));
@@ -34,6 +46,11 @@ public class ClassRepository {
         return store.values().stream()
                 .filter(c -> c.getCourseCode().equalsIgnoreCase(courseCode))
                 .collect(Collectors.toList());
+    }
+
+    /** Returns true when a ClassEntry with the given classId exists. */
+    public boolean exists(String classId) {
+        return store.containsKey(classId);
     }
 
     /** Removes all stored ClassEntry objects. */

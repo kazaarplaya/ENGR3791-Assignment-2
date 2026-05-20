@@ -1,11 +1,13 @@
 package au.edu.flinders.timetable.controller;
 
-import au.edu.flinders.timetable.model.User;
 import au.edu.flinders.timetable.model.Preference;
+import au.edu.flinders.timetable.model.User;
 import au.edu.flinders.timetable.service.PreferenceService;
 import au.edu.flinders.timetable.ui.ConsoleView;
 import au.edu.flinders.timetable.ui.InputHelper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /** Top-level controller that drives the main application loop. */
@@ -13,11 +15,29 @@ public class MenuController {
 
     private static final String[] MENU_OPTIONS = {
         "Import Data",
-        "Search Classes",
+        "Classes",
         "Manage Preferences",
         "Generate Timetable",
         "View / Export Timetable",
         "Exit"
+    };
+
+    // All 14 valid preference tokens presented to the user with friendly labels.
+    private static final String[][] PREF_TOKENS = {
+        { Preference.CAMPUS_BEDFORD_PARK, "Campus: Bedford Park" },
+        { Preference.CAMPUS_TONSLEY,      "Campus: Tonsley"      },
+        { Preference.CAMPUS_CITY,         "Campus: City"         },
+        { Preference.CAMPUS_SAME,         "Campus: Same campus"  },
+        { Preference.TIME_MORNING,        "Time: Morning (before 12:00)" },
+        { Preference.TIME_AFTERNOON,      "Time: Afternoon (12:00–17:00)" },
+        { Preference.TIME_EVENING,        "Time: Evening (17:00+)" },
+        { Preference.DAY_MONDAY,          "Day: Monday"    },
+        { Preference.DAY_TUESDAY,         "Day: Tuesday"   },
+        { Preference.DAY_WEDNESDAY,       "Day: Wednesday" },
+        { Preference.DAY_THURSDAY,        "Day: Thursday"  },
+        { Preference.DAY_FRIDAY,          "Day: Friday"    },
+        { Preference.SPREAD,              "Spread classes across the week" },
+        { Preference.COMPACT,             "Compact classes into fewer days" }
     };
 
     private final Scanner                sc;
@@ -58,6 +78,7 @@ public class MenuController {
         currentUser   = new User(userId, name);
         view.printSuccess("Welcome, " + name + "!");
         System.out.println();
+
         boolean running = true;
         while (running) {
             view.printMenu(MENU_OPTIONS);
@@ -65,7 +86,7 @@ public class MenuController {
             System.out.println();
             switch (choice) {
                 case 1 -> importExportController.importData();
-                case 2 -> handleSearch();
+                case 2 -> handleClasses();
                 case 3 -> handlePreferences();
                 case 4 -> timetableController.generate(currentUser);
                 case 5 -> handleViewExport();
@@ -78,21 +99,48 @@ public class MenuController {
         }
     }
 
-    /** Prompts for a search query and delegates to ClassController. */
-    private void handleSearch() {
-        System.out.println("── Search Classes ───────────────────────────");
-        System.out.println("  1. Search by keyword");
-        System.out.println("  2. Show all classes");
-        int choice = input.readInt(sc, "Select: ", 1, 2);
-        if (choice == 1) {
-            String query = input.readLine(sc, "Search query: ").trim();
-            classController.search(query);
-        } else {
-            classController.showAll();
+    // ── Sub-menus ─────────────────────────────────────────────────────────────
+
+    /** Classes sub-menu: search, view all, edit, delete. */
+    private void handleClasses() {
+        System.out.println("── Classes ──────────────────────────────────");
+        System.out.println("  1. Search / browse classes");
+        System.out.println("  2. View all classes (detailed)");
+        System.out.println("  3. Edit a class");
+        System.out.println("  4. Delete a class");
+        int choice = input.readInt(sc, "Select: ", 1, 4);
+        switch (choice) {
+            case 1 -> classController.search();
+            case 2 -> classController.viewAll();
+            case 3 -> classController.editClass();
+            case 4 -> classController.deleteClass();
         }
     }
 
-    /** Prompts the user to view, set, or clear their preferences. */
+    /** View / Export sub-menu: list, view grid, edit/swap, export, delete. */
+    private void handleViewExport() {
+        System.out.println("── View / Export Timetable ──────────────────");
+        System.out.println("  1. List all timetables");
+        System.out.println("  2. View timetable (grid)");
+        System.out.println("  3. Edit timetable (swap class instance)");
+        System.out.println("  4. Export timetable to CSV");
+        System.out.println("  5. Delete a timetable");
+        int choice = input.readInt(sc, "Select: ", 1, 5);
+        switch (choice) {
+            case 1 -> timetableController.viewAll();
+            case 2 -> timetableController.view();
+            case 3 -> timetableController.editTimetable();
+            case 4 -> timetableController.export();
+            case 5 -> timetableController.delete();
+        }
+    }
+
+    /**
+     * Preferences sub-menu.
+     * Allows the user to view, set (token-based), or clear their preferences.
+     * The "set" flow presents all 14 tokens; the user selects them one by one
+     * in priority order (highest first), pressing Enter with no input to finish.
+     */
     private void handlePreferences() {
         System.out.println("── Manage Preferences ───────────────────────");
         System.out.println("  1. View current preferences");
@@ -108,29 +156,7 @@ public class MenuController {
                         () -> System.out.println("  No preferences set.")
                     );
             }
-            case 2 -> {
-                String campus    = input.readLine(sc, "Preferred campus (blank = Any): ").trim();
-                String timeOfDay = input.readLine(sc, "Time of day (Morning/Afternoon/Evening/Any): ").trim();
-                String day       = input.readLine(sc, "Preferred day (Monday-Friday/Any): ").trim();
-
-                if (campus.isBlank())    campus    = "Any";
-                if (timeOfDay.isBlank()) timeOfDay = "Any";
-                if (day.isBlank())       day       = "Any";
-
-                System.out.println("  Assign a priority to each criterion (1 = most important).");
-                int cp = input.readInt(sc, "  Campus priority:      ", 1, 3);
-                int tp = input.readInt(sc, "  Time-of-day priority: ", 1, 3);
-                int dp = input.readInt(sc, "  Day priority:         ", 1, 3);
-
-                try {
-                    Preference pref = new Preference(
-                        currentUser.getUserId(), campus, timeOfDay, day, cp, tp, dp);
-                    preferenceService.savePreference(pref);
-                    view.printSuccess("Preferences saved.");
-                } catch (IllegalArgumentException e) {
-                    view.printError(e.getMessage());
-                }
-            }
+            case 2 -> setPreferencesTokenMode();
             case 3 -> {
                 preferenceService.clearPreference(currentUser.getUserId());
                 view.printSuccess("Preferences cleared.");
@@ -138,17 +164,61 @@ public class MenuController {
         }
     }
 
-    /** Prompts the user to view all timetables, view a grid, export, or delete. */
-    private void handleViewExport() {
-        System.out.println("── View / Export Timetable ──────────────────");
-        System.out.println("  1. List all timetables");
-        System.out.println("  2. Export timetable to CSV");
-        System.out.println("  3. Delete a timetable");
-        int choice = input.readInt(sc, "Select: ", 1, 3);
-        switch (choice) {
-            case 1 -> timetableController.viewAll();
-            case 2 -> timetableController.export();
-            case 3 -> timetableController.delete();
+    /**
+     * Token-based preference builder.
+     * Shows a numbered list of all 14 tokens; user enters numbers in priority order.
+     * An empty line finishes selection. Validates and saves the resulting preference.
+     */
+    private void setPreferencesTokenMode() {
+        System.out.println("\n  Available preference tokens (enter numbers in priority order):");
+        System.out.println("  Press Enter with no input when done.\n");
+
+        for (int i = 0; i < PREF_TOKENS.length; i++) {
+            System.out.printf("  %2d. %s%n", i + 1, PREF_TOKENS[i][1]);
+        }
+        System.out.println();
+
+        List<String> selected = new ArrayList<>();
+        boolean[] used = new boolean[PREF_TOKENS.length];
+
+        while (true) {
+            String raw = input.readLine(sc,
+                "  Add token #" + (selected.size() + 1) + " (or Enter to finish): ").trim();
+            if (raw.isEmpty()) break;
+
+            int idx;
+            try {
+                idx = Integer.parseInt(raw) - 1;
+            } catch (NumberFormatException e) {
+                view.printWarning("Please enter a number between 1 and " + PREF_TOKENS.length + ".");
+                continue;
+            }
+
+            if (idx < 0 || idx >= PREF_TOKENS.length) {
+                view.printWarning("Number out of range. Enter 1–" + PREF_TOKENS.length + ".");
+                continue;
+            }
+            if (used[idx]) {
+                view.printWarning("Token already selected. Choose a different one.");
+                continue;
+            }
+
+            used[idx] = true;
+            selected.add(PREF_TOKENS[idx][0]);
+            System.out.println("  Added: " + PREF_TOKENS[idx][1]);
+        }
+
+        if (selected.isEmpty()) {
+            view.printWarning("No tokens selected; preferences unchanged.");
+            return;
+        }
+
+        try {
+            Preference pref = new Preference(currentUser.getUserId(), selected);
+            preferenceService.savePreference(pref);
+            view.printSuccess("Preferences saved. Priority order: " + selected);
+        } catch (IllegalArgumentException e) {
+            view.printError(e.getMessage());
         }
     }
 }

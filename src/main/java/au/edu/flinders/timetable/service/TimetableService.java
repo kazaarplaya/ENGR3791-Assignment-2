@@ -1,20 +1,33 @@
 package au.edu.flinders.timetable.service;
 
+import au.edu.flinders.timetable.model.ClassEntry;
 import au.edu.flinders.timetable.model.Timetable;
+import au.edu.flinders.timetable.repository.ClassRepository;
 import au.edu.flinders.timetable.repository.TimetableRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-/** Manages persistence and naming of Timetable objects. */
+/** Manages persistence, naming, and editing of Timetable objects. */
 public class TimetableService {
 
     private final TimetableRepository timetableRepository;
+    private final ClassRepository     classRepository; // may be null (backward compat)
     private int nameCounter = 0;
 
-    /** Constructs the service with the repository it manages. */
+    /**
+     * Single-argument constructor preserved for backward compatibility with unit tests.
+     * swapClassInstance() class-validation is skipped when classRepository is null.
+     */
     public TimetableService(TimetableRepository timetableRepository) {
+        this(timetableRepository, null);
+    }
+
+    /** Full constructor used in production wiring via Main. */
+    public TimetableService(TimetableRepository timetableRepository,
+                             ClassRepository classRepository) {
         this.timetableRepository = timetableRepository;
+        this.classRepository     = classRepository;
     }
 
     /**
@@ -52,9 +65,49 @@ public class TimetableService {
     }
 
     /**
+     * Replaces oldClassId with newClassId in the named timetable.
+     * Both classes must share the same courseCode and classType.
+     * Throws IllegalArgumentException if the timetable is not found, either class ID
+     * is missing from the repository, or courseCode/classType do not match.
+     */
+    public void swapClassInstance(String timetableName, String oldClassId, String newClassId) {
+        Timetable t = timetableRepository.findByName(timetableName)
+            .orElseThrow(() -> new IllegalArgumentException(
+                "Timetable '" + timetableName + "' not found."));
+
+        if (!t.getClassIds().contains(oldClassId)) {
+            throw new IllegalArgumentException(
+                "Class '" + oldClassId + "' is not in timetable '" + timetableName + "'.");
+        }
+
+        if (classRepository != null) {
+            ClassEntry oldEntry = classRepository.findById(oldClassId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                    "Class '" + oldClassId + "' not found in repository."));
+            ClassEntry newEntry = classRepository.findById(newClassId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                    "Class '" + newClassId + "' not found in repository."));
+
+            if (!oldEntry.getCourseCode().equalsIgnoreCase(newEntry.getCourseCode())) {
+                throw new IllegalArgumentException(
+                    "Cannot swap: course codes differ ("
+                    + oldEntry.getCourseCode() + " vs " + newEntry.getCourseCode() + ").");
+            }
+            if (!oldEntry.getType().equalsIgnoreCase(newEntry.getType())) {
+                throw new IllegalArgumentException(
+                    "Cannot swap: class types differ ("
+                    + oldEntry.getType() + " vs " + newEntry.getType() + ").");
+            }
+        }
+
+        t.removeClass(oldClassId);
+        t.addClass(newClassId);
+        timetableRepository.save(t);
+    }
+
+    /**
      * Generates a unique sequential timetable name for this session.
      * Returns names in the format Timetable_1, Timetable_2, etc.
-     * The counter increments with each call and never resets within a session.
      */
     public String generateUniqueName() {
         nameCounter++;

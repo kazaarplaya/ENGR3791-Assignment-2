@@ -18,22 +18,23 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Generates an optimised Timetable for a user based on campus selections,
+ * Generates an optimised Timetable for a user based on semester, campus selections,
  * preferences, and clash detection rules.
  */
 public class TimetableGeneratorService {
 
-    // Campus label constants used in clash detection.
     private static final String CITY         = "city";
     private static final String BEDFORD_PARK = "bedford park";
     private static final String TONSLEY      = "tonsley";
+    private static final String FESTIVAL_TOWER = "festival tower";
+    private static final String TONSLEY_PREFIX = "tonsley";
 
-    private final ClassRepository     classRepository;
-    private final TopicRepository     topicRepository;
+    private final ClassRepository      classRepository;
+    private final TopicRepository      topicRepository;
     private final PreferenceRepository preferenceRepository;
-    private final TimetableService    timetableService;
+    private final TimetableService     timetableService;
 
-    /** Constructs the generator with all required service and repository dependencies. */
+    /** Constructs the generator with all required dependencies. */
     public TimetableGeneratorService(ClassRepository classRepository,
                                      TopicRepository topicRepository,
                                      PreferenceRepository preferenceRepository,
@@ -44,16 +45,30 @@ public class TimetableGeneratorService {
         this.timetableService    = timetableService;
     }
 
+    // ── Public generate overloads ─────────────────────────────────────────────
+
+    /**
+     * Backward-compatible 5-argument overload (semester = 0 = both semesters).
+     * Preserved so existing unit tests continue to compile without modification.
+     */
+    public Timetable generate(User user,
+                              Map<String, String> campusSelections,
+                              boolean allowLectureOverlap,
+                              boolean applyPreferences,
+                              String optionalName) {
+        return generate(user, campusSelections, allowLectureOverlap,
+                        applyPreferences, optionalName, 0);
+    }
+
     /**
      * Generates and saves an optimised Timetable for the given user.
      *
      * @param user                the student whose enrolled topics are used
-     * @param campusSelections    map of courseCode to the campus label the user chose for that
-     *                            topic; topics absent from this map have no campus filter applied
-     * @param allowLectureOverlap whether back-to-back lectures at different campuses are
-     *                            permitted without a 30-minute gap
-     * @param applyPreferences    whether to filter using the user's saved preference priorities
-     * @param optionalName        desired timetable name; pass blank or null to auto-generate
+     * @param campusSelections    map of courseCode to the campus label chosen for that topic
+     * @param allowLectureOverlap whether back-to-back lectures between campuses are permitted
+     * @param applyPreferences    whether to filter using the user's saved preferences
+     * @param optionalName        desired timetable name; blank/null = auto-generate
+     * @param semester            1 = Sem 1 only, 2 = Sem 2 only, 0 = both
      * @return the saved Timetable
      * @throws IllegalStateException    when no valid classes remain for a topic after filtering
      * @throws IllegalArgumentException when the timetable name already exists
@@ -62,33 +77,41 @@ public class TimetableGeneratorService {
                               Map<String, String> campusSelections,
                               boolean allowLectureOverlap,
                               boolean applyPreferences,
-                              String optionalName) {
+                              String optionalName,
+                              int semester) {
 
-        // Resolve timetable name
         String name = (optionalName != null && !optionalName.isBlank())
-            ? optionalName
-            : timetableService.generateUniqueName();
+            ? optionalName : timetableService.generateUniqueName();
 
-        Timetable timetable = new Timetable(name, "", allowLectureOverlap, applyPreferences);
+        Timetable timetable = new Timetable(name,
+            semester == 0 ? "" : "Semester " + semester,
+            allowLectureOverlap, applyPreferences);
 
-        // Load preference if requested
         Optional<Preference> prefOpt = applyPreferences
             ? preferenceRepository.findByUserId(user.getUserId())
             : Optional.empty();
 
-        // Accumulate all accepted ClassEntry objects across topics
         List<ClassEntry> accepted = new ArrayList<>();
 
         for (String courseCode : user.getEnrolledTopics()) {
             List<ClassEntry> candidates = classRepository.findByCourseCode(courseCode);
 
-            // Step 2: campus constraint
+            // Semester filter
+            if (semester != 0) {
+                final int sem = semester;
+                candidates = candidates.stream()
+                    .filter(c -> topicRepository.findByCourseCode(c.getCourseCode())
+                        .map(t -> t.getSemester() == sem).orElse(true))
+                    .collect(Collectors.toList());
+            }
+
+            // Campus constraint per topic (City/non-City exclusion rule)
             String selectedCampus = campusSelections.getOrDefault(courseCode, "");
             if (!selectedCampus.isBlank()) {
                 candidates = applyCampusConstraint(candidates, courseCode, selectedCampus);
             }
 
-            // Step 3: preference filters
+            // Preference filters
             if (applyPreferences && prefOpt.isPresent()) {
                 candidates = applyPreferenceFilters(candidates, prefOpt.get());
             }
@@ -99,7 +122,6 @@ public class TimetableGeneratorService {
                     "No classes available for topic " + courseCode + " at " + campusMsg + ".");
             }
 
-            // Step 4: clash detection — add each candidate if it doesn't clash
             for (ClassEntry candidate : candidates) {
                 if (!hasClash(candidate, accepted, allowLectureOverlap)) {
                     accepted.add(candidate);
@@ -108,7 +130,6 @@ public class TimetableGeneratorService {
             }
         }
 
-        // Steps 6 & 7 — save
         timetableService.save(timetable);
         return timetable;
     }
@@ -116,19 +137,32 @@ public class TimetableGeneratorService {
     // ── Campus constraint ─────────────────────────────────────────────────────
 
     /**
-     * Filters candidates to only those whose Topic.campus matches the selected campus.
-     * City campus classes may not be mixed with Bedford Park or Tonsley classes for the same topic.
+     * Enforces the City / non-City exclusion rule for a single topic.
+     * City selected   → keep only classes in Festival Tower (City campus).
+     * Non-City selected → exclude classes in Festival Tower; Bedford Park/Tonsley may coexist.
      */
     private List<ClassEntry> applyCampusConstraint(List<ClassEntry> candidates,
                                                     String courseCode,
                                                     String selectedCampus) {
+        boolean citySelected = selectedCampus.equalsIgnoreCase("City")
+                            || selectedCampus.equalsIgnoreCase("Flinders City Campus");
+
         List<ClassEntry> filtered = candidates.stream()
             .filter(c -> {
-                Optional<Topic> t = topicRepository.findByCourseCode(c.getCourseCode());
-                return t.map(topic -> topic.getCampus().equalsIgnoreCase(selectedCampus))
-                        .orElse(false);
+                String classCampus = inferCampusFromBuilding(c.getBuilding());
+                return citySelected
+                    ? classCampus.equalsIgnoreCase("City")
+                    : !classCampus.equalsIgnoreCase("City");
             })
             .collect(Collectors.toList());
+
+        // Fallback: match by Topic.campus when building inference yields nothing.
+        if (filtered.isEmpty()) {
+            filtered = candidates.stream()
+                .filter(c -> topicRepository.findByCourseCode(c.getCourseCode())
+                    .map(t -> t.getCampus().equalsIgnoreCase(selectedCampus)).orElse(false))
+                .collect(Collectors.toList());
+        }
 
         if (filtered.isEmpty()) {
             throw new IllegalStateException(
@@ -138,177 +172,152 @@ public class TimetableGeneratorService {
         return filtered;
     }
 
+    /** Infers the campus name from a building string. */
+    private String inferCampusFromBuilding(String building) {
+        if (building == null) return "Bedford Park";
+        String b = building.toLowerCase();
+        if (b.contains(FESTIVAL_TOWER)) return "City";
+        if (b.contains(TONSLEY_PREFIX)) return "Tonsley";
+        return "Bedford Park";
+    }
+
     // ── Preference filters ────────────────────────────────────────────────────
 
     /**
-     * Applies campus, timeOfDay, and day preference filters in priority order.
-     * Criteria with a lower priority number are applied first (priority 1 = most important).
-     * If applying a criterion would reduce the candidate list to zero, that criterion is
-     * skipped so a high-priority preference never silently eliminates all options.
-     * Criteria that share the same priority number are applied together in one pass.
+     * Applies preference tokens in priority order.
+     * A token is skipped if applying it would empty the candidate list.
      */
     private List<ClassEntry> applyPreferenceFilters(List<ClassEntry> candidates,
                                                      Preference pref) {
         List<ClassEntry> result = new ArrayList<>(candidates);
-
-        // Collect distinct priority levels in ascending order (lowest = most important).
-        List<Integer> priorities = List.of(
-                pref.getCampusPriority(),
-                pref.getTimeOfDayPriority(),
-                pref.getDayPriority()
-        ).stream().sorted().distinct().collect(Collectors.toList());
-
-        for (int priority : priorities) {
-            List<ClassEntry> filtered = new ArrayList<>(result);
-
-            // Apply every criterion whose priority matches this level.
-            if (priority == pref.getCampusPriority()
-                    && !pref.getCampus().equalsIgnoreCase("Any")
-                    && !pref.getCampus().isBlank()) {
-                filtered = filtered.stream()
-                    .filter(c -> c.getBuilding().equalsIgnoreCase(pref.getCampus()))
-                    .collect(Collectors.toList());
-            }
-            if (priority == pref.getTimeOfDayPriority()
-                    && !pref.getTimeOfDay().equalsIgnoreCase("Any")) {
-                filtered = filtered.stream()
-                    .filter(c -> matchesTimeOfDay(c.getStartTime(), pref.getTimeOfDay()))
-                    .collect(Collectors.toList());
-            }
-            if (priority == pref.getDayPriority()
-                    && !pref.getDay().equalsIgnoreCase("Any")
-                    && !pref.getDay().isBlank()) {
-                filtered = filtered.stream()
-                    .filter(c -> c.getDay() != null
-                        && c.getDay() == DayOfWeek.valueOf(pref.getDay().toUpperCase()))
-                    .collect(Collectors.toList());
-            }
-
-            // Commit this priority's filters only if candidates remain.
-            if (!filtered.isEmpty()) {
-                result = filtered;
-            }
+        for (String token : pref.getPriorityOrder()) {
+            List<ClassEntry> filtered = applyToken(token, result);
+            if (!filtered.isEmpty()) result = filtered;
         }
-
         return result;
     }
 
-    /** Returns true when the given start time falls within the named time-of-day window. */
-    private boolean matchesTimeOfDay(LocalTime start, String timeOfDay) {
-        return switch (timeOfDay.toLowerCase()) {
-            case "morning"   -> start.isBefore(LocalTime.of(12, 0));
-            case "afternoon" -> !start.isBefore(LocalTime.of(12, 0))
-                                && start.isBefore(LocalTime.of(18, 0));
-            case "evening"   -> !start.isBefore(LocalTime.of(18, 0));
-            default          -> true;
+    /** Applies a single preference token as a filter. */
+    private List<ClassEntry> applyToken(String token, List<ClassEntry> candidates) {
+        return switch (token) {
+            case Preference.CAMPUS_BEDFORD_PARK ->
+                candidates.stream()
+                    .filter(c -> inferCampusFromBuilding(c.getBuilding()).equalsIgnoreCase("Bedford Park"))
+                    .collect(Collectors.toList());
+            case Preference.CAMPUS_TONSLEY ->
+                candidates.stream()
+                    .filter(c -> inferCampusFromBuilding(c.getBuilding()).equalsIgnoreCase("Tonsley"))
+                    .collect(Collectors.toList());
+            case Preference.CAMPUS_CITY ->
+                candidates.stream()
+                    .filter(c -> inferCampusFromBuilding(c.getBuilding()).equalsIgnoreCase("City"))
+                    .collect(Collectors.toList());
+            case Preference.TIME_MORNING ->
+                candidates.stream()
+                    .filter(c -> c.getStartTime().isBefore(LocalTime.of(12, 0)))
+                    .collect(Collectors.toList());
+            case Preference.TIME_AFTERNOON ->
+                candidates.stream()
+                    .filter(c -> {
+                        LocalTime s = c.getStartTime();
+                        return !s.isBefore(LocalTime.of(12, 0)) && s.isBefore(LocalTime.of(17, 0));
+                    })
+                    .collect(Collectors.toList());
+            case Preference.TIME_EVENING ->
+                candidates.stream()
+                    .filter(c -> !c.getStartTime().isBefore(LocalTime.of(17, 0)))
+                    .collect(Collectors.toList());
+            case Preference.DAY_MONDAY ->
+                candidates.stream().filter(c -> c.getDay() == DayOfWeek.MONDAY).collect(Collectors.toList());
+            case Preference.DAY_TUESDAY ->
+                candidates.stream().filter(c -> c.getDay() == DayOfWeek.TUESDAY).collect(Collectors.toList());
+            case Preference.DAY_WEDNESDAY ->
+                candidates.stream().filter(c -> c.getDay() == DayOfWeek.WEDNESDAY).collect(Collectors.toList());
+            case Preference.DAY_THURSDAY ->
+                candidates.stream().filter(c -> c.getDay() == DayOfWeek.THURSDAY).collect(Collectors.toList());
+            case Preference.DAY_FRIDAY ->
+                candidates.stream().filter(c -> c.getDay() == DayOfWeek.FRIDAY).collect(Collectors.toList());
+            // CAMPUS_SAME, SPREAD, COMPACT: ordering hints only — no exclusion.
+            default -> new ArrayList<>(candidates);
         };
     }
 
     // ── Clash detection ───────────────────────────────────────────────────────
 
     /**
-     * Returns true when the candidate clashes with any already-accepted class
-     * according to the campus and lecture-overlap rules.
+     * Public clash check used by TimetableController when editing timetables.
+     * Returns true when candidate clashes with any class in the accepted list.
      */
+    public boolean wouldClash(ClassEntry candidate,
+                               List<ClassEntry> accepted,
+                               boolean allowLectureOverlap) {
+        return hasClash(candidate, accepted, allowLectureOverlap);
+    }
+
     private boolean hasClash(ClassEntry candidate,
                               List<ClassEntry> accepted,
                               boolean allowLectureOverlap) {
         for (ClassEntry existing : accepted) {
             if (existing.getDay() != candidate.getDay()) continue;
-
             String campusA = resolveCampus(existing);
             String campusB = resolveCampus(candidate);
-
-            if (clashes(existing, candidate, campusA, campusB, allowLectureOverlap)) {
-                return true;
-            }
+            if (clashes(existing, candidate, campusA, campusB, allowLectureOverlap)) return true;
         }
         return false;
     }
 
     /**
-     * Applies the ordered clash detection rules from the design specification.
-     * Returns true when the two classes clash and cannot both be scheduled.
-     *
      * Rule evaluation order:
-     *   a. Same campus          → only a direct time overlap is a clash.
-     *   g. City + any campus    → always require a 30-minute gap; class type and
-     *                             allowLectureOverlap have no effect on this rule.
-     *   b–f. Bedford + Tonsley  → gap rules depend on class type and overlap flag.
+     *   a. Same campus          → only direct time overlap is a clash.
+     *   g. City + any other     → unconditional 30-minute gap required.
+     *   b–f. Bedford + Tonsley  → gap varies by class type and overlap flag.
      *   default                 → 30-minute gap required.
      */
     private boolean clashes(ClassEntry a, ClassEntry b,
                              String campusA, String campusB,
                              boolean allowLectureOverlap) {
+        if (campusA.equalsIgnoreCase(campusB)) return timesOverlap(a, b);
 
-        // Rule a: same campus — back-to-back always allowed; only check time overlap.
-        if (campusA.equalsIgnoreCase(campusB)) {
-            return timesOverlap(a, b);
-        }
-
-        // Rule g: City campus paired with ANY other campus (including Tonsley) —
-        // unconditionally requires a 30-minute gap regardless of class type or
-        // the allowLectureOverlap flag.  This check must come before all other
-        // cross-campus rules so it cannot be bypassed.
         boolean aCityOther = campusA.equalsIgnoreCase(CITY) && !campusB.equalsIgnoreCase(CITY);
         boolean bCityOther = campusB.equalsIgnoreCase(CITY) && !campusA.equalsIgnoreCase(CITY);
-        if (aCityOther || bCityOther) {
-            return !hasGap(a, b, 30);
-        }
+        if (aCityOther || bCityOther) return !hasGap(a, b, 30);
 
-        // Rules b–f: Bedford Park + Tonsley — gap rules vary by class type and flag.
         if (isBedfordTonsleyPair(campusA, campusB)) {
-            boolean bothLectures    = a.isLecture() && b.isLecture();
-            boolean bothNonLectures = !a.isLecture() && !b.isLecture();
-
-            if (bothNonLectures) {
-                // Rule b: both non-lectures — always require 30-minute gap.
-                return !hasGap(a, b, 30);
-            }
-            if (bothLectures) {
-                // Rules c/d: both lectures — gap waived only when overlap enabled.
-                return allowLectureOverlap ? timesOverlap(a, b) : !hasGap(a, b, 30);
-            }
-            // Rules e/f: one lecture + one non-lecture — gap waived only when overlap enabled.
+            boolean bothNonLect  = !a.isLecture() && !b.isLecture();
+            boolean bothLectures = a.isLecture() && b.isLecture();
+            if (bothNonLect)  return !hasGap(a, b, 30);
+            if (bothLectures) return allowLectureOverlap ? timesOverlap(a, b) : !hasGap(a, b, 30);
             return allowLectureOverlap ? timesOverlap(a, b) : !hasGap(a, b, 30);
         }
 
-        // Default: any other cross-campus pairing requires a 30-minute gap.
         return !hasGap(a, b, 30);
     }
 
-    /** Returns true when time intervals of a and b overlap (exclusive of touching boundaries). */
     private boolean timesOverlap(ClassEntry a, ClassEntry b) {
         return a.getStartTime().isBefore(b.getEndTime())
             && b.getStartTime().isBefore(a.getEndTime());
     }
 
-    /**
-     * Returns true when there is at least minGapMinutes between the end of one class
-     * and the start of the other (in either order).
-     */
     private boolean hasGap(ClassEntry a, ClassEntry b, int minGapMinutes) {
         long gapAtoB = java.time.Duration.between(a.getEndTime(), b.getStartTime()).toMinutes();
         long gapBtoA = java.time.Duration.between(b.getEndTime(), a.getStartTime()).toMinutes();
         return gapAtoB >= minGapMinutes || gapBtoA >= minGapMinutes;
     }
 
-    /** Returns true when one campus is City and the other is something different. */
-    private boolean isCityPairedWithOther(String campusA, String campusB) {
-        return (campusA.equalsIgnoreCase(CITY) && !campusB.equalsIgnoreCase(CITY))
-            || (campusB.equalsIgnoreCase(CITY) && !campusA.equalsIgnoreCase(CITY));
-    }
-
-    /** Returns true when one campus is Bedford Park and the other is Tonsley (or vice versa). */
     private boolean isBedfordTonsleyPair(String campusA, String campusB) {
         return (campusA.equalsIgnoreCase(BEDFORD_PARK) && campusB.equalsIgnoreCase(TONSLEY))
             || (campusA.equalsIgnoreCase(TONSLEY) && campusB.equalsIgnoreCase(BEDFORD_PARK));
     }
 
-    /** Resolves the campus label for a ClassEntry via its associated Topic (lower-cased). */
+    /** Resolves campus by building inference first, then Topic fallback. */
     private String resolveCampus(ClassEntry c) {
+        String fromBuilding = inferCampusFromBuilding(c.getBuilding());
+        if (!fromBuilding.equalsIgnoreCase("Bedford Park")
+                || c.getBuilding() == null || c.getBuilding().isBlank()) {
+            return fromBuilding.toLowerCase();
+        }
         return topicRepository.findByCourseCode(c.getCourseCode())
                 .map(t -> t.getCampus().toLowerCase())
-                .orElse("");
+                .orElse("bedford park");
     }
 }

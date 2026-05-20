@@ -29,22 +29,36 @@ public class ImportExportController {
     }
 
     /**
-     * Prompts the user for a file path and data type (Topics or Classes),
-     * delegates to CSVImportService, and reports import results.
+     * Prompts the user for a file path and data type, delegates to CSVImportService,
+     * and reports import results. Supports three modes:
+     * 1 = Topics CSV (synthetic format), 2 = Classes CSV (synthetic format),
+     * 3 = University timetable export file (data/ folder format).
      */
     public void importData() {
         System.out.println("\n── Import Data ──────────────────────────────");
-        System.out.println("  1. Import Topics");
-        System.out.println("  2. Import Classes");
-        int choice = input.readInt(sc, "Select type (1-2): ", 1, 2);
+        System.out.println("  1. Import Topics (course list CSV)");
+        System.out.println("  2. Import Classes (class list CSV)");
+        System.out.println("  3. Import from university timetable file (data/ folder)");
+        int choice = input.readInt(sc, "Select type (1-3): ", 1, 3);
         String path = input.readNonBlank(sc, "File path: ");
 
-        if (choice == 1) {
-            List<Topic> imported = importService.importTopics(path);
-            view.printSuccess("Imported " + imported.size() + " topic(s) from " + path + ".");
-        } else {
-            List<ClassEntry> imported = importService.importClasses(path);
-            view.printSuccess("Imported " + imported.size() + " class(es) from " + path + ".");
+        switch (choice) {
+            case 1 -> {
+                List<Topic> imported = importService.importTopics(path);
+                view.printSuccess("Imported " + imported.size() + " topic(s) from: " + path);
+            }
+            case 2 -> {
+                List<ClassEntry> imported = importService.importClasses(path);
+                view.printSuccess("Imported " + imported.size() + " class(es) from: " + path);
+            }
+            case 3 -> {
+                CSVImportService.ImportResult result =
+                    importService.importFromTimetableFile(path);
+                view.printSuccess(
+                    "Import complete — "
+                    + result.newCount()     + " new, "
+                    + result.updatedCount() + " updated  (" + path + ")");
+            }
         }
     }
 }

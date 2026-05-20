@@ -22,11 +22,26 @@ public class PreferenceService {
 
     /**
      * Validates and saves the given Preference.
-     * Throws IllegalArgumentException if timeOfDay or day contains an invalid value.
+     * For legacy preferences (7-arg constructor): validates timeOfDay and day.
+     * For token-based preferences: validates that all tokens are in the valid set.
+     * Throws IllegalArgumentException on invalid input.
      */
     public void savePreference(Preference p) {
-        validateTimeOfDay(p.getTimeOfDay());
-        validateDay(p.getDay());
+        // Legacy-style: the old 7-arg constructor always sets non-null campus/timeOfDay/day.
+        // Token-style: uses the 2-arg constructor which leaves those fields null.
+        if (p.getTimeOfDay() != null) {
+            // Legacy path — validate the old-style fields.
+            validateTimeOfDay(p.getTimeOfDay());
+            validateDay(p.getDay());
+        } else {
+            // Token path — validate each token.
+            for (String token : p.getPriorityOrder()) {
+                if (!Preference.VALID_TOKENS.contains(token)) {
+                    throw new IllegalArgumentException(
+                        "Invalid preference token: '" + token + "'.");
+                }
+            }
+        }
         preferenceRepository.save(p);
     }
 
@@ -51,7 +66,7 @@ public class PreferenceService {
 
     /**
      * Throws IllegalArgumentException when day is not a recognised English day name or "Any".
-     * Accepts full English day names (Monday–Friday, Saturday, Sunday) or "Any".
+     * Accepts full English day names (Monday–Sunday) or "Any".
      */
     private void validateDay(String day) {
         if (day == null) {

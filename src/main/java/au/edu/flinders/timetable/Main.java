@@ -33,13 +33,13 @@ public class Main {
         PreferenceRepository preferenceRepo = new PreferenceRepository();
 
         // ── Services ──────────────────────────────────────────────
-        CSVImportService           importService     = new CSVImportService(topicRepo, classRepo);
-        CSVExportService           exportService     = new CSVExportService(classRepo);
-        ClassService               classService      = new ClassService(classRepo, topicRepo);
-        SearchService              searchService     = new SearchService(classRepo, topicRepo);
-        PreferenceService          preferenceService = new PreferenceService(preferenceRepo);
-        TimetableService           timetableService  = new TimetableService(timetableRepo);
-        TimetableGeneratorService  generatorService  = new TimetableGeneratorService(
+        CSVImportService          importService     = new CSVImportService(topicRepo, classRepo);
+        CSVExportService          exportService     = new CSVExportService(classRepo, topicRepo);
+        ClassService              classService      = new ClassService(classRepo, topicRepo);
+        SearchService             searchService     = new SearchService(classRepo, topicRepo);
+        PreferenceService         preferenceService = new PreferenceService(preferenceRepo);
+        TimetableService          timetableService  = new TimetableService(timetableRepo, classRepo);
+        TimetableGeneratorService generatorService  = new TimetableGeneratorService(
             classRepo, topicRepo, preferenceRepo, timetableService);
 
         // ── UI helpers ────────────────────────────────────────────
@@ -50,8 +50,10 @@ public class Main {
         // ── Controllers ───────────────────────────────────────────
         ImportExportController importExportController = new ImportExportController(
             importService, view, input, sc);
+
         ClassController classController = new ClassController(
-            classService, searchService, view);
+            classService, searchService, topicRepo, view, input, sc);
+
         TimetableController timetableController = new TimetableController(
             generatorService, timetableService, exportService, classRepo, view, input, sc);
 
