@@ -43,21 +43,24 @@ public class ImportExportController {
         String path = input.readNonBlank(sc, "File path: ");
 
         switch (choice) {
-            case 1 -> {
+            case 1: {
                 List<Topic> imported = importService.importTopics(path);
                 view.printSuccess("Imported " + imported.size() + " topic(s) from: " + path);
+                break;
             }
-            case 2 -> {
+            case 2: {
                 List<ClassEntry> imported = importService.importClasses(path);
                 view.printSuccess("Imported " + imported.size() + " class(es) from: " + path);
+                break;
             }
-            case 3 -> {
+            case 3: {
                 CSVImportService.ImportResult result =
                     importService.importFromTimetableFile(path);
                 view.printSuccess(
                     "Import complete — "
                     + result.newCount()     + " new, "
                     + result.updatedCount() + " updated  (" + path + ")");
+                break;
             }
         }
     }

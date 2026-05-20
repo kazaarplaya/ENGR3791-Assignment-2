@@ -6,12 +6,16 @@ import au.edu.flinders.timetable.repository.PreferenceRepository;
 import java.time.DayOfWeek;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 
 /** Manages saving, retrieving, and clearing user preferences with validation. */
 public class PreferenceService {
 
-    private static final Set<String> VALID_TIMES =
-        Set.of("morning", "afternoon", "evening", "any");
+    private static final Set<String> VALID_TIMES = Collections.unmodifiableSet(
+        new HashSet<>(Arrays.asList("morning", "afternoon", "evening", "any"))
+    );
 
     private final PreferenceRepository preferenceRepository;
 

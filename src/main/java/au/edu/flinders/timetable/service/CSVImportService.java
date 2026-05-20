@@ -27,7 +27,23 @@ import java.util.regex.Pattern;
 public class CSVImportService {
 
     /** Result returned by importFromTimetableFile() reporting new and promoted record counts. */
-    public record ImportResult(int newCount, int updatedCount) {}
+    public static class ImportResult {
+        private final int newCount;
+        private final int updatedCount;
+
+        public ImportResult(int newCount, int updatedCount) {
+            this.newCount = newCount;
+            this.updatedCount = updatedCount;
+        }
+
+        public int newCount() {
+            return newCount;
+        }
+
+        public int updatedCount() {
+            return updatedCount;
+        }
+    }
 
     private static final DateTimeFormatter MONTH_DAY_FMT =
         DateTimeFormatter.ofPattern("dd MMM");
@@ -256,12 +272,16 @@ public class CSVImportService {
     private static String parseCampus(String availability) {
         String[] parts = availability.split(" - ", -1);
         String raw = parts.length > 1 ? parts[1].trim() : availability.trim();
-        return switch (raw) {
-            case "Flinders City Campus" -> "City";
-            case "Bedford Park"         -> "Bedford Park";
-            case "Tonsley"              -> "Tonsley";
-            default                     -> raw;
-        };
+        switch (raw) {
+            case "Flinders City Campus":
+                return "City";
+            case "Bedford Park":
+                return "Bedford Park";
+            case "Tonsley":
+                return "Tonsley";
+            default:
+                return raw;
+        }
     }
 
     /** Extracts the semester digit from patterns like "- S1 -" in the availability string. */

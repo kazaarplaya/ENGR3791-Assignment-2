@@ -101,34 +101,48 @@ public class Preference {
 
     private static String oldCampusToToken(String campus) {
         if (campus == null) return null;
-        return switch (campus.toLowerCase().trim()) {
-            case "bedford park" -> CAMPUS_BEDFORD_PARK;
-            case "tonsley"      -> CAMPUS_TONSLEY;
-            case "city"         -> CAMPUS_CITY;
-            default             -> null;
-        };
+        switch (campus.toLowerCase().trim()) {
+            case "bedford park":
+                return CAMPUS_BEDFORD_PARK;
+            case "tonsley":
+                return CAMPUS_TONSLEY;
+            case "city":
+                return CAMPUS_CITY;
+            default:
+                return null;
+        }
     }
 
     private static String oldTimeOfDayToToken(String timeOfDay) {
         if (timeOfDay == null) return null;
-        return switch (timeOfDay.toLowerCase().trim()) {
-            case "morning"   -> TIME_MORNING;
-            case "afternoon" -> TIME_AFTERNOON;
-            case "evening"   -> TIME_EVENING;
-            default          -> null;
-        };
+        switch (timeOfDay.toLowerCase().trim()) {
+            case "morning":
+                return TIME_MORNING;
+            case "afternoon":
+                return TIME_AFTERNOON;
+            case "evening":
+                return TIME_EVENING;
+            default:
+                return null;
+        }
     }
 
     private static String oldDayToToken(String day) {
         if (day == null) return null;
-        return switch (day.toLowerCase().trim()) {
-            case "monday"    -> DAY_MONDAY;
-            case "tuesday"   -> DAY_TUESDAY;
-            case "wednesday" -> DAY_WEDNESDAY;
-            case "thursday"  -> DAY_THURSDAY;
-            case "friday"    -> DAY_FRIDAY;
-            default          -> null;
-        };
+        switch (day.toLowerCase().trim()) {
+            case "monday":
+                return DAY_MONDAY;
+            case "tuesday":
+                return DAY_TUESDAY;
+            case "wednesday":
+                return DAY_WEDNESDAY;
+            case "thursday":
+                return DAY_THURSDAY;
+            case "friday":
+                return DAY_FRIDAY;
+            default:
+                return null;
+        }
     }
 
     // ── Getters ───────────────────────────────────────────────────────────────

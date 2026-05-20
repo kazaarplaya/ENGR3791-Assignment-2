@@ -85,15 +85,25 @@ public class MenuController {
             int choice = input.readInt(sc, "Select option: ", 1, MENU_OPTIONS.length);
             System.out.println();
             switch (choice) {
-                case 1 -> importExportController.importData();
-                case 2 -> handleClasses();
-                case 3 -> handlePreferences();
-                case 4 -> timetableController.generate(currentUser);
-                case 5 -> handleViewExport();
-                case 6 -> {
+                case 1:
+                    importExportController.importData();
+                    break;
+                case 2:
+                    handleClasses();
+                    break;
+                case 3:
+                    handlePreferences();
+                    break;
+                case 4:
+                    timetableController.generate(currentUser);
+                    break;
+                case 5:
+                    handleViewExport();
+                    break;
+                case 6:
                     view.printSuccess("Goodbye!");
                     running = false;
-                }
+                    break;
             }
             System.out.println();
         }
@@ -110,10 +120,18 @@ public class MenuController {
         System.out.println("  4. Delete a class");
         int choice = input.readInt(sc, "Select: ", 1, 4);
         switch (choice) {
-            case 1 -> classController.search();
-            case 2 -> classController.viewAll();
-            case 3 -> classController.editClass();
-            case 4 -> classController.deleteClass();
+            case 1:
+                classController.search();
+                break;
+            case 2:
+                classController.viewAll();
+                break;
+            case 3:
+                classController.editClass();
+                break;
+            case 4:
+                classController.deleteClass();
+                break;
         }
     }
 
@@ -127,11 +145,21 @@ public class MenuController {
         System.out.println("  5. Delete a timetable");
         int choice = input.readInt(sc, "Select: ", 1, 5);
         switch (choice) {
-            case 1 -> timetableController.viewAll();
-            case 2 -> timetableController.view();
-            case 3 -> timetableController.editTimetable();
-            case 4 -> timetableController.export();
-            case 5 -> timetableController.delete();
+            case 1:
+                timetableController.viewAll();
+                break;
+            case 2:
+                timetableController.view();
+                break;
+            case 3:
+                timetableController.editTimetable();
+                break;
+            case 4:
+                timetableController.export();
+                break;
+            case 5:
+                timetableController.delete();
+                break;
         }
     }
 
@@ -149,18 +177,20 @@ public class MenuController {
         int choice = input.readInt(sc, "Select: ", 1, 3);
 
         switch (choice) {
-            case 1 -> {
+            case 1:
                 preferenceService.getPreference(currentUser.getUserId())
                     .ifPresentOrElse(
                         p -> System.out.println("  " + p),
                         () -> System.out.println("  No preferences set.")
                     );
-            }
-            case 2 -> setPreferencesTokenMode();
-            case 3 -> {
+                break;
+            case 2:
+                setPreferencesTokenMode();
+                break;
+            case 3:
                 preferenceService.clearPreference(currentUser.getUserId());
                 view.printSuccess("Preferences cleared.");
-            }
+                break;
         }
     }
 

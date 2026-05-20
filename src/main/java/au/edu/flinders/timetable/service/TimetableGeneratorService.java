@@ -245,47 +245,48 @@ public class TimetableGeneratorService {
 
     /** Applies a single preference token as a filter. */
     private List<ClassEntry> applyToken(String token, List<ClassEntry> candidates) {
-        return switch (token) {
-            case Preference.CAMPUS_BEDFORD_PARK ->
-                candidates.stream()
+        switch (token) {
+            case Preference.CAMPUS_BEDFORD_PARK:
+                return candidates.stream()
                     .filter(c -> inferCampusFromBuilding(c.getBuilding()).equalsIgnoreCase("Bedford Park"))
                     .collect(Collectors.toList());
-            case Preference.CAMPUS_TONSLEY ->
-                candidates.stream()
+            case Preference.CAMPUS_TONSLEY:
+                return candidates.stream()
                     .filter(c -> inferCampusFromBuilding(c.getBuilding()).equalsIgnoreCase("Tonsley"))
                     .collect(Collectors.toList());
-            case Preference.CAMPUS_CITY ->
-                candidates.stream()
+            case Preference.CAMPUS_CITY:
+                return candidates.stream()
                     .filter(c -> inferCampusFromBuilding(c.getBuilding()).equalsIgnoreCase("City"))
                     .collect(Collectors.toList());
-            case Preference.TIME_MORNING ->
-                candidates.stream()
+            case Preference.TIME_MORNING:
+                return candidates.stream()
                     .filter(c -> c.getStartTime().isBefore(LocalTime.of(12, 0)))
                     .collect(Collectors.toList());
-            case Preference.TIME_AFTERNOON ->
-                candidates.stream()
+            case Preference.TIME_AFTERNOON:
+                return candidates.stream()
                     .filter(c -> {
                         LocalTime s = c.getStartTime();
                         return !s.isBefore(LocalTime.of(12, 0)) && s.isBefore(LocalTime.of(17, 0));
                     })
                     .collect(Collectors.toList());
-            case Preference.TIME_EVENING ->
-                candidates.stream()
+            case Preference.TIME_EVENING:
+                return candidates.stream()
                     .filter(c -> !c.getStartTime().isBefore(LocalTime.of(17, 0)))
                     .collect(Collectors.toList());
-            case Preference.DAY_MONDAY ->
-                candidates.stream().filter(c -> c.getDay() == DayOfWeek.MONDAY).collect(Collectors.toList());
-            case Preference.DAY_TUESDAY ->
-                candidates.stream().filter(c -> c.getDay() == DayOfWeek.TUESDAY).collect(Collectors.toList());
-            case Preference.DAY_WEDNESDAY ->
-                candidates.stream().filter(c -> c.getDay() == DayOfWeek.WEDNESDAY).collect(Collectors.toList());
-            case Preference.DAY_THURSDAY ->
-                candidates.stream().filter(c -> c.getDay() == DayOfWeek.THURSDAY).collect(Collectors.toList());
-            case Preference.DAY_FRIDAY ->
-                candidates.stream().filter(c -> c.getDay() == DayOfWeek.FRIDAY).collect(Collectors.toList());
+            case Preference.DAY_MONDAY:
+                return candidates.stream().filter(c -> c.getDay() == DayOfWeek.MONDAY).collect(Collectors.toList());
+            case Preference.DAY_TUESDAY:
+                return candidates.stream().filter(c -> c.getDay() == DayOfWeek.TUESDAY).collect(Collectors.toList());
+            case Preference.DAY_WEDNESDAY:
+                return candidates.stream().filter(c -> c.getDay() == DayOfWeek.WEDNESDAY).collect(Collectors.toList());
+            case Preference.DAY_THURSDAY:
+                return candidates.stream().filter(c -> c.getDay() == DayOfWeek.THURSDAY).collect(Collectors.toList());
+            case Preference.DAY_FRIDAY:
+                return candidates.stream().filter(c -> c.getDay() == DayOfWeek.FRIDAY).collect(Collectors.toList());
             // CAMPUS_SAME, SPREAD, COMPACT: ordering hints only — no exclusion.
-            default -> new ArrayList<>(candidates);
-        };
+            default:
+                return new ArrayList<>(candidates);
+        }
     }
 
     // ── Clash detection ───────────────────────────────────────────────────────

@@ -8,6 +8,7 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /** Handles all formatted console output including the ASCII banner and timetable grid. */
 public class ConsoleView {
@@ -468,7 +469,7 @@ public class ConsoleView {
                 && c.getStartTime() != null && c.getEndTime() != null
                 && c.getStartTime().isBefore(slotEnd)
                 && c.getEndTime().isAfter(slotTime))
-            .toList();
+            .collect(Collectors.toList());
     }
 
     /** Builds a horizontal separator line with the given left, middle, and right connectors. */
