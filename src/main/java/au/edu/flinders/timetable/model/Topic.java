@@ -6,17 +6,20 @@ import java.util.Objects;
 public class Topic {
 
     private final String courseCode;
+    private final String topicName;
     private final String campus;
-    private final int semester;
+    private final int    semester;
     private final String delivery;
-    private final int numOfClasses;
+    private final int    numOfClasses;
 
     /** Constructs a Topic; throws IllegalArgumentException if courseCode is blank. */
-    public Topic(String courseCode, String campus, int semester, String delivery, int numOfClasses) {
+    public Topic(String courseCode, String topicName, String campus,
+                 int semester, String delivery, int numOfClasses) {
         if (courseCode == null || courseCode.isBlank()) {
             throw new IllegalArgumentException("courseCode cannot be blank");
         }
         this.courseCode   = courseCode;
+        this.topicName    = (topicName == null) ? "" : topicName;
         this.campus       = campus;
         this.semester     = semester;
         this.delivery     = delivery;
@@ -25,6 +28,9 @@ public class Topic {
 
     /** Returns the course code (primary key). */
     public String getCourseCode()   { return courseCode; }
+
+    /** Returns the human-readable topic name, e.g. "Computer Programming 1". */
+    public String getTopicName()    { return topicName; }
 
     /** Returns the campus at which this topic is offered. */
     public String getCampus()       { return campus; }
@@ -53,9 +59,9 @@ public class Topic {
         return Objects.hash(courseCode);
     }
 
-    /** Returns a readable summary: "COMP1000 – City (Semester 1)". */
+    /** Returns a readable summary: "COMP1000 – Computer Programming 1 – City (Semester 1)". */
     @Override
     public String toString() {
-        return courseCode + " – " + campus + " (Semester " + semester + ")";
+        return courseCode + " – " + topicName + " – " + campus + " (Semester " + semester + ")";
     }
 }

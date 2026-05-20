@@ -43,7 +43,7 @@ class TimetableGeneratorServiceTest {
 
     /** Creates and stores a Topic. */
     private Topic topic(String code, String campus) {
-        Topic t = new Topic(code, campus, 1, "In Person", 10);
+        Topic t = new Topic(code, "", campus, 1, "In Person", 10);
         topicRepo.save(t);
         return t;
     }
@@ -166,7 +166,7 @@ class TimetableGeneratorServiceTest {
             DayOfWeek.TUESDAY, LocalTime.of(9, 0), LocalTime.of(11, 0));
 
         // Prefer Tuesday only
-        prefRepo.save(new Preference("u1", "Any", "Any", "Tuesday"));
+        prefRepo.save(new Preference("u1", "Any", "Any", "Tuesday", 1, 2, 3));
         User u = user("COMP1000");
 
         Timetable t = generator.generate(u, Map.of(), false, true, "T1");
@@ -183,7 +183,7 @@ class TimetableGeneratorServiceTest {
         classEntry("C002", "Lecture", "COMP1000",
             DayOfWeek.TUESDAY, LocalTime.of(13, 0), LocalTime.of(15, 0)); // afternoon
 
-        prefRepo.save(new Preference("u1", "Any", "Morning", "Any"));
+        prefRepo.save(new Preference("u1", "Any", "Morning", "Any", 1, 2, 3));
         User u = user("COMP1000");
 
         Timetable t = generator.generate(u, Map.of(), false, true, "T1");
@@ -233,7 +233,7 @@ class TimetableGeneratorServiceTest {
             DayOfWeek.MONDAY, LocalTime.of(14, 0), LocalTime.of(16, 0));
 
         // Preference requires morning — no classes survive the filter
-        prefRepo.save(new Preference("u1", "Any", "Morning", "Any"));
+        prefRepo.save(new Preference("u1", "Any", "Morning", "Any", 1, 2, 3));
         User u = user("COMP1000");
 
         assertThrows(

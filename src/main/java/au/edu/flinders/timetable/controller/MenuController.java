@@ -28,8 +28,8 @@ public class MenuController {
     private final TimetableController    timetableController;
     private final PreferenceService      preferenceService;
 
-    // Single session user — created on first run
-    private final User currentUser;
+    // Populated during start() after the user enters their details.
+    private User currentUser;
 
     /** Constructs MenuController with all sub-controllers and shared dependencies. */
     public MenuController(Scanner sc,
@@ -39,19 +39,25 @@ public class MenuController {
                           ClassController classController,
                           TimetableController timetableController,
                           PreferenceService preferenceService) {
-        this.sc                    = sc;
-        this.view                  = view;
-        this.input                 = input;
+        this.sc                     = sc;
+        this.view                   = view;
+        this.input                  = input;
         this.importExportController = importExportController;
-        this.classController       = classController;
-        this.timetableController   = timetableController;
-        this.preferenceService     = preferenceService;
-        this.currentUser           = new User("student1", "Current Student");
+        this.classController        = classController;
+        this.timetableController    = timetableController;
+        this.preferenceService      = preferenceService;
+        this.currentUser            = null;
     }
 
-    /** Displays the banner and runs the main menu loop until the user selects Exit. */
+    /** Displays the banner, collects the user's identity, then runs the main menu loop. */
     public void start() {
         view.printBanner();
+        System.out.println("  Please enter your details to begin.");
+        String userId = input.readNonBlank(sc, "  Student ID : ");
+        String name   = input.readNonBlank(sc, "  Your name  : ");
+        currentUser   = new User(userId, name);
+        view.printSuccess("Welcome, " + name + "!");
+        System.out.println();
         boolean running = true;
         while (running) {
             view.printMenu(MENU_OPTIONS);
@@ -111,8 +117,14 @@ public class MenuController {
                 if (timeOfDay.isBlank()) timeOfDay = "Any";
                 if (day.isBlank())       day       = "Any";
 
+                System.out.println("  Assign a priority to each criterion (1 = most important).");
+                int cp = input.readInt(sc, "  Campus priority:      ", 1, 3);
+                int tp = input.readInt(sc, "  Time-of-day priority: ", 1, 3);
+                int dp = input.readInt(sc, "  Day priority:         ", 1, 3);
+
                 try {
-                    Preference pref = new Preference(currentUser.getUserId(), campus, timeOfDay, day);
+                    Preference pref = new Preference(
+                        currentUser.getUserId(), campus, timeOfDay, day, cp, tp, dp);
                     preferenceService.savePreference(pref);
                     view.printSuccess("Preferences saved.");
                 } catch (IllegalArgumentException e) {

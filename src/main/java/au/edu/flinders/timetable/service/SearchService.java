@@ -53,8 +53,9 @@ public class SearchService {
         Optional<Topic> topic = topicRepository.findByCourseCode(c.getCourseCode());
         if (topic.isPresent()) {
             Topic t = topic.get();
-            if (contains(t.getCampus(),   q)) return true;
-            if (contains(t.getDelivery(), q)) return true;
+            if (contains(t.getCampus(),    q)) return true;
+            if (contains(t.getTopicName(), q)) return true;
+            if (contains(t.getDelivery(),  q)) return true;
         }
 
         return false;

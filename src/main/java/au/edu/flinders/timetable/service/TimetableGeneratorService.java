@@ -48,10 +48,12 @@ public class TimetableGeneratorService {
      * Generates and saves an optimised Timetable for the given user.
      *
      * @param user                the student whose enrolled topics are used
-     * @param campusSelections    map of courseCode -> chosen campus label (may be empty)
-     * @param allowLectureOverlap whether back-to-back lectures at different campuses are allowed
-     * @param applyPreferences    whether to filter classes using the user's saved preferences
-     * @param optionalName        desired timetable name; auto-generated if blank
+     * @param campusSelections    map of courseCode to the campus label the user chose for that
+     *                            topic; topics absent from this map have no campus filter applied
+     * @param allowLectureOverlap whether back-to-back lectures at different campuses are
+     *                            permitted without a 30-minute gap
+     * @param applyPreferences    whether to filter using the user's saved preference priorities
+     * @param optionalName        desired timetable name; pass blank or null to auto-generate
      * @return the saved Timetable
      * @throws IllegalStateException    when no valid classes remain for a topic after filtering
      * @throws IllegalArgumentException when the timetable name already exists
@@ -138,31 +140,54 @@ public class TimetableGeneratorService {
 
     // ── Preference filters ────────────────────────────────────────────────────
 
-    /** Applies campus, timeOfDay, and day preference filters to the candidate list. */
+    /**
+     * Applies campus, timeOfDay, and day preference filters in priority order.
+     * Criteria with a lower priority number are applied first (priority 1 = most important).
+     * If applying a criterion would reduce the candidate list to zero, that criterion is
+     * skipped so a high-priority preference never silently eliminates all options.
+     * Criteria that share the same priority number are applied together in one pass.
+     */
     private List<ClassEntry> applyPreferenceFilters(List<ClassEntry> candidates,
                                                      Preference pref) {
         List<ClassEntry> result = new ArrayList<>(candidates);
 
-        // Campus filter
-        if (!pref.getCampus().equalsIgnoreCase("Any") && !pref.getCampus().isBlank()) {
-            result = result.stream()
-                .filter(c -> c.getBuilding().equalsIgnoreCase(pref.getCampus()))
-                .collect(Collectors.toList());
-        }
+        // Collect distinct priority levels in ascending order (lowest = most important).
+        List<Integer> priorities = List.of(
+                pref.getCampusPriority(),
+                pref.getTimeOfDayPriority(),
+                pref.getDayPriority()
+        ).stream().sorted().distinct().collect(Collectors.toList());
 
-        // Time-of-day filter
-        if (!pref.getTimeOfDay().equalsIgnoreCase("Any")) {
-            result = result.stream()
-                .filter(c -> matchesTimeOfDay(c.getStartTime(), pref.getTimeOfDay()))
-                .collect(Collectors.toList());
-        }
+        for (int priority : priorities) {
+            List<ClassEntry> filtered = new ArrayList<>(result);
 
-        // Day filter
-        if (!pref.getDay().equalsIgnoreCase("Any") && !pref.getDay().isBlank()) {
-            result = result.stream()
-                .filter(c -> c.getDay() != null
-                    && c.getDay() == DayOfWeek.valueOf(pref.getDay().toUpperCase()))
-                .collect(Collectors.toList());
+            // Apply every criterion whose priority matches this level.
+            if (priority == pref.getCampusPriority()
+                    && !pref.getCampus().equalsIgnoreCase("Any")
+                    && !pref.getCampus().isBlank()) {
+                filtered = filtered.stream()
+                    .filter(c -> c.getBuilding().equalsIgnoreCase(pref.getCampus()))
+                    .collect(Collectors.toList());
+            }
+            if (priority == pref.getTimeOfDayPriority()
+                    && !pref.getTimeOfDay().equalsIgnoreCase("Any")) {
+                filtered = filtered.stream()
+                    .filter(c -> matchesTimeOfDay(c.getStartTime(), pref.getTimeOfDay()))
+                    .collect(Collectors.toList());
+            }
+            if (priority == pref.getDayPriority()
+                    && !pref.getDay().equalsIgnoreCase("Any")
+                    && !pref.getDay().isBlank()) {
+                filtered = filtered.stream()
+                    .filter(c -> c.getDay() != null
+                        && c.getDay() == DayOfWeek.valueOf(pref.getDay().toUpperCase()))
+                    .collect(Collectors.toList());
+            }
+
+            // Commit this priority's filters only if candidates remain.
+            if (!filtered.isEmpty()) {
+                result = filtered;
+            }
         }
 
         return result;

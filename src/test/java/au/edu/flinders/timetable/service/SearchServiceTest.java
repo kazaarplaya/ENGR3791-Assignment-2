@@ -27,8 +27,8 @@ class SearchServiceTest {
         service   = new SearchService(classRepo, topicRepo);
 
         // Seed a topic and two classes
-        topicRepo.save(new Topic("COMP1000", "City", 1, "In Person", 24));
-        topicRepo.save(new Topic("MATH1000", "Bedford Park", 1, "Online", 12));
+        topicRepo.save(new Topic("COMP1000", "Computer Programming 1", "City", 1, "In Person", 24));
+        topicRepo.save(new Topic("MATH1000", "Mathematics 1", "Bedford Park", 1, "Online", 12));
 
         classRepo.save(new ClassEntry("C001", "Lecture", null,
             LocalTime.of(9, 0), LocalTime.of(11, 0),

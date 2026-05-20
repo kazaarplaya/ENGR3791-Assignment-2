@@ -25,7 +25,7 @@ public class CSVImportService {
 
     /**
      * Reads a Topics CSV file (header + data rows) and saves each valid Topic.
-     * Column order: CourseCode, Campus, Semester, Delivery, Num_of_Classes.
+     * Column order: CourseCode, TopicName, Campus, Semester, Delivery, Num_of_Classes.
      * Bad rows are logged to System.err and skipped; parsing continues.
      * Returns the list of successfully imported Topics.
      */
@@ -40,17 +40,18 @@ public class CSVImportService {
                 if (lineNumber == 1) continue; // skip header
                 if (line.isBlank()) continue;
 
-                String[] cols = line.split(",", -1);
+                String[] cols = splitCsvLine(line);
                 if (cols[0].trim().isEmpty()) continue; // skip blank first column
 
                 try {
                     String courseCode   = cols[0].trim();
-                    String campus       = cols.length > 1 ? cols[1].trim() : "";
-                    int    semester     = cols.length > 2 ? Integer.parseInt(cols[2].trim()) : 1;
-                    String delivery     = cols.length > 3 ? cols[3].trim() : "";
-                    int    numOfClasses = cols.length > 4 ? Integer.parseInt(cols[4].trim()) : 0;
+                    String topicName    = cols.length > 1 ? cols[1].trim() : "";
+                    String campus       = cols.length > 2 ? cols[2].trim() : "";
+                    int    semester     = cols.length > 3 ? Integer.parseInt(cols[3].trim()) : 1;
+                    String delivery     = cols.length > 4 ? cols[4].trim() : "";
+                    int    numOfClasses = cols.length > 5 ? Integer.parseInt(cols[5].trim()) : 0;
 
-                    Topic topic = new Topic(courseCode, campus, semester, delivery, numOfClasses);
+                    Topic topic = new Topic(courseCode, topicName, campus, semester, delivery, numOfClasses);
                     topicRepository.save(topic);
                     imported.add(topic);
                 } catch (Exception e) {
@@ -83,7 +84,7 @@ public class CSVImportService {
                 if (lineNumber == 1) continue; // skip header
                 if (line.isBlank()) continue;
 
-                String[] cols = line.split(",", -1);
+                String[] cols = splitCsvLine(line);
                 if (cols[0].trim().isEmpty()) continue; // skip blank first column
 
                 try {
@@ -101,5 +102,45 @@ public class CSVImportService {
         }
 
         return imported;
+    }
+
+    /**
+     * Splits one CSV line into tokens, respecting double-quoted fields.
+     * A field surrounded by double quotes may contain commas.
+     * Double quotes inside a quoted field are escaped as two double quotes.
+     */
+    private String[] splitCsvLine(String line) {
+        List<String> tokens = new ArrayList<>();
+        StringBuilder current = new StringBuilder();
+        boolean inQuotes = false;
+
+        for (int i = 0; i < line.length(); i++) {
+            char ch = line.charAt(i);
+
+            if (inQuotes) {
+                if (ch == '"') {
+                    // Peek ahead: "" inside quotes is an escaped quote
+                    if (i + 1 < line.length() && line.charAt(i + 1) == '"') {
+                        current.append('"');
+                        i++; // skip the second quote
+                    } else {
+                        inQuotes = false; // closing quote
+                    }
+                } else {
+                    current.append(ch);
+                }
+            } else {
+                if (ch == '"') {
+                    inQuotes = true;
+                } else if (ch == ',') {
+                    tokens.add(current.toString());
+                    current.setLength(0);
+                } else {
+                    current.append(ch);
+                }
+            }
+        }
+        tokens.add(current.toString()); // last token
+        return tokens.toArray(new String[0]);
     }
 }

@@ -38,9 +38,9 @@ class CSVImportServiceTest {
       void importTopics_validFile_returnsCorrectCount() throws IOException {
         Path file = tempDir.resolve("topics.csv");
         Files.writeString(file,
-            "CourseCode,Campus,Semester,Delivery,Num_of_Classes\n"
-          + "COMP1000,City,1,In Person,24\n"
-          + "MATH1000,Bedford Park,2,Online,12\n");
+            "CourseCode,TopicName,Campus,Semester,Delivery,Num_of_Classes\n"
+          + "COMP1000,Computer Programming 1,City,1,In Person,24\n"
+          + "MATH1000,Mathematics 1,Bedford Park,2,Online,12\n");
 
         List<Topic> result = service.importTopics(file.toString());
 
@@ -53,10 +53,10 @@ class CSVImportServiceTest {
     void importTopics_badRow_skipsRowAndContinues() throws IOException {
         Path file = tempDir.resolve("topics_bad.csv");
         Files.writeString(file,
-            "CourseCode,Campus,Semester,Delivery,Num_of_Classes\n"
-          + "COMP1000,City,1,In Person,24\n"
-          + "BADROW,City,NOT_A_NUMBER,In Person,5\n"   // bad semester
-          + "MATH1000,Bedford Park,2,Online,12\n");
+            "CourseCode,TopicName,Campus,Semester,Delivery,Num_of_Classes\n"
+          + "COMP1000,Computer Programming 1,City,1,In Person,24\n"
+          + "BADROW,Bad Topic,City,NOT_A_NUMBER,In Person,5\n"   // bad semester
+          + "MATH1000,Mathematics 1,Bedford Park,2,Online,12\n");
 
         List<Topic> result = service.importTopics(file.toString());
 

@@ -23,7 +23,7 @@ class PreferenceServiceTest {
 
     @Test
     void savePreference_invalidTimeOfDay_throwsIllegalArgumentException() {
-        Preference pref = new Preference("u1", "Any", "Midday", "Any");
+        Preference pref = new Preference("u1", "Any", "Midday", "Any", 1, 2, 3);
         IllegalArgumentException ex = assertThrows(
             IllegalArgumentException.class,
             () -> service.savePreference(pref)
@@ -34,7 +34,7 @@ class PreferenceServiceTest {
 
     @Test
     void savePreference_invalidDay_throwsIllegalArgumentException() {
-        Preference pref = new Preference("u1", "Any", "Morning", "Funday");
+        Preference pref = new Preference("u1", "Any", "Morning", "Funday", 1, 2, 3);
         IllegalArgumentException ex = assertThrows(
             IllegalArgumentException.class,
             () -> service.savePreference(pref)
@@ -45,7 +45,7 @@ class PreferenceServiceTest {
 
     @Test
     void savePreference_valid_canBeRetrievedByUserId() {
-        Preference pref = new Preference("u1", "City", "Morning", "Monday");
+        Preference pref = new Preference("u1", "City", "Morning", "Monday", 1, 2, 3);
         service.savePreference(pref);
 
         Optional<Preference> found = service.getPreference("u1");
@@ -57,7 +57,7 @@ class PreferenceServiceTest {
 
     @Test
     void clearPreference_removesPreference() {
-        Preference pref = new Preference("u1", "Any", "Any", "Any");
+        Preference pref = new Preference("u1", "Any", "Any", "Any", 1, 2, 3);
         service.savePreference(pref);
         service.clearPreference("u1");
 
