@@ -204,41 +204,51 @@ public class TimetableGeneratorService {
     /**
      * Applies the ordered clash detection rules from the design specification.
      * Returns true when the two classes clash and cannot both be scheduled.
+     *
+     * Rule evaluation order:
+     *   a. Same campus          → only a direct time overlap is a clash.
+     *   g. City + any campus    → always require a 30-minute gap; class type and
+     *                             allowLectureOverlap have no effect on this rule.
+     *   b–f. Bedford + Tonsley  → gap rules depend on class type and overlap flag.
+     *   default                 → 30-minute gap required.
      */
     private boolean clashes(ClassEntry a, ClassEntry b,
                              String campusA, String campusB,
                              boolean allowLectureOverlap) {
 
-        // Rule a: same campus — back-to-back always allowed; only check time overlap
+        // Rule a: same campus — back-to-back always allowed; only check time overlap.
         if (campusA.equalsIgnoreCase(campusB)) {
             return timesOverlap(a, b);
         }
 
-        boolean cityInvolved = isCityPairedWithOther(campusA, campusB);
-
-        // Rule g: City paired with any other campus — always require 30-minute gap
-        if (cityInvolved) {
+        // Rule g: City campus paired with ANY other campus (including Tonsley) —
+        // unconditionally requires a 30-minute gap regardless of class type or
+        // the allowLectureOverlap flag.  This check must come before all other
+        // cross-campus rules so it cannot be bypassed.
+        boolean aCityOther = campusA.equalsIgnoreCase(CITY) && !campusB.equalsIgnoreCase(CITY);
+        boolean bCityOther = campusB.equalsIgnoreCase(CITY) && !campusA.equalsIgnoreCase(CITY);
+        if (aCityOther || bCityOther) {
             return !hasGap(a, b, 30);
         }
 
-        // Rules b–f: Bedford Park + Tonsley
+        // Rules b–f: Bedford Park + Tonsley — gap rules vary by class type and flag.
         if (isBedfordTonsleyPair(campusA, campusB)) {
             boolean bothLectures    = a.isLecture() && b.isLecture();
             boolean bothNonLectures = !a.isLecture() && !b.isLecture();
 
             if (bothNonLectures) {
-                // Rule b: both non-lectures — require 30-minute gap
+                // Rule b: both non-lectures — always require 30-minute gap.
                 return !hasGap(a, b, 30);
             }
             if (bothLectures) {
-                // Rules c/d: both lectures
+                // Rules c/d: both lectures — gap waived only when overlap enabled.
                 return allowLectureOverlap ? timesOverlap(a, b) : !hasGap(a, b, 30);
             }
-            // Rules e/f: one lecture + one non-lecture
+            // Rules e/f: one lecture + one non-lecture — gap waived only when overlap enabled.
             return allowLectureOverlap ? timesOverlap(a, b) : !hasGap(a, b, 30);
         }
 
-        // Default: other cross-campus pairings require 30-minute gap
+        // Default: any other cross-campus pairing requires a 30-minute gap.
         return !hasGap(a, b, 30);
     }
 
