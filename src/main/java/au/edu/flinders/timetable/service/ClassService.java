@@ -103,6 +103,17 @@ public class ClassService {
     }
 
     /**
+     * Returns one representative ClassEntry per logical class group
+     * whose courseCode matches the given code (case-insensitive).
+     * Delegates to getGroupedClasses() and filters by courseCode.
+     */
+    public List<ClassEntry> getGroupedClassesForTopic(String courseCode) {
+        return getGroupedClasses().stream()
+            .filter(c -> c.getCourseCode().equalsIgnoreCase(courseCode))
+            .collect(Collectors.toList());
+    }
+
+    /**
      * Deletes the class with the given ID.
      * Throws IllegalArgumentException if the class is not found.
      */

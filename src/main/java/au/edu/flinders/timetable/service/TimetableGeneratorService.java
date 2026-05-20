@@ -134,6 +134,52 @@ public class TimetableGeneratorService {
         return timetable;
     }
 
+    /**
+     * Builds and saves a timetable from an explicitly supplied list of ClassEntry objects.
+     * Unlike generate(), no candidate filtering is applied — the caller has already chosen
+     * the specific class instances. Clash detection still runs; clashing classes are added
+     * to the timetable AND a warning is printed so the student can see the conflict in the grid.
+     *
+     * @param user                 the student (used only for name generation)
+     * @param selectedClasses      the exact ClassEntry instances chosen by the student
+     * @param allowLectureOverlap  forwarded to the clash detection rules
+     * @param applyPreferences     stored in the Timetable metadata flag only
+     * @param optionalName         desired name; blank/null = auto-generate
+     * @param semester             stored in the Timetable metadata string only
+     * @return the saved Timetable
+     * @throws IllegalArgumentException when the timetable name already exists
+     */
+    public Timetable generateFromSelections(User user,
+                                            List<ClassEntry> selectedClasses,
+                                            boolean allowLectureOverlap,
+                                            boolean applyPreferences,
+                                            String optionalName,
+                                            int semester) {
+        String name = (optionalName != null && !optionalName.isBlank())
+            ? optionalName : timetableService.generateUniqueName();
+
+        Timetable timetable = new Timetable(name,
+            semester == 0 ? "" : "Semester " + semester,
+            allowLectureOverlap, applyPreferences);
+
+        List<ClassEntry> accepted = new ArrayList<>();
+
+        for (ClassEntry candidate : selectedClasses) {
+            if (hasClash(candidate, accepted, allowLectureOverlap)) {
+                System.err.println("[WARN] Clash detected for "
+                    + candidate.getCourseCode() + " " + candidate.getType()
+                    + " #" + candidate.getClassInstance()
+                    + " — included in timetable; check the grid for conflicts.");
+            }
+            // Always add the student's explicit selection, clash or not.
+            timetable.addClass(candidate.getClassId());
+            accepted.add(candidate);
+        }
+
+        timetableService.save(timetable);
+        return timetable;
+    }
+
     // ── Campus constraint ─────────────────────────────────────────────────────
 
     /**

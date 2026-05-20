@@ -5,6 +5,7 @@ import au.edu.flinders.timetable.model.Timetable;
 import au.edu.flinders.timetable.model.User;
 import au.edu.flinders.timetable.repository.ClassRepository;
 import au.edu.flinders.timetable.service.CSVExportService;
+import au.edu.flinders.timetable.service.ClassService;
 import au.edu.flinders.timetable.service.TimetableGeneratorService;
 import au.edu.flinders.timetable.service.TimetableService;
 import au.edu.flinders.timetable.ui.ConsoleView;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /** Routes timetable management actions to TimetableGeneratorService and TimetableService. */
@@ -26,6 +28,7 @@ public class TimetableController {
     private final TimetableService          timetableService;
     private final CSVExportService          exportService;
     private final ClassRepository           classRepository;
+    private final ClassService              classService;
     private final ConsoleView               view;
     private final InputHelper               input;
     private final Scanner                   sc;
@@ -42,6 +45,7 @@ public class TimetableController {
                                 TimetableService timetableService,
                                 CSVExportService exportService,
                                 ClassRepository classRepository,
+                                ClassService classService,
                                 ConsoleView view,
                                 InputHelper input,
                                 Scanner sc) {
@@ -49,6 +53,7 @@ public class TimetableController {
         this.timetableService = timetableService;
         this.exportService    = exportService;
         this.classRepository  = classRepository;
+        this.classService     = classService;
         this.view             = view;
         this.input            = input;
         this.sc               = sc;
@@ -58,13 +63,17 @@ public class TimetableController {
 
     /**
      * Interactive timetable generation flow.
-     * Prompts for enrolled topics, per-topic campus selections, semester filter,
-     * overlap and preference toggles, then generates and saves a timetable.
+     * <ol>
+     *   <li>Collects enrolled topics and per-topic campus preferences.</li>
+     *   <li>Prompts the student to select exactly ONE instance of each class type
+     *       (Lecture, Workshop, Laboratory, etc.) for every enrolled topic.</li>
+     *   <li>Runs clash detection and builds the timetable from the explicit selections.</li>
+     * </ol>
      */
     public void generate(User user) {
         System.out.println("\n── Generate Timetable ──────────────────────");
 
-        // Collect enrolled topics
+        // ── Step 1: Collect enrolled topics ───────────────────────────────────
         System.out.println("Enter course codes to enrol (blank line to finish):");
         List<String> newEnrolments = new ArrayList<>();
         while (true) {
@@ -80,7 +89,7 @@ public class TimetableController {
             return;
         }
 
-        // Collect per-topic campus selections
+        // ── Step 2: Collect per-topic campus preferences ───────────────────────
         Map<String, String> campusSelections = new HashMap<>();
         System.out.println("\nFor each topic, enter your preferred campus (blank = any campus):");
         for (String code : user.getEnrolledTopics()) {
@@ -90,16 +99,93 @@ public class TimetableController {
             }
         }
 
-        // Semester filter
+        // ── Step 3: Semester filter ────────────────────────────────────────────
         System.out.println("\nSemester filter: 1 = Semester 1, 2 = Semester 2, 0 = both");
         int semester = input.readInt(sc, "  Semester (0/1/2): ", 0, 2);
 
-        // Flags
+        // ── Step 4: Interactive class-instance selection ───────────────────────
+        System.out.println("\n── Select Classes ──────────────────────────────────");
+        System.out.println("For each enrolled topic, choose one class instance");
+        System.out.println("per type (Lecture, Workshop, Laboratory, etc.).\n");
+
+        List<ClassEntry> explicitSelections = new ArrayList<>();
+
+        for (String courseCode : user.getEnrolledTopics()) {
+
+            // Get one representative ClassEntry per (courseCode, type, instance) group
+            List<ClassEntry> grouped = classService.getGroupedClassesForTopic(courseCode);
+
+            // Apply campus filter if the student stated a campus preference
+            String selectedCampus = campusSelections.getOrDefault(courseCode, "");
+            if (!selectedCampus.isBlank()) {
+                boolean citySelected = selectedCampus.equalsIgnoreCase("City")
+                        || selectedCampus.equalsIgnoreCase("Flinders City Campus");
+                List<ClassEntry> filtered = grouped.stream()
+                    .filter(c -> {
+                        String classCampus = inferCampusFromBuilding(c.getBuilding());
+                        return citySelected
+                            ? classCampus.equalsIgnoreCase("City")
+                            : !classCampus.equalsIgnoreCase("City");
+                    })
+                    .collect(Collectors.toList());
+                if (!filtered.isEmpty()) grouped = filtered;
+                // If filtered is empty, fall back to the unfiltered list (no matching classes)
+            }
+
+            // Group by class type, sorted alphabetically for consistent presentation
+            Map<String, List<ClassEntry>> byType = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+            for (ClassEntry c : grouped) {
+                byType.computeIfAbsent(c.getType(), k -> new ArrayList<>()).add(c);
+            }
+
+            if (byType.isEmpty()) {
+                view.printWarning("No classes found for " + courseCode
+                    + " with the selected campus. Skipping topic.");
+                continue;
+            }
+
+            System.out.println("  ── " + courseCode + " ─────────────────────────────────────");
+
+            for (Map.Entry<String, List<ClassEntry>> typeEntry : byType.entrySet()) {
+                String type          = typeEntry.getKey();
+                List<ClassEntry> options = typeEntry.getValue();
+
+                System.out.println("  ── " + courseCode + " › " + type + " ──────────────");
+
+                if (options.size() == 1) {
+                    // Only one option — auto-select and inform the student
+                    ClassEntry auto = options.get(0);
+                    System.out.printf("  Auto-selected: Group #%d | %s %s–%s | %s %s%n",
+                        auto.getClassInstance(),
+                        auto.getDay()       != null ? auto.getDay()       : "---",
+                        auto.getStartTime() != null ? auto.getStartTime() : "",
+                        auto.getEndTime()   != null ? auto.getEndTime()   : "",
+                        auto.getBuilding()  != null ? auto.getBuilding()  : "",
+                        auto.getRoom()      != null ? auto.getRoom()      : "");
+                    explicitSelections.add(auto);
+                } else {
+                    // Multiple options — list them and prompt
+                    for (int i = 0; i < options.size(); i++) {
+                        ClassEntry opt = options.get(i);
+                        System.out.printf("  %d. Group #%d | %s %s–%s | %s %s%n",
+                            i + 1,
+                            opt.getClassInstance(),
+                            opt.getDay()       != null ? opt.getDay()       : "---",
+                            opt.getStartTime() != null ? opt.getStartTime() : "",
+                            opt.getEndTime()   != null ? opt.getEndTime()   : "",
+                            opt.getBuilding()  != null ? opt.getBuilding()  : "",
+                            opt.getRoom()      != null ? opt.getRoom()      : "");
+                    }
+                    int choice = input.readInt(sc, "  Select " + type + ": ", 1, options.size());
+                    explicitSelections.add(options.get(choice - 1));
+                }
+            }
+        }
+
+        // ── Step 5: Overlap and preferences ───────────────────────────────────
         boolean overlap = input.readBoolean(sc, "\nAllow lecture overlap between campuses?");
         boolean prefs   = input.readBoolean(sc, "Apply your saved preferences?");
-
-        // Optional name
-        String name = input.readLine(sc, "Timetable name (blank = auto-generate): ").trim();
+        String  name    = input.readLine(sc, "Timetable name (blank = auto-generate): ").trim();
 
         // Persist last settings
         lastSemester         = semester;
@@ -108,9 +194,14 @@ public class TimetableController {
         lastEnrolments       = new ArrayList<>(newEnrolments);
         lastCampusSelections = new HashMap<>(campusSelections);
 
+        if (explicitSelections.isEmpty()) {
+            view.printWarning("No classes were selected. Timetable not generated.");
+            return;
+        }
+
         try {
-            Timetable t = generatorService.generate(
-                user, campusSelections, overlap, prefs, name, semester);
+            Timetable t = generatorService.generateFromSelections(
+                user, explicitSelections, overlap, prefs, name, semester);
             view.printSuccess("Timetable '" + t.getTimetableName() + "' generated with "
                 + t.getClassIds().size() + " class(es).");
             view.printTimetable(t, resolveClasses(t));
@@ -158,7 +249,6 @@ public class TimetableController {
         try {
             timetableService.swapClassInstance(timetableName, oldClassId, newClassId);
             view.printSuccess("Swapped '" + oldClassId + "' → '" + newClassId + "'.");
-            // Show updated grid
             timetableService.getByName(timetableName).ifPresent(
                 updated -> view.printTimetable(updated, resolveClasses(updated)));
         } catch (IllegalArgumentException e) {
@@ -218,5 +308,17 @@ public class TimetableController {
             .filter(Optional::isPresent)
             .map(Optional::get)
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Infers the campus label from a building name string.
+     * Festival Tower → City; "tonsley" prefix → Tonsley; everything else → Bedford Park.
+     */
+    private static String inferCampusFromBuilding(String building) {
+        if (building == null) return "Bedford Park";
+        String b = building.toLowerCase();
+        if (b.contains("festival tower")) return "City";
+        if (b.contains("tonsley"))        return "Tonsley";
+        return "Bedford Park";
     }
 }

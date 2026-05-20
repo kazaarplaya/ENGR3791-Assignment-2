@@ -10,10 +10,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.time.MonthDay;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -22,8 +26,11 @@ import java.util.regex.Pattern;
 /** Handles importing Topics and ClassEntries from CSV files into their repositories. */
 public class CSVImportService {
 
-    /** Result returned by importFromTimetableFile() reporting new and updated record counts. */
+    /** Result returned by importFromTimetableFile() reporting new and promoted record counts. */
     public record ImportResult(int newCount, int updatedCount) {}
+
+    private static final DateTimeFormatter MONTH_DAY_FMT =
+        DateTimeFormatter.ofPattern("dd MMM");
 
     private final TopicRepository  topicRepository;
     private final ClassRepository  classRepository;
@@ -119,20 +126,23 @@ public class CSVImportService {
      * Imports Topics and ClassEntries from a single university timetable export file.
      * File format (8 columns): Topic, Availability, Class, Class instance,
      *                          Date, Day, Time, Location.
-     * Topics are inferred from the data and saved once per unique course code.
-     * ClassEntries are deduplicated by (courseCode, type, instance, day, startTime).
-     * When a duplicate is detected the existing record's time and location are updated.
-     * Bad rows are logged to System.err and skipped.
      *
-     * @return ImportResult with newCount (inserted) and updatedCount (overwritten)
+     * <p>Every data row is stored as its own {@link ClassEntry} — there is no
+     * deduplication. A unique class ID is generated for each row by combining the
+     * course code, class type, instance number, day, start time, and the start of
+     * the date range (dateFrom), so that rows which share the same group and
+     * day/time but cover different date ranges produce distinct IDs.
+     *
+     * <p>Topics are inferred from the data and saved once per unique course code.
+     * Bad rows are logged to {@code System.err} and skipped.
+     *
+     * @return ImportResult with newCount (rows inserted) and updatedCount (always 0)
      */
     public ImportResult importFromTimetableFile(String filePath) {
-        int newCount     = 0;
-        int updatedCount = 0;
-        int lineNumber   = 0;
+        int newCount   = 0;
+        int lineNumber = 0;
 
         Set<String> seenCourses = new HashSet<>();
-        Set<String> seenSlots   = new HashSet<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -152,10 +162,10 @@ public class CSVImportService {
                     String topicName   = nameParts.length > 1 ? nameParts[1] : "";
 
                     // Column 1: availability → attendanceMode, campus, semester, availabilityNumber
-                    String availability      = cols[1].trim();
-                    String attendanceMode    = parseAttendanceMode(availability);
-                    String campus            = parseCampus(availability);
-                    int    semester          = parseSemester(availability);
+                    String availability       = cols[1].trim();
+                    String attendanceMode     = parseAttendanceMode(availability);
+                    String campus             = parseCampus(availability);
+                    int    semester           = parseSemester(availability);
                     int    availabilityNumber = parseAvailabilityNumber(availability);
 
                     // Column 2: class type
@@ -169,11 +179,11 @@ public class CSVImportService {
                     String dateFrom = dateParts[0].trim();
                     String dateTo   = dateParts.length > 1 ? dateParts[1].trim() : dateFrom;
 
-                    // Column 5: day (strip qualifier in parentheses)
-                    String rawDay  = cols[5].trim();
+                    // Column 5: day (strip any parenthetical qualifier such as "(once-only)")
+                    String rawDay   = cols[5].trim();
                     int    parenIdx = rawDay.indexOf('(');
-                    String dayStr  = (parenIdx >= 0 ? rawDay.substring(0, parenIdx) : rawDay).trim();
-                    DayOfWeek day  = DayOfWeek.valueOf(dayStr.toUpperCase());
+                    String dayStr   = (parenIdx >= 0 ? rawDay.substring(0, parenIdx) : rawDay).trim();
+                    DayOfWeek day   = DayOfWeek.valueOf(dayStr.toUpperCase());
 
                     // Column 6: time range "HH:mm - HH:mm"
                     String[] timeParts = cols[6].trim().split(" - ", 2);
@@ -200,31 +210,25 @@ public class CSVImportService {
                             "In Person", 0, attendanceMode));
                     }
 
-                    // Generate deterministic class ID
+                    // Build a unique class ID per row.
+                    // Including dateFrom (stripped to alphanumerics) ensures that rows
+                    // for the same group/day/time in different date ranges get distinct IDs.
+                    String dateTag = dateFrom.replaceAll("[^A-Za-z0-9]", "");
                     String classId = courseCode + "-"
                         + classType.replaceAll("[^A-Za-z0-9]", "") + "-"
                         + classInstance + "-"
                         + day.toString().substring(0, 3).toUpperCase() + "-"
-                        + startTime.toString().replace(":", "");
-
-                    // Deduplication key
-                    String slotKey = courseCode + "|" + classType + "|"
-                                   + classInstance + "|" + day + "|" + startTime;
+                        + startTime.toString().replace(":", "") + "-"
+                        + dateTag;
 
                     ClassEntry entry = new ClassEntry(
                         classId, classType, null, startTime, endTime,
                         day, building, room, courseCode,
-                        attendanceMode, availabilityNumber, classInstance, dateFrom, dateTo);
+                        attendanceMode, availabilityNumber, classInstance,
+                        dateFrom, dateTo);
 
-                    if (seenSlots.contains(slotKey)) {
-                        // Update existing record (time / location may have changed)
-                        classRepository.update(entry);
-                        updatedCount++;
-                    } else {
-                        seenSlots.add(slotKey);
-                        classRepository.save(entry);
-                        newCount++;
-                    }
+                    classRepository.save(entry);
+                    newCount++;
 
                 } catch (Exception e) {
                     System.err.println("[WARN] Skipping row " + lineNumber + ": " + e.getMessage());
@@ -234,7 +238,7 @@ public class CSVImportService {
             System.err.println("[ERROR] Could not read timetable file '" + filePath + "': " + e.getMessage());
         }
 
-        return new ImportResult(newCount, updatedCount);
+        return new ImportResult(newCount, 0);
     }
 
     // ── Private parsing helpers ───────────────────────────────────────────────
@@ -275,6 +279,42 @@ public class CSVImportService {
         }
         return 1;
     }
+
+    // ── Date comparison helpers ───────────────────────────────────────────────
+
+    /**
+     * Parses a "dd MMM" date string into a MonthDay for chronological comparison.
+     * Returns MonthDay.of(1, 1) on any parse failure.
+     */
+    private static MonthDay parseMonthDay(String s) {
+        try {
+            return MonthDay.parse(s == null ? "" : s.trim(), MONTH_DAY_FMT);
+        } catch (Exception e) {
+            return MonthDay.of(1, 1);
+        }
+    }
+
+    /**
+     * Returns whichever of the two "dd MMM" date strings falls earlier in the year.
+     * Falls back to {@code a} when either string cannot be parsed.
+     */
+    private static String earlierDate(String a, String b) {
+        MonthDay ma = parseMonthDay(a);
+        MonthDay mb = parseMonthDay(b);
+        return (ma.compareTo(mb) <= 0) ? a : b;
+    }
+
+    /**
+     * Returns whichever of the two "dd MMM" date strings falls later in the year.
+     * Falls back to {@code a} when either string cannot be parsed.
+     */
+    private static String laterDate(String a, String b) {
+        MonthDay ma = parseMonthDay(a);
+        MonthDay mb = parseMonthDay(b);
+        return (ma.compareTo(mb) >= 0) ? a : b;
+    }
+
+    // ── CSV tokeniser ─────────────────────────────────────────────────────────
 
     /**
      * Splits one CSV line into tokens, respecting double-quoted fields.

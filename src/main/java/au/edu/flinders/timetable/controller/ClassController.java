@@ -54,29 +54,28 @@ public class ClassController {
     // ── Public actions ────────────────────────────────────────────────────────
 
     /**
-     * Displays all grouped classes in a compact browse-style list.
-     * Groups are formed by (courseCode, attendanceMode, availabilityNumber, type, instance).
+     * Displays all stored classes in a compact browse-style list.
      */
     public void showAll() {
-        List<ClassEntry> grouped = classService.getGroupedClasses();
-        if (grouped.isEmpty()) {
+        List<ClassEntry> all = classService.getAllClasses();
+        if (all.isEmpty()) {
             view.printWarning("No classes have been imported yet.");
             return;
         }
-        view.printBrowseList(grouped, buildTopicMap(grouped));
+        view.printBrowseList(all, buildTopicMap(all));
     }
 
     /**
-     * Displays all grouped classes in a detailed view-style list.
+     * Displays all stored classes in a detailed view-style list.
      * Shows all fields including date range, attendance mode, and campus.
      */
     public void viewAll() {
-        List<ClassEntry> grouped = classService.getGroupedClasses();
-        if (grouped.isEmpty()) {
+        List<ClassEntry> all = classService.getAllClasses();
+        if (all.isEmpty()) {
             view.printWarning("No classes have been imported yet.");
             return;
         }
-        view.printViewList(grouped, buildTopicMap(grouped));
+        view.printViewList(all, buildTopicMap(all));
     }
 
     /**
