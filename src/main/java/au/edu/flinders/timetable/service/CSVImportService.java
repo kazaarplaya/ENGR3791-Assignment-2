@@ -6,6 +6,7 @@ import au.edu.flinders.timetable.repository.ClassRepository;
 import au.edu.flinders.timetable.repository.TopicRepository;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.DayOfWeek;
@@ -255,6 +256,30 @@ public class CSVImportService {
         }
 
         return new ImportResult(newCount, 0);
+    }
+
+    // ── Path-based entry point ────────────────────────────────────────────────
+
+    /**
+     * Imports from a single CSV file or every CSV file inside a folder.
+     * Delegates each file to importFromTimetableFile().
+     */
+    public ImportResult importFromPath(String path) {
+        File f = new File(path);
+        if (f.isDirectory()) {
+            File[] csvFiles = f.listFiles((dir, name) -> name.toLowerCase().endsWith(".csv"));
+            if (csvFiles == null || csvFiles.length == 0) {
+                System.err.println("[WARN] No CSV files found in: " + path);
+                return new ImportResult(0, 0);
+            }
+            int totalNew = 0;
+            for (File csv : csvFiles) {
+                ImportResult r = importFromTimetableFile(csv.getAbsolutePath());
+                totalNew += r.newCount();
+            }
+            return new ImportResult(totalNew, 0);
+        }
+        return importFromTimetableFile(path);
     }
 
     // ── Private parsing helpers ───────────────────────────────────────────────

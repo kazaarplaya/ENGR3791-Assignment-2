@@ -4,6 +4,7 @@ import au.edu.flinders.timetable.model.Preference;
 import au.edu.flinders.timetable.model.User;
 import au.edu.flinders.timetable.service.PreferenceService;
 import au.edu.flinders.timetable.ui.ConsoleView;
+import au.edu.flinders.timetable.ui.EarlyExitException;
 import au.edu.flinders.timetable.ui.InputHelper;
 
 import java.util.ArrayList;
@@ -82,28 +83,33 @@ public class MenuController {
         boolean running = true;
         while (running) {
             view.printMenu(MENU_OPTIONS);
-            int choice = input.readInt(sc, "Select option: ", 1, MENU_OPTIONS.length);
-            System.out.println();
-            switch (choice) {
-                case 1:
-                    importExportController.importData();
-                    break;
-                case 2:
-                    handleClasses();
-                    break;
-                case 3:
-                    handlePreferences();
-                    break;
-                case 4:
-                    timetableController.generate(currentUser);
-                    break;
-                case 5:
-                    handleViewExport();
-                    break;
-                case 6:
-                    view.printSuccess("Goodbye!");
-                    running = false;
-                    break;
+            System.out.println("  (Enter 'q' at any prompt to return to the main menu.)\n");
+            try {
+                int choice = input.readInt(sc, "Select option: ", 1, MENU_OPTIONS.length);
+                System.out.println();
+                switch (choice) {
+                    case 1:
+                        importExportController.importData();
+                        break;
+                    case 2:
+                        handleClasses();
+                        break;
+                    case 3:
+                        handlePreferences();
+                        break;
+                    case 4:
+                        timetableController.generate(currentUser);
+                        break;
+                    case 5:
+                        handleViewExport();
+                        break;
+                    case 6:
+                        view.printSuccess("Goodbye!");
+                        running = false;
+                        break;
+                }
+            } catch (EarlyExitException e) {
+                System.out.println("\nReturning to main menu.");
             }
             System.out.println();
         }
@@ -111,14 +117,15 @@ public class MenuController {
 
     // ── Sub-menus ─────────────────────────────────────────────────────────────
 
-    /** Classes sub-menu: search, view all, edit, delete. */
+    /** Classes sub-menu: search, view all, view all detailed, edit, delete. */
     private void handleClasses() {
         System.out.println("── Classes ──────────────────────────────────");
         System.out.println("  1. Search / browse classes");
-        System.out.println("  2. View all classes (detailed)");
-        System.out.println("  3. Edit a class");
-        System.out.println("  4. Delete a class");
-        int choice = input.readInt(sc, "Select: ", 1, 4);
+        System.out.println("  2. View all classes");
+        System.out.println("  3. View all classes (detailed)");
+        System.out.println("  4. Edit a class");
+        System.out.println("  5. Delete a class");
+        int choice = input.readInt(sc, "Select (or q to return): ", 1, 5);
         switch (choice) {
             case 1:
                 classController.search();
@@ -127,9 +134,12 @@ public class MenuController {
                 classController.viewAll();
                 break;
             case 3:
-                classController.editClass();
+                classController.viewAllDetailed();
                 break;
             case 4:
+                classController.editClass();
+                break;
+            case 5:
                 classController.deleteClass();
                 break;
         }
@@ -143,7 +153,7 @@ public class MenuController {
         System.out.println("  3. Edit timetable (swap class instance)");
         System.out.println("  4. Export timetable to CSV");
         System.out.println("  5. Delete a timetable");
-        int choice = input.readInt(sc, "Select: ", 1, 5);
+        int choice = input.readInt(sc, "Select (or q to return): ", 1, 5);
         switch (choice) {
             case 1:
                 timetableController.viewAll();
@@ -174,7 +184,7 @@ public class MenuController {
         System.out.println("  1. View current preferences");
         System.out.println("  2. Set preferences");
         System.out.println("  3. Clear preferences");
-        int choice = input.readInt(sc, "Select: ", 1, 3);
+        int choice = input.readInt(sc, "Select (or q to return): ", 1, 3);
 
         switch (choice) {
             case 1:

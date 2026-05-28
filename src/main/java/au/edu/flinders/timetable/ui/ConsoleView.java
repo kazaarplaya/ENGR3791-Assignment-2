@@ -6,6 +6,7 @@ import au.edu.flinders.timetable.model.Topic;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -435,18 +436,32 @@ public class ConsoleView {
 
         // ── Class detail blocks below the grid ────────────────────────────────
         if (!resolved.isEmpty()) {
-            int detailWidth = 58;
-            System.out.println(CYAN + BOLD + "┌─ Included Classes " + "─".repeat(detailWidth - 18) + "┐" + RESET);
+            // Pre-format every line so the box width can be derived from the longest one
+            List<String> lines = new ArrayList<>();
             for (ClassEntry c : resolved) {
-                String line = String.format("  %-10s | %-10s #%-2d | %-9s %s–%s | %s %s",
+                String day = c.getDay() != null ? c.getDay().toString().substring(0, 3) : "---";
+                lines.add(String.format("  %-10s | %-10s #%-2d | %-9s %s–%s | %s %s",
                     c.getCourseCode(),
                     c.getType(),
                     c.getClassInstance(),
-                    (c.getDay() != null ? c.getDay().toString().substring(0, 3) : "---"),
-                    (c.getStartTime() != null ? c.getStartTime() : ""),
-                    (c.getEndTime()   != null ? c.getEndTime()   : ""),
-                    c.getBuilding(),
-                    c.getRoom());
+                    day,
+                    c.getStartTime() != null ? c.getStartTime() : "",
+                    c.getEndTime()   != null ? c.getEndTime()   : "",
+                    c.getBuilding()  != null ? c.getBuilding()  : "",
+                    c.getRoom()      != null ? c.getRoom()      : ""));
+            }
+
+            // "┌─ Included Classes " is 20 chars; box total width = detailWidth + 2
+            // top border: prefix(20) + dashes(detailWidth - 19) + "┐"(1) = detailWidth + 2
+            String titlePrefix = "┌─ Included Classes ";
+            int detailWidth = Math.max(
+                titlePrefix.length() + 2,
+                lines.stream().mapToInt(String::length).max().orElse(0)
+            );
+
+            System.out.println(CYAN + BOLD + titlePrefix
+                + "─".repeat(detailWidth - titlePrefix.length() + 1) + "┐" + RESET);
+            for (String line : lines) {
                 int rpad = Math.max(0, detailWidth - line.length());
                 System.out.println(CYAN + "│" + RESET
                     + BRIGHT_WHITE + line + RESET

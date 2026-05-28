@@ -56,7 +56,7 @@ public class Main {
 
         TimetableController timetableController = new TimetableController(
             generatorService, timetableService, exportService, classRepo,
-            classService, view, input, sc);
+            topicRepo, classService, view, input, sc);
 
         MenuController menu = new MenuController(
             sc, view, input, importExportController,
