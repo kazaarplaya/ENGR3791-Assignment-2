@@ -5,10 +5,18 @@ import java.util.Scanner;
 /** Provides validated, prompted console input helpers. */
 public class InputHelper {
 
+    private static final String EXIT_SENTINEL = "q";
+
+    private void checkExit(String raw) {
+        if (raw.equalsIgnoreCase(EXIT_SENTINEL)) throw new EarlyExitException();
+    }
+
     /** Prints the prompt and returns the raw line entered by the user (may be blank). */
     public String readLine(Scanner sc, String prompt) {
         System.out.print(prompt);
-        return sc.nextLine();
+        String line = sc.nextLine();
+        checkExit(line.trim());
+        return line;
     }
 
     /**
@@ -19,6 +27,7 @@ public class InputHelper {
         while (true) {
             System.out.print(prompt);
             String raw = sc.nextLine().trim();
+            checkExit(raw);
             try {
                 int value = Integer.parseInt(raw);
                 if (value >= min && value <= max) {
@@ -39,6 +48,7 @@ public class InputHelper {
         while (true) {
             System.out.print(prompt + " (y/n): ");
             String raw = sc.nextLine().trim().toLowerCase();
+            checkExit(raw);
             if (raw.equals("y")) return true;
             if (raw.equals("n")) return false;
             System.out.println("[WARN] Please enter y or n.");
@@ -53,6 +63,7 @@ public class InputHelper {
         while (true) {
             System.out.print(prompt);
             String raw = sc.nextLine().trim();
+            checkExit(raw);
             if (!raw.isEmpty()) return raw;
             System.out.println("[WARN] Input cannot be blank. Please try again.");
         }

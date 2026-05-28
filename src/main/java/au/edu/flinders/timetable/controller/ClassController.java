@@ -12,6 +12,7 @@ import au.edu.flinders.timetable.ui.InputHelper;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,13 +70,35 @@ public class ClassController {
      * Displays all stored classes in a detailed view-style list.
      * Shows all fields including date range, attendance mode, and campus.
      */
-    public void viewAll() {
+    public void viewAllDetailed() {
         List<ClassEntry> all = classService.getAllClasses();
         if (all.isEmpty()) {
             view.printWarning("No classes have been imported yet.");
             return;
         }
         view.printViewList(all, buildTopicMap(all));
+    }
+
+    /**
+     * Displays a simple numbered list of all imported courses: number, course code, topic name.
+     */
+    public void viewAll() {
+        System.out.println("\n── Available Courses ────────────────────────");
+        if (topicRepository == null) {
+            view.printWarning("No course data available.");
+            return;
+        }
+        List<Topic> topics = topicRepository.findAll();
+        if (topics.isEmpty()) {
+            view.printWarning("No courses have been imported yet.");
+            return;
+        }
+        topics.sort(Comparator.comparing(Topic::getCourseCode));
+        System.out.printf("  %d course(s) imported:%n%n", topics.size());
+        for (int i = 0; i < topics.size(); i++) {
+            Topic t = topics.get(i);
+            System.out.printf("  %3d.  %-12s  %s%n", i + 1, t.getCourseCode(), t.getTopicName());
+        }
     }
 
     /**
