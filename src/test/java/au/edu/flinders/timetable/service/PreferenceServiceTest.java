@@ -175,11 +175,9 @@ public class PreferenceServiceTest {
         preferenceService.savePreference(buildTokenPref(ordered));
 
         Optional<Preference> saved = preferenceService.getPreference(USER_ID);
-        assertAll(
-                () -> assertTrue(saved.isPresent()),
-                () -> assertEquals(ordered, saved.get().getPriorityOrder(),
-                        "Token order must be preserved from insertion")
-        );
+        assertTrue(saved.isPresent());
+        assertEquals(ordered, saved.get().getPriorityOrder(),
+    "Token order must be preserved from insertion");
     }
 
     @Test
@@ -223,6 +221,33 @@ public class PreferenceServiceTest {
 
         assertTrue(preferenceService.getPreference(USER_ID).isEmpty(),
                 "Preference should be absent after clear");
+    }
+
+
+    @Test
+    @Order(11)
+    @DisplayName("TC 4.11 – Save legacy preference accepts Any as day")
+    @Tag("Luke")
+    @Tag("Core")
+    void saveLegacyPreferenceAnyDayIsAccepted() {
+        Preference pref = buildLegacyPref("morning", "Any");
+
+        assertDoesNotThrow(() -> preferenceService.savePreference(pref));
+
+        assertTrue(preferenceService.getPreference(USER_ID).isPresent());
+    }
+
+
+    @Test
+    @Order(12)
+    @DisplayName("TC 4.12 – Save token preference rejects unknown token string")
+    @Tag("Luke")
+    @Tag("Core")
+    void saveTokenPreferenceUnknownTokenThrowsIllegalArgumentException() {
+        Preference pref = new Preference(USER_ID, List.of("NOT_A_VALID_TOKEN"));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> preferenceService.savePreference(pref));
     }
 
 }
