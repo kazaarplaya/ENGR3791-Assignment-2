@@ -175,11 +175,9 @@ public class PreferenceServiceTest {
         preferenceService.savePreference(buildTokenPref(ordered));
 
         Optional<Preference> saved = preferenceService.getPreference(USER_ID);
-        assertAll(
-                () -> assertTrue(saved.isPresent()),
-                () -> assertEquals(ordered, saved.get().getPriorityOrder(),
-                        "Token order must be preserved from insertion")
-        );
+        assertTrue(saved.isPresent());
+        assertEquals(ordered, saved.get().getPriorityOrder(),
+    "Token order must be preserved from insertion");
     }
 
     @Test
