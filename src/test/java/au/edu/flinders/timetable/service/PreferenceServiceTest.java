@@ -250,4 +250,159 @@ public class PreferenceServiceTest {
                 () -> preferenceService.savePreference(pref));
     }
 
+
+    @Test
+    @Order(13)
+    @DisplayName("TC 4.13 – Legacy preference with Tonsley campus converts to CAMPUS_TONSLEY token")
+    @Tag("Luke")
+    @Tag("Core")
+    void legacyPreferenceTonslyCampusConvertsToToken() {
+        Preference pref = new Preference(USER_ID, "Tonsley", "morning", "Monday", 1, 2, 3);
+        preferenceService.savePreference(pref);
+
+        Preference saved = preferenceService.getPreference(USER_ID).get();
+        assertTrue(saved.getPriorityOrder().contains(Preference.CAMPUS_TONSLEY));
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("TC 4.14 – Legacy preference with City campus converts to CAMPUS_CITY token")
+    @Tag("Luke")
+    @Tag("Core")
+    void legacyPreferenceCityCampusConvertsToToken() {
+        Preference pref = new Preference(USER_ID, "City", "morning", "Monday", 1, 2, 3);
+        preferenceService.savePreference(pref);
+
+        Preference saved = preferenceService.getPreference(USER_ID).get();
+        assertTrue(saved.getPriorityOrder().contains(Preference.CAMPUS_CITY));
+    }
+
+    @Test
+    @Order(15)
+    @DisplayName("TC 4.15 – Legacy preference with afternoon time converts to TIME_AFTERNOON token")
+    @Tag("Luke")
+    @Tag("Core")
+    void legacyPreferenceAfternoonTimeConvertsToToken() {
+        Preference pref = new Preference(USER_ID, "Bedford Park", "afternoon", "Monday", 1, 2, 3);
+        preferenceService.savePreference(pref);
+
+        Preference saved = preferenceService.getPreference(USER_ID).get();
+        assertTrue(saved.getPriorityOrder().contains(Preference.TIME_AFTERNOON));
+    }
+
+    @Test
+    @Order(16)
+    @DisplayName("TC 4.16 – Legacy preference with evening time converts to TIME_EVENING token")
+    @Tag("Luke")
+    @Tag("Core")
+    void legacyPreferenceEveningTimeConvertsToToken() {
+        Preference pref = new Preference(USER_ID, "Bedford Park", "evening", "Monday", 1, 2, 3);
+        preferenceService.savePreference(pref);
+
+        Preference saved = preferenceService.getPreference(USER_ID).get();
+        assertTrue(saved.getPriorityOrder().contains(Preference.TIME_EVENING));
+    }
+
+    @ParameterizedTest(name = "day=''{0}'' should convert to token ''{1}''")
+    @Order(17)
+    @DisplayName("TC 4.17 – Legacy preference converts all weekdays to correct tokens")
+    @Tag("Luke")
+    @Tag("Core")
+    @CsvSource({
+            "Tuesday,  DAY_TUESDAY",
+            "Wednesday, DAY_WEDNESDAY",
+            "Thursday, DAY_THURSDAY",
+            "Friday,   DAY_FRIDAY"
+    })
+    void legacyPreferenceAllWeekdaysConvertToTokens(String day, String expectedToken) {
+        Preference pref = new Preference(USER_ID, "Bedford Park", "morning", day, 1, 2, 3);
+        preferenceService.savePreference(pref);
+
+        Preference saved = preferenceService.getPreference(USER_ID).get();
+        assertTrue(saved.getPriorityOrder().contains(expectedToken));
+    }
+
+    @Test
+    @Order(18)
+    @DisplayName("TC 4.18 – Legacy preference getters return correct values")
+    @Tag("Luke")
+    @Tag("Core")
+    void legacyPreferenceGettersReturnCorrectValues() {
+        Preference pref = new Preference(USER_ID, "Bedford Park", "morning", "Monday", 1, 2, 3);
+
+        assertAll(
+                () -> assertEquals(USER_ID, pref.getUserId()),
+                () -> assertEquals("Bedford Park", pref.getCampus()),
+                () -> assertEquals("morning", pref.getTimeOfDay()),
+                () -> assertEquals("Monday", pref.getDay()),
+                () -> assertEquals(1, pref.getCampusPriority()),
+                () -> assertEquals(2, pref.getTimeOfDayPriority()),
+                () -> assertEquals(3, pref.getDayPriority())
+        );
+    }
+
+    @Test
+    @Order(19)
+    @DisplayName("TC 4.19 – toString returns non-null readable summary")
+    @Tag("Luke")
+    @Tag("Core")
+    void toStringReturnsNonNullSummary() {
+        Preference pref = new Preference(USER_ID, List.of(Preference.TIME_MORNING));
+
+        assertNotNull(pref.toString());
+        assertTrue(pref.toString().contains(USER_ID));
+    }
+
+
+    @Test
+    @Order(20)
+    @DisplayName("TC 4.20 – Legacy preference with null campus defaults to Any")
+    @Tag("Luke")
+    @Tag("Core")
+    void legacyPreferenceNullCampusDefaultsToAny() {
+        Preference pref = new Preference(USER_ID, null, "morning", "Monday", 1, 2, 3);
+        preferenceService.savePreference(pref);
+
+        Preference saved = preferenceService.getPreference(USER_ID).get();
+        assertAll(
+                () -> assertEquals("Any", saved.getCampus()),
+                () -> assertFalse(saved.getPriorityOrder().contains(Preference.CAMPUS_BEDFORD_PARK),
+                        "Any campus should not add a campus token")
+        );
+    }
+
+    @Test
+    @Order(21)
+    @DisplayName("TC 4.21 – Legacy preference with null timeOfDay defaults to Any")
+    @Tag("Luke")
+    @Tag("Core")
+    void legacyPreferenceNullTimeOfDayDefaultsToAny() {
+        Preference pref = new Preference(USER_ID, "Bedford Park", null, "Monday", 1, 2, 3);
+        preferenceService.savePreference(pref);
+
+        Preference saved = preferenceService.getPreference(USER_ID).get();
+        assertAll(
+                () -> assertEquals("Any", saved.getTimeOfDay()),
+                () -> assertFalse(saved.getPriorityOrder().contains(Preference.TIME_MORNING),
+                        "Any timeOfDay should not add a time token")
+        );
+    }
+
+    @Test
+    @Order(22)
+    @DisplayName("TC 4.22 – Legacy preference with null day defaults to Any")
+    @Tag("Luke")
+    @Tag("Core")
+    void legacyPreferenceNullDayDefaultsToAny() {
+        Preference pref = new Preference(USER_ID, "Bedford Park", "morning", null, 1, 2, 3);
+        preferenceService.savePreference(pref);
+
+        Preference saved = preferenceService.getPreference(USER_ID).get();
+        assertAll(
+                () -> assertEquals("Any", saved.getDay()),
+                () -> assertFalse(saved.getPriorityOrder().contains(Preference.DAY_MONDAY),
+                        "Any day should not add a day token")
+        );
+    }
+
 }
