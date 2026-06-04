@@ -321,23 +321,20 @@ public class TimetableGeneratorService {
      *   default                 → 30-minute gap required.
      */
     private boolean clashes(ClassEntry a, ClassEntry b,
-                             String campusA, String campusB,
-                             boolean allowLectureOverlap) {
+                            String campusA, String campusB,
+                            boolean allowLectureOverlap) {
         if (campusA.equalsIgnoreCase(campusB)) return timesOverlap(a, b);
 
         boolean aCityOther = campusA.equalsIgnoreCase(CITY) && !campusB.equalsIgnoreCase(CITY);
         boolean bCityOther = campusB.equalsIgnoreCase(CITY) && !campusA.equalsIgnoreCase(CITY);
         if (aCityOther || bCityOther) return !hasGap(a, b, 30);
 
-        if (isBedfordTonsleyPair(campusA, campusB)) {
-            boolean bothNonLect  = !a.isLecture() && !b.isLecture();
-            boolean bothLectures = a.isLecture() && b.isLecture();
-            if (bothNonLect)  return !hasGap(a, b, 30);
-            if (bothLectures) return allowLectureOverlap ? timesOverlap(a, b) : !hasGap(a, b, 30);
-            return allowLectureOverlap ? timesOverlap(a, b) : !hasGap(a, b, 30);
-        }
-
-        return !hasGap(a, b, 30);
+        // Bedford + Tonsley pair (or any other cross-campus combination)
+        boolean bothNonLect  = !a.isLecture() && !b.isLecture();
+        boolean bothLectures = a.isLecture() && b.isLecture();
+        if (bothNonLect)  return !hasGap(a, b, 30);
+        if (bothLectures) return allowLectureOverlap ? timesOverlap(a, b) : !hasGap(a, b, 30);
+        return allowLectureOverlap ? timesOverlap(a, b) : !hasGap(a, b, 30);
     }
 
     private boolean timesOverlap(ClassEntry a, ClassEntry b) {
@@ -351,10 +348,6 @@ public class TimetableGeneratorService {
         return gapAtoB >= minGapMinutes || gapBtoA >= minGapMinutes;
     }
 
-    private boolean isBedfordTonsleyPair(String campusA, String campusB) {
-        return (campusA.equalsIgnoreCase(BEDFORD_PARK) && campusB.equalsIgnoreCase(TONSLEY))
-            || (campusA.equalsIgnoreCase(TONSLEY) && campusB.equalsIgnoreCase(BEDFORD_PARK));
-    }
 
     /** Resolves campus by building inference first, then Topic fallback. */
     private String resolveCampus(ClassEntry c) {
