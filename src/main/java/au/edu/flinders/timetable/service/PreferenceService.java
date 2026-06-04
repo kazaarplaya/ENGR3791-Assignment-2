@@ -61,7 +61,7 @@ public class PreferenceService {
 
     /** Throws IllegalArgumentException when timeOfDay is not a recognised value. */
     private void validateTimeOfDay(String timeOfDay) {
-        if (timeOfDay == null || !VALID_TIMES.contains(timeOfDay.toLowerCase())) {
+        if (!VALID_TIMES.contains(timeOfDay.toLowerCase())) {
             throw new IllegalArgumentException(
                 "Invalid timeOfDay '" + timeOfDay
                     + "'. Must be one of: Morning, Afternoon, Evening, Any.");
@@ -73,9 +73,6 @@ public class PreferenceService {
      * Accepts full English day names (Monday–Sunday) or "Any".
      */
     private void validateDay(String day) {
-        if (day == null) {
-            throw new IllegalArgumentException("day cannot be null.");
-        }
         if (day.equalsIgnoreCase("Any")) return;
         try {
             DayOfWeek.valueOf(day.toUpperCase());
