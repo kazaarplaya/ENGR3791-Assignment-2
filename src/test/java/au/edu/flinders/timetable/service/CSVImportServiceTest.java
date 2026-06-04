@@ -130,7 +130,6 @@ class CSVImportServiceTest {
     }
 
     //TC 1.04
-    @ParameterizedTest(name = "TC 1.04 [{index}] {0} -> {1}")
     @Order(4)
     @DisplayName("TC 1.04 Import timetable file normalises Flinders City Campus to City")
     @Tag("Oscar")
@@ -150,7 +149,6 @@ class CSVImportServiceTest {
     }
 
     //TC 1.05
-    @ParameterizedTest(name = "TC 1.05 [{index}] {0} -> semester {1}")
     @Order(5)
     @DisplayName("TC 1.05 Import timetable file extracts semester from availability")
     @Tag("Oscar")
@@ -193,7 +191,6 @@ class CSVImportServiceTest {
     }
 
     //TC 1.08
-    @ParameterizedTest(name = "TC 1.08 [{index}] {0} -> {1}")
     @Order(8)
     @DisplayName("TC 1.08 Import timetable file strips day qualifier from once-only day values")
     @Tag("Oscar")
@@ -315,7 +312,6 @@ class CSVImportServiceTest {
     }
 
     //TC 1.15
-    @ParameterizedTest(name = "TC 1.15 [{index}] malformed row skipped")
     @Order(15)
     @DisplayName("TC 1.15 Import timetable file skips malformed rows (boundary / invalid input)")
     @Tag("Oscar")
