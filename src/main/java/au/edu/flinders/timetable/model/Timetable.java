@@ -12,6 +12,7 @@ public class Timetable {
     private List<String> classIds;
     private boolean      isOverlap;
     private boolean      hasPreference;
+    private String       name;
 
     /** Constructs a new empty Timetable with the given name and configuration flags. */
     public Timetable(String timetableName, String semester,
@@ -72,5 +73,9 @@ public class Timetable {
     public String toString() {
         return String.format("Timetable[name=%s, semester=%s, classes=%d, overlap=%b, prefs=%b]",
             timetableName, semester, classIds.size(), isOverlap, hasPreference);
+    }
+
+    public String getName() {
+        return timetableName;
     }
 }
