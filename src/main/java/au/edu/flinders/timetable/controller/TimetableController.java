@@ -228,12 +228,6 @@ public class TimetableController {
                 byType.computeIfAbsent(c.getType(), k -> new ArrayList<>()).add(c);
             }
 
-            if (byType.isEmpty()) {
-                view.printWarning("No classes found for " + courseCode
-                    + " with the selected campus. Skipping topic.");
-                continue;
-            }
-
             System.out.println("  ── " + courseCode + " ─────────────────────────────────────");
 
             for (Map.Entry<String, List<ClassEntry>> typeEntry : byType.entrySet()) {
@@ -246,12 +240,12 @@ public class TimetableController {
                     // Only one option — auto-select and inform the student
                     ClassEntry auto = options.get(0);
                     System.out.printf("  Auto-selected: Group #%d | %s %s–%s | %s %s%n",
-                        auto.getClassInstance(),
-                        auto.getDay()       != null ? auto.getDay()       : "---",
-                        auto.getStartTime() != null ? auto.getStartTime() : "",
-                        auto.getEndTime()   != null ? auto.getEndTime()   : "",
-                        auto.getBuilding()  != null ? auto.getBuilding()  : "",
-                        auto.getRoom()      != null ? auto.getRoom()      : "");
+                            auto.getClassInstance(),
+                            auto.getDay(),
+                            auto.getStartTime(),
+                            auto.getEndTime(),
+                            auto.getBuilding(),
+                            auto.getRoom());
                     explicitSelections.add(auto);
                 } else {
                     // Multiple options — list them and prompt
@@ -260,11 +254,11 @@ public class TimetableController {
                         System.out.printf("  %d. Group #%d | %s %s–%s | %s %s%n",
                             i + 1,
                             opt.getClassInstance(),
-                            opt.getDay()       != null ? opt.getDay()       : "---",
-                            opt.getStartTime() != null ? opt.getStartTime() : "",
-                            opt.getEndTime()   != null ? opt.getEndTime()   : "",
-                            opt.getBuilding()  != null ? opt.getBuilding()  : "",
-                            opt.getRoom()      != null ? opt.getRoom()      : "");
+                            opt.getDay(),
+                            opt.getStartTime(),
+                            opt.getEndTime(),
+                            opt.getBuilding(),
+                            opt.getRoom());
                     }
                     int choice = input.readInt(sc, "  Select " + type + ": ", 1, options.size());
                     explicitSelections.add(options.get(choice - 1));
@@ -343,9 +337,9 @@ public class TimetableController {
                 c.getCourseCode(),
                 c.getType(),
                 c.getClassInstance(),
-                c.getDay() != null ? c.getDay().toString().substring(0, 3) : "---",
-                c.getStartTime() != null ? c.getStartTime() : "",
-                c.getEndTime()   != null ? c.getEndTime()   : "");
+                c.getDay().toString().substring(0, 3),
+                c.getStartTime(),
+                c.getEndTime());
         }
         int removeIdx = input.readInt(sc, "  Select: ", 1, current.size());
         ClassEntry oldEntry = current.get(removeIdx - 1);
@@ -370,11 +364,11 @@ public class TimetableController {
             System.out.printf("  [%2d]  Group #%d  %s  %s–%s  %s %s%n",
                 i + 1,
                 c.getClassInstance(),
-                c.getDay()       != null ? c.getDay().toString().substring(0, 3) : "---",
-                c.getStartTime() != null ? c.getStartTime() : "",
-                c.getEndTime()   != null ? c.getEndTime()   : "",
-                c.getBuilding()  != null ? c.getBuilding()  : "",
-                c.getRoom()      != null ? c.getRoom()      : "");
+                c.getDay().toString().substring(0, 3),
+                c.getStartTime(),
+                c.getEndTime(),
+                c.getBuilding(),
+                c.getRoom());
         }
         int addIdx = input.readInt(sc, "  Select: ", 1, alternatives.size());
         ClassEntry newEntry = alternatives.get(addIdx - 1);
@@ -389,16 +383,12 @@ public class TimetableController {
             return;
         }
 
-        try {
-            timetableService.swapClassInstance(timetableName, oldEntry.getClassId(), newEntry.getClassId());
-            view.printSuccess("Swapped " + oldEntry.getCourseCode() + " " + oldEntry.getType()
+        timetableService.swapClassInstance(timetableName, oldEntry.getClassId(), newEntry.getClassId());
+        view.printSuccess("Swapped " + oldEntry.getCourseCode() + " " + oldEntry.getType()
                 + " Group #" + oldEntry.getClassInstance()
                 + " → Group #" + newEntry.getClassInstance() + ".");
-            timetableService.getByName(timetableName).ifPresent(
+        timetableService.getByName(timetableName).ifPresent(
                 updated -> view.printTimetable(updated, resolveClasses(updated)));
-        } catch (IllegalArgumentException e) {
-            view.printError(e.getMessage());
-        }
     }
 
     /** Lists the names of all saved timetables. */
@@ -444,12 +434,9 @@ public class TimetableController {
             System.out.println("  Delete cancelled.");
             return;
         }
-        try {
-            timetableService.delete(t.getTimetableName());
-            view.printSuccess("Timetable '" + t.getTimetableName() + "' deleted.");
-        } catch (IllegalArgumentException e) {
-            view.printError(e.getMessage());
-        }
+
+        timetableService.delete(t.getTimetableName());
+        view.printSuccess("Timetable '" + t.getTimetableName() + "' deleted.");
     }
 
     // ── Private helpers ───────────────────────────────────────────────────────
