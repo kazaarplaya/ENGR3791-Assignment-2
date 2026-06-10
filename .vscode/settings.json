@@ -1,4 +1,6 @@
 {
-  "java.project.sourcePaths": ["src\\main", "src\\main\\java"],
+  "java.project.sourcePaths": [
+    "src/main/java/au/edu/flinders/timetable"
+  ],
   "java.project.referencedLibraries": []
 }
