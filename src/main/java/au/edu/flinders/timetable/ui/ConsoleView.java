@@ -500,14 +500,12 @@ public class ConsoleView {
 
     /** Right-pads a string to the given width, truncating if necessary. */
     private String padRight(String s, int width) {
-        if (s == null) s = "";
         if (s.length() >= width) return s.substring(0, width);
         return s + " ".repeat(width - s.length());
     }
 
     /** Centre-pads a string to the given width. */
     private String padCenter(String s, int width) {
-        if (s == null) s = "";
         if (s.length() >= width) return s.substring(0, width);
         int totalPad = width - s.length();
         int left  = totalPad / 2;

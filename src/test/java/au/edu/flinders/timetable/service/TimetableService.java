@@ -2,6 +2,7 @@ package au.edu.flinders.timetable.service;
 
 import au.edu.flinders.timetable.model.ClassEntry;
 import au.edu.flinders.timetable.model.Timetable;
+import au.edu.flinders.timetable.repository.ClassRepository;
 import au.edu.flinders.timetable.repository.TimetableRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -53,7 +54,7 @@ class TimetableServiceTest {
                 null,
                 LocalTime.of(9, 0),
                 LocalTime.of(11, 0),
-                DayOfWeek.MONDAY,   // FIXED: was "DaysOfWeek.MONDAY" (wrong field name and wrong type)
+                DayOfWeek.MONDAY,
                 "T1",
                 "G42",
                 courseCode,
@@ -111,8 +112,8 @@ class TimetableServiceTest {
         List<Timetable> all = timetableService.getAll();
 
         assertEquals(2, all.size());
-        assertTrue(all.stream().anyMatch(t -> t.getName().equals("Alpha")));  // FIXED: was ".strean()" (typo)
-        assertTrue(all.stream().anyMatch(t -> t.getName().equals("Beta")));   // FIXED: was ".strean()" + "Beta" vs "Beata"
+        assertTrue(all.stream().anyMatch(t -> t.getName().equals("Alpha")));
+        assertTrue(all.stream().anyMatch(t -> t.getName().equals("Beta")));
     }
 
     @Test
@@ -169,7 +170,7 @@ class TimetableServiceTest {
     @Tag("TC 5.07")
     @Tag("Seth")
     @Tag("Critical")
-    void swapClassInstance_rejectDifferentCourseCode() {  // FIXED: was "CouseCode" (typo)
+    void swapClassInstance_rejectDifferentCourseCode() {
         Timetable timetable = makeTimetable("SwapReject");
         timetable.addClass("OLD-003");
         timetableService.save(timetable);
@@ -190,12 +191,11 @@ class TimetableServiceTest {
     void swapClassInstance_rejectDifferentClassType() {
         Timetable timetable = makeTimetable("SwapReject2");
         timetable.addClass("OLD-005");
-        timetableService.save(timetable);  // FIXED: was "timetableService.saved()" (wrong method name)
+        timetableService.save(timetable);
 
         ClassEntry oldClass = makeEntry("OLD-005", "COMP1234", "Lecture", 1);
         ClassEntry newClass = makeEntry("NEW-006", "COMP1234", "Workshop", 1);
 
-        // FIXED: was "asserThrows" (typo)
         assertThrows(IllegalArgumentException.class,
                 () -> timetableService.swapClass("SwapReject2", oldClass, newClass));
     }
@@ -213,5 +213,190 @@ class TimetableServiceTest {
 
         timetable.removeClass(oldClass.getClassId());
         timetable.addClass(newClass.getClassId());
+    }
+
+
+    @Test
+    @DisplayName("TC 5.09 – getByName returns present when timetable exists")
+    @Tag("Luke")
+    @Tag("Core")
+    void getByNameReturnsPresentWhenTimetableExists() {
+        timetableService.save(makeTimetable("FindMe"));
+
+        assertTrue(timetableService.getByName("FindMe").isPresent());
+    }
+
+    @Test
+    @DisplayName("TC 5.10 – getByName returns empty when timetable does not exist")
+    @Tag("Luke")
+    @Tag("Core")
+    void getByNameReturnsEmptyWhenTimetableAbsent() {
+        assertTrue(timetableService.getByName("Ghost").isEmpty());
+    }
+
+    @Test
+    @DisplayName("TC 5.11 – swapClassInstance throws when timetable not found")
+    @Tag("Luke")
+    @Tag("Core")
+    void swapClassInstanceThrowsWhenTimetableNotFound() {
+        assertThrows(IllegalArgumentException.class,
+                () -> timetableService.swapClassInstance("NoSuchTimetable", "OLD-001", "NEW-002"));
+    }
+
+    @Test
+    @DisplayName("TC 5.12 – swapClassInstance throws when old class not in timetable")
+    @Tag("Luke")
+    @Tag("Core")
+    void swapClassInstanceThrowsWhenOldClassNotInTimetable() {
+        Timetable t = makeTimetable("SwapT");
+        timetableService.save(t);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> timetableService.swapClassInstance("SwapT", "MISSING-001", "NEW-002"));
+    }
+
+    @Test
+    @DisplayName("TC 5.13 – swapClassInstance succeeds without class repository validation")
+    @Tag("Luke")
+    @Tag("Core")
+    void swapClassInstanceSucceedsWithNullClassRepository() {
+        Timetable t = makeTimetable("SwapNoRepo");
+        t.addClass("OLD-001");
+        timetableService.save(t);
+
+        timetableService.swapClassInstance("SwapNoRepo", "OLD-001", "NEW-002");
+
+        Timetable updated = timetableService.getByName("SwapNoRepo").orElseThrow();
+        assertAll(
+                () -> assertTrue(updated.getClassIds().contains("NEW-002")),
+                () -> assertFalse(updated.getClassIds().contains("OLD-001"))
+        );
+    }
+
+    @Test
+    @DisplayName("TC 5.14 – swapClassInstance with repo throws when old class not in repository")
+    @Tag("Luke")
+    @Tag("Core")
+    void swapClassInstanceThrowsWhenOldClassNotInRepository() {
+        ClassRepository classRepo = new ClassRepository();
+        TimetableService svc = new TimetableService(timetableRepo, classRepo);
+
+        Timetable t = makeTimetable("SwapRepo1");
+        t.addClass("OLD-001");
+        timetableRepo.save(t);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> svc.swapClassInstance("SwapRepo1", "OLD-001", "NEW-002"));
+    }
+
+    @Test
+    @DisplayName("TC 5.15 – swapClassInstance with repo throws when new class not in repository")
+    @Tag("Luke")
+    @Tag("Core")
+    void swapClassInstanceThrowsWhenNewClassNotInRepository() {
+        ClassRepository classRepo = new ClassRepository();
+        TimetableService svc = new TimetableService(timetableRepo, classRepo);
+
+        ClassEntry old = makeEntry("OLD-001", "COMP1001", "Lecture", 1);
+        classRepo.save(old);
+
+        Timetable t = makeTimetable("SwapRepo2");
+        t.addClass("OLD-001");
+        timetableRepo.save(t);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> svc.swapClassInstance("SwapRepo2", "OLD-001", "NEW-002"));
+    }
+
+    @Test
+    @DisplayName("TC 5.16 – swapClassInstance with repo throws when course codes differ")
+    @Tag("Luke")
+    @Tag("Core")
+    void swapClassInstanceThrowsWhenCourseCodesDiffer() {
+        ClassRepository classRepo = new ClassRepository();
+        TimetableService svc = new TimetableService(timetableRepo, classRepo);
+
+        ClassEntry old = makeEntry("OLD-001", "COMP1001", "Lecture", 1);
+        ClassEntry newE = makeEntry("NEW-002", "MATH1001", "Lecture", 1);
+        classRepo.save(old);
+        classRepo.save(newE);
+
+        Timetable t = makeTimetable("SwapRepo3");
+        t.addClass("OLD-001");
+        timetableRepo.save(t);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> svc.swapClassInstance("SwapRepo3", "OLD-001", "NEW-002"));
+    }
+
+    @Test
+    @DisplayName("TC 5.17 – swapClassInstance with repo throws when class types differ")
+    @Tag("Luke")
+    @Tag("Core")
+    void swapClassInstanceThrowsWhenClassTypesDiffer() {
+        ClassRepository classRepo = new ClassRepository();
+        TimetableService svc = new TimetableService(timetableRepo, classRepo);
+
+        ClassEntry old = makeEntry("OLD-001", "COMP1001", "Lecture", 1);
+        ClassEntry newE = makeEntry("NEW-002", "COMP1001", "Workshop", 1);
+        classRepo.save(old);
+        classRepo.save(newE);
+
+        Timetable t = makeTimetable("SwapRepo4");
+        t.addClass("OLD-001");
+        timetableRepo.save(t);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> svc.swapClassInstance("SwapRepo4", "OLD-001", "NEW-002"));
+    }
+
+    @Test
+    @DisplayName("TC 5.18 – swapClassInstance with repo succeeds when classes are compatible")
+    @Tag("Luke")
+    @Tag("Core")
+    void swapClassInstanceSucceedsWithCompatibleClasses() {
+        ClassRepository classRepo = new ClassRepository();
+        TimetableService svc = new TimetableService(timetableRepo, classRepo);
+
+        ClassEntry old = makeEntry("OLD-001", "COMP1001", "Lecture", 1);
+        ClassEntry newE = makeEntry("NEW-002", "COMP1001", "Lecture", 2);
+        classRepo.save(old);
+        classRepo.save(newE);
+
+        Timetable t = makeTimetable("SwapRepo5");
+        t.addClass("OLD-001");
+        timetableRepo.save(t);
+
+        svc.swapClassInstance("SwapRepo5", "OLD-001", "NEW-002");
+
+        Timetable updated = svc.getByName("SwapRepo5").orElseThrow();
+        assertAll(
+                () -> assertTrue(updated.getClassIds().contains("NEW-002")),
+                () -> assertFalse(updated.getClassIds().contains("OLD-001"))
+        );
+    }
+
+
+    @Test
+    @DisplayName("TC 5.19 – generateUniqueName returns sequentially numbered names")
+    @Tag("Luke")
+    @Tag("Core")
+    void generateUniqueNameReturnsSequentialNames() {
+        String first = timetableService.generateUniqueName();
+        String second = timetableService.generateUniqueName();
+
+        assertEquals("Timetable_1", first);
+        assertEquals("Timetable_2", second);
+    }
+
+    @Test
+    @DisplayName("TC 5.20 – generateUniqueName returns unique name on each call")
+    @Tag("Luke")
+    @Tag("Core")
+    void generateUniqueNameReturnsUniqueNameEachCall() {
+        String a = timetableService.generateUniqueName();
+        String b = timetableService.generateUniqueName();
+
+        assertNotEquals(a, b);
     }
 }
