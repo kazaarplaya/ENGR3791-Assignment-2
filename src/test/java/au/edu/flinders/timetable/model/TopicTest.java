@@ -1,58 +1,198 @@
 package au.edu.flinders.timetable.model;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TopicTest {
+
+    private Topic topic;
 
     @BeforeEach
     void setUp() {
+        topic = new Topic("COMP1001", "Computing Fundamentals", "Bedford Park",
+                1, "Internal", 3, "In person");
     }
 
     @AfterEach
-    void tearDown() {
+    void tearDown() {}
+
+
+    @Test
+    @Order(1)
+    @DisplayName("TC X.01 – getCourseCode returns constructed course code")
+    @Tag("Luke")
+    @Tag("Core")
+    void getCourseCodeReturnsConstructedValue() {
+        assertEquals("COMP1001", topic.getCourseCode());
     }
 
     @Test
-    void getCourseCode() {
+    @Order(2)
+    @DisplayName("TC X.02 – getTopicName returns constructed topic name")
+    @Tag("Luke")
+    @Tag("Core")
+    void getTopicNameReturnsConstructedValue() {
+        assertEquals("Computing Fundamentals", topic.getTopicName());
     }
 
     @Test
-    void getTopicName() {
+    @Order(3)
+    @DisplayName("TC X.03 – getCampus returns constructed campus")
+    @Tag("Luke")
+    @Tag("Core")
+    void getCampusReturnsConstructedValue() {
+        assertEquals("Bedford Park", topic.getCampus());
     }
 
     @Test
-    void getCampus() {
+    @Order(4)
+    @DisplayName("TC X.04 – getSemester returns constructed semester")
+    @Tag("Luke")
+    @Tag("Core")
+    void getSemesterReturnsConstructedValue() {
+        assertEquals(1, topic.getSemester());
     }
 
     @Test
-    void getSemester() {
+    @Order(5)
+    @DisplayName("TC X.05 – getDelivery returns constructed delivery mode")
+    @Tag("Luke")
+    @Tag("Core")
+    void getDeliveryReturnsConstructedValue() {
+        assertEquals("Internal", topic.getDelivery());
     }
 
     @Test
-    void getDelivery() {
+    @Order(6)
+    @DisplayName("TC X.06 – getNumOfClasses returns constructed number of classes")
+    @Tag("Luke")
+    @Tag("Core")
+    void getNumOfClassesReturnsConstructedValue() {
+        assertEquals(3, topic.getNumOfClasses());
     }
 
     @Test
-    void getNumOfClasses() {
+    @Order(7)
+    @DisplayName("TC X.07 – getAttendanceMode returns constructed attendance mode")
+    @Tag("Luke")
+    @Tag("Core")
+    void getAttendanceModeReturnsConstructedValue() {
+        assertEquals("In person", topic.getAttendanceMode());
     }
 
     @Test
-    void getAttendanceMode() {
+    @Order(8)
+    @DisplayName("TC X.08 – null topicName defaults to empty string")
+    @Tag("Luke")
+    @Tag("Core")
+    void nullTopicNameDefaultsToEmptyString() {
+        Topic t = new Topic("COMP1001", null, "Bedford Park", 1, "Internal", 1, "In person");
+        assertEquals("", t.getTopicName());
     }
 
     @Test
-    void testEquals() {
+    @Order(9)
+    @DisplayName("TC X.09 – null attendanceMode defaults to empty string")
+    @Tag("Luke")
+    @Tag("Core")
+    void nullAttendanceModeDefaultsToEmptyString() {
+        Topic t = new Topic("COMP1001", "Computing", "Bedford Park", 1, "Internal", 1, null);
+        assertEquals("", t.getAttendanceMode());
     }
 
     @Test
-    void testHashCode() {
+    @Order(10)
+    @DisplayName("TC X.10 – null courseCode throws IllegalArgumentException")
+    @Tag("Luke")
+    @Tag("Core")
+    void nullCourseCodeThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Topic(null, "Computing", "Bedford Park", 1, "Internal", 1, "In person"));
     }
 
     @Test
-    void testToString() {
+    @Order(11)
+    @DisplayName("TC X.11 – blank courseCode throws IllegalArgumentException")
+    @Tag("Luke")
+    @Tag("Core")
+    void blankCourseCodeThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Topic("   ", "Computing", "Bedford Park", 1, "Internal", 1, "In person"));
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("TC X.12 – 6-arg constructor sets attendanceMode to empty string")
+    @Tag("Luke")
+    @Tag("Core")
+    void sixArgConstructorSetsAttendanceModeToEmptyString() {
+        Topic t = new Topic("COMP1001", "Computing", "Bedford Park", 1, "Internal", 2);
+        assertEquals("", t.getAttendanceMode());
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("TC X.13 – equals returns true for same course code")
+    @Tag("Luke")
+    @Tag("Core")
+    void equalsReturnsTrueForSameCourseCode() {
+        Topic other = new Topic("COMP1001", "Different Name", "Tonsley", 2, "External", 1, "Online");
+        assertEquals(topic, other);
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("TC X.14 – equals returns false for different course code")
+    @Tag("Luke")
+    @Tag("Core")
+    void equalsReturnsFalseForDifferentCourseCode() {
+        Topic other = new Topic("MATH1001", "Calculus", "Bedford Park", 1, "Internal", 2, "In person");
+        assertNotEquals(topic, other);
+    }
+
+    @Test
+    @Order(15)
+    @DisplayName("TC X.15 – equals returns true for same instance")
+    @Tag("Luke")
+    @Tag("Core")
+    void equalsReturnsTrueForSameInstance() {
+        assertEquals(topic, topic);
+    }
+
+    @Test
+    @Order(16)
+    @DisplayName("TC X.16 – equals returns false for non-Topic object")
+    @Tag("Luke")
+    @Tag("Core")
+    void equalsReturnsFalseForNonTopicObject() {
+        assertNotEquals(topic, "COMP1001");
+    }
+
+    @Test
+    @Order(17)
+    @DisplayName("TC X.17 – equal topics have same hash code")
+    @Tag("Luke")
+    @Tag("Core")
+    void equalTopicsHaveSameHashCode() {
+        Topic other = new Topic("COMP1001", "Other Name", "Tonsley", 2, "External", 1);
+        assertEquals(topic.hashCode(), other.hashCode());
+    }
+
+
+    @Test
+    @Order(18)
+    @DisplayName("TC X.18 – toString contains courseCode, topicName, campus and semester")
+    @Tag("Luke")
+    @Tag("Core")
+    void toStringContainsAllKeyFields() {
+        String s = topic.toString();
+        assertAll(
+                () -> assertTrue(s.contains("COMP1001")),
+                () -> assertTrue(s.contains("Computing Fundamentals")),
+                () -> assertTrue(s.contains("Bedford Park")),
+                () -> assertTrue(s.contains("Semester 1"))
+        );
     }
 }

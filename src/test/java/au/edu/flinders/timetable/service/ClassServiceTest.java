@@ -3,6 +3,7 @@ package au.edu.flinders.timetable.service;
 import au.edu.flinders.timetable.model.ClassEntry;
 import au.edu.flinders.timetable.repository.ClassRepository;
 import au.edu.flinders.timetable.repository.TopicRepository;
+import au.edu.flinders.timetable.model.Topic;
 import org.junit.jupiter.api.*;
 
 
@@ -242,5 +243,107 @@ class ClassServiceTest {
         List<ClassEntry> grouped = classService.getGroupedClasses();
 
         assertEquals(2, grouped.size());
+    }
+
+
+    @Test
+    @Order(11)
+    @DisplayName("TC 2.11 – getAllClasses returns all stored classes")
+    @Tag("Luke")
+    @Tag("Core")
+    void getAllClassesReturnsAllStoredClasses() {
+        ClassEntry a = makeEntry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001", "Lecture",
+                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0), "01 Mar", "01 Mar");
+        ClassEntry b = makeEntry("MATH1001-LEC-1-TUE-1000-01Mar", "MATH1001", "Lecture",
+                1, DayOfWeek.TUESDAY, LocalTime.of(10, 0), LocalTime.of(12, 0), "01 Mar", "01 Mar");
+        classRepo.save(a);
+        classRepo.save(b);
+
+        List<ClassEntry> result = classService.getAllClasses();
+
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("TC 2.12 – getClassesByCampus returns classes whose topic campus matches")
+    @Tag("Luke")
+    @Tag("Core")
+    void getClassesByCampusReturnsCampusMatchingClasses() {
+        ClassEntry entry = makeEntry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001", "Lecture",
+                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0), "01 Mar", "01 Mar");
+        classRepo.save(entry);
+        topicRepo.save(new Topic("COMP1001", "Computing 1", "Bedford Park", 1, "In Person", 2));
+
+        List<ClassEntry> result = classService.getClassesByCampus("Bedford Park");
+
+        assertEquals(1, result.size());
+        assertEquals("COMP1001", result.get(0).getCourseCode());
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("TC 2.13 – getClassesByCampus returns empty when topic campus does not match")
+    @Tag("Luke")
+    @Tag("Core")
+    void getClassesByCampusReturnsEmptyWhenCampusDoesNotMatch() {
+        ClassEntry entry = makeEntry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001", "Lecture",
+                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0), "01 Mar", "01 Mar");
+        classRepo.save(entry);
+        topicRepo.save(new Topic("COMP1001", "Computing 1", "Bedford Park", 1, "In Person", 2));
+
+        List<ClassEntry> result = classService.getClassesByCampus("Tonsley");
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("TC 2.14 – getClassesByCampus returns empty when class has no matching topic")
+    @Tag("Luke")
+    @Tag("Core")
+    void getClassesByCampusReturnsEmptyWhenNoTopicExistsForClass() {
+        ClassEntry entry = makeEntry("COMP9999-LEC-1-MON-0900-01Mar", "COMP9999", "Lecture",
+                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0), "01 Mar", "01 Mar");
+        classRepo.save(entry);
+
+        List<ClassEntry> result = classService.getClassesByCampus("Bedford Park");
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    @Order(15)
+    @DisplayName("TC 2.15 – getGroupedClassesForTopic returns only entries matching course code")
+    @Tag("Luke")
+    @Tag("Core")
+    void getGroupedClassesForTopicReturnsMatchingCourseCodeOnly() {
+        ClassEntry comp = makeEntry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001", "Lecture",
+                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0), "01 Mar", "01 Mar");
+        ClassEntry math = makeEntry("MATH1001-LEC-1-TUE-1000-01Mar", "MATH1001", "Lecture",
+                1, DayOfWeek.TUESDAY, LocalTime.of(10, 0), LocalTime.of(12, 0), "01 Mar", "01 Mar");
+        classRepo.save(comp);
+        classRepo.save(math);
+
+        List<ClassEntry> result = classService.getGroupedClassesForTopic("COMP1001");
+
+        assertEquals(1, result.size());
+        assertEquals("COMP1001", result.get(0).getCourseCode());
+    }
+
+    @Test
+    @Order(16)
+    @DisplayName("TC 2.16 – getGroupedClasses handles invalid date string without throwing")
+    @Tag("Luke")
+    @Tag("Core")
+    void getGroupedClassesInvalidDateStringDoesNotThrow() {
+        ClassEntry invalid = makeEntry("COMP1001-LEC-1-MON-0900-BAD", "COMP1001", "Lecture",
+                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0), "INVALID", "INVALID");
+        ClassEntry valid = makeEntry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001", "Lecture",
+                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0), "01 Mar", "01 Mar");
+        classRepo.save(invalid);
+        classRepo.save(valid);
+
+        assertDoesNotThrow(() -> classService.getGroupedClasses());
     }
 }
