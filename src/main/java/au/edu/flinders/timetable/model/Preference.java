@@ -100,7 +100,6 @@ public class Preference {
     // ── Token conversion helpers ──────────────────────────────────────────────
 
     private static String oldCampusToToken(String campus) {
-        if (campus == null) return null;
         switch (campus.toLowerCase().trim()) {
             case "bedford park":
                 return CAMPUS_BEDFORD_PARK;
@@ -114,7 +113,6 @@ public class Preference {
     }
 
     private static String oldTimeOfDayToToken(String timeOfDay) {
-        if (timeOfDay == null) return null;
         switch (timeOfDay.toLowerCase().trim()) {
             case "morning":
                 return TIME_MORNING;
@@ -128,7 +126,6 @@ public class Preference {
     }
 
     private static String oldDayToToken(String day) {
-        if (day == null) return null;
         switch (day.toLowerCase().trim()) {
             case "monday":
                 return DAY_MONDAY;

@@ -113,4 +113,7 @@ public class TimetableService {
         nameCounter++;
         return "Timetable_" + nameCounter;
     }
+
+    public void swapClass(String swapTest, ClassEntry oldClass, ClassEntry newClass) {
+    }
 }
