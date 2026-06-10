@@ -277,12 +277,8 @@ public class MenuController {
             return;
         }
 
-        try {
-            Preference pref = new Preference(currentUser.getUserId(), selected);
-            preferenceService.savePreference(pref);
-            view.printSuccess("Preferences saved. Priority order: " + selected);
-        } catch (IllegalArgumentException e) {
-            view.printError(e.getMessage());
-        }
+        Preference pref = new Preference(currentUser.getUserId(), selected);
+        preferenceService.savePreference(pref);
+        view.printSuccess("Preferences saved. Priority order: " + selected);
     }
 }
