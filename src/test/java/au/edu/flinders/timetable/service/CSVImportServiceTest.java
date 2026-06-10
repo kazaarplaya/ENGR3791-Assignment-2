@@ -130,6 +130,7 @@ class CSVImportServiceTest {
     }
 
     //TC 1.04
+    @ParameterizedTest(name = "TC 1.04 [{index}] {0} -> {1}")
     @Order(4)
     @DisplayName("TC 1.04 Import timetable file normalises Flinders City Campus to City")
     @Tag("Oscar")
@@ -149,6 +150,7 @@ class CSVImportServiceTest {
     }
 
     //TC 1.05
+    @ParameterizedTest(name = "TC 1.05 [{index}] {0} -> semester {1}")
     @Order(5)
     @DisplayName("TC 1.05 Import timetable file extracts semester from availability")
     @Tag("Oscar")
@@ -191,6 +193,7 @@ class CSVImportServiceTest {
     }
 
     //TC 1.08
+    @ParameterizedTest(name = "TC 1.08 [{index}] {0} -> {1}")
     @Order(8)
     @DisplayName("TC 1.08 Import timetable file strips day qualifier from once-only day values")
     @Tag("Oscar")
@@ -312,6 +315,7 @@ class CSVImportServiceTest {
     }
 
     //TC 1.15
+    @ParameterizedTest(name = "TC 1.15 [{index}] malformed row skipped")
     @Order(15)
     @DisplayName("TC 1.15 Import timetable file skips malformed rows (boundary / invalid input)")
     @Tag("Oscar")
@@ -365,5 +369,178 @@ class CSVImportServiceTest {
     void importIsDeterministic() throws IOException {
         service.importFromTimetableFile(timetableFile(VALID_ROW));
         assertEquals(1, classRepo.findAll().size());
+    }
+
+    //TC 1.19
+    @Test
+    @Order(19)
+    @DisplayName("TC 1.19 importFromPath with single file imports correctly")
+    @Tag("Oscar")
+    @Tag("Core")
+    void importFromPathSingleFile() throws IOException {
+        String path = timetableFile(VALID_ROW);
+
+        CSVImportService.ImportResult result = service.importFromPath(path);
+
+        assertEquals(1, result.newCount());
+        assertEquals(1, classRepo.findAll().size());
+    }
+
+    //TC 1.20
+    @Test
+    @Order(20)
+    @DisplayName("TC 1.20 importFromPath with directory imports all CSVs")
+    @Tag("Oscar")
+    @Tag("Core")
+    void importFromPathDirectory() throws IOException {
+        // write two separate CSV files into tempDir
+        Files.write(tempDir.resolve("one.csv"), List.of(HEADER_TT, VALID_ROW));
+        String secondRow = "MATH1001 Calculus,"
+                + "In person - Bedford Park - S1 - 1,"
+                + "Lecture,1,03 Mar - 09 Jun,Tuesday,10:00 - 12:00,Library";
+        Files.write(tempDir.resolve("two.csv"), List.of(HEADER_TT, secondRow));
+
+        CSVImportService.ImportResult result = service.importFromPath(tempDir.toString());
+
+        assertEquals(2, result.newCount());
+    }
+
+    //TC 1.21
+    @Test
+    @Order(21)
+    @DisplayName("TC 1.21 importFromPath with empty directory returns zero")
+    @Tag("Oscar")
+    @Tag("Core")
+    void importFromPathEmptyDirectory() throws IOException {
+        Path emptyDir = tempDir.resolve("empty");
+        Files.createDirectory(emptyDir);
+
+        CSVImportService.ImportResult result = service.importFromPath(emptyDir.toString());
+
+        assertEquals(0, result.newCount());
+    }
+
+    //TC 1.22
+    @Test
+    @Order(22)
+    @DisplayName("TC 1.22 Location without comma sets building only and room empty")
+    @Tag("Oscar")
+    @Tag("Core")
+    void locationWithoutCommaGivesBuildingOnly() throws IOException {
+        String row = "COMP1234 Programming,"
+                + "In person - Flinders City Campus - S1 - 1,"
+                + "Lecture,1,03 Mar - 09 Jun,Monday,09:00 - 11:00,Library";
+
+        service.importFromTimetableFile(timetableFile(row));
+
+        ClassEntry entry = classRepo.findAll().get(0);
+        assertAll("building only, no room",
+                () -> assertEquals("Library", entry.getBuilding()),
+                () -> assertEquals("", entry.getRoom()));
+    }
+
+    //TC 1.23
+    @Test
+    @Order(23)
+    @DisplayName("TC 1.23 Single date with no range sets dateFrom and dateTo equal")
+    @Tag("Oscar")
+    @Tag("Core")
+    void singleDateSetsBothFromAndTo() throws IOException {
+        String row = "COMP1234 Programming,"
+                + "In person - Flinders City Campus - S1 - 1,"
+                + "Lecture,1,03 Mar,Monday,09:00 - 11:00,\"Building A, Room 101\"";
+
+        service.importFromTimetableFile(timetableFile(row));
+
+        ClassEntry entry = classRepo.findAll().get(0);
+        assertAll("single date",
+                () -> assertEquals("03 Mar", entry.getDateFrom()),
+                () -> assertEquals("03 Mar", entry.getDateTo()));
+    }
+
+    //TC 1.24
+    @Test
+    @Order(24)
+    @DisplayName("TC 1.24 Topic with course code only and no name stores empty name")
+    @Tag("Oscar")
+    @Tag("Additional")
+    void topicCodeOnlyStoresEmptyName() throws IOException {
+        String row = "COMP1234,"
+                + "In person - Flinders City Campus - S1 - 1,"
+                + "Lecture,1,03 Mar - 09 Jun,Monday,09:00 - 11:00,\"Building A, Room 101\"";
+
+        service.importFromTimetableFile(timetableFile(row));
+
+        Topic topic = topicRepo.findByCourseCode("COMP1234").orElseThrow();
+        assertEquals("", topic.getTopicName());
+    }
+
+    //TC 1.25
+    @Test
+    @Order(25)
+    @DisplayName("TC 1.25 Duplicate course code rows save topic only once")
+    @Tag("Oscar")
+    @Tag("Core")
+    void duplicateCourseCodeSavesTopicOnce() throws IOException {
+        String row2 = "COMP1234 Programming,"
+                + "In person - Flinders City Campus - S1 - 1,"
+                + "Tutorial,2,03 Mar - 09 Jun,Tuesday,14:00 - 16:00,\"Building A, Room 102\"";
+
+        service.importFromTimetableFile(timetableFile(VALID_ROW, row2));
+
+        assertEquals(2, classRepo.findAll().size());
+        assertEquals(1, topicRepo.findAll().size());
+    }
+
+    //TC 1.26
+    @Test
+    @Order(26)
+    @DisplayName("TC 1.26 Blank lines in middle of file are skipped")
+    @Tag("Oscar")
+    @Tag("Additional")
+    void blankLinesAreSkipped() throws IOException {
+        Path file = tempDir.resolve("blanks.csv");
+        Files.write(file, List.of(HEADER_TT, "", VALID_ROW, "", ""));
+
+        CSVImportService.ImportResult result = service.importFromTimetableFile(file.toString());
+
+        assertEquals(1, result.newCount());
+    }
+
+    //TC 1.27
+    @Test
+    @Order(27)
+    @DisplayName("TC 1.27 CSV tokeniser handles embedded double quotes")
+    @Tag("Oscar")
+    @Tag("Additional")
+    void csvTokeniserHandlesEmbeddedQuotes() throws IOException {
+        // Building field contains a double quote: The "Main" Hall
+        // In CSV this is: "The ""Main"" Hall"
+        String row = "COMP1234 Programming,"
+                + "In person - Flinders City Campus - S1 - 1,"
+                + "Lecture,1,03 Mar - 09 Jun,Monday,09:00 - 11:00,"
+                + "\"The \"\"Main\"\" Hall, Room 101\"";
+
+        service.importFromTimetableFile(timetableFile(row));
+
+        ClassEntry entry = classRepo.findAll().get(0);
+        assertAll("embedded quotes parsed",
+                () -> assertEquals("The \"Main\" Hall", entry.getBuilding()),
+                () -> assertEquals("Room 101", entry.getRoom()));
+    }
+
+    //TC 1.28
+    @Test
+    @Order(28)
+    @DisplayName("TC 1.28 Availability with no semester token defaults to semester 1")
+    @Tag("Oscar")
+    @Tag("Additional")
+    void noSemesterTokenDefaultsToOne() throws IOException {
+        String row = rowWithAvailability("In person - Flinders City Campus - 1");
+
+        service.importFromTimetableFile(timetableFile(row));
+
+        Topic topic = topicRepo.findByCourseCode("COMP1234").orElseThrow();
+        assertEquals(1, topic.getSemester());
     }
 }
