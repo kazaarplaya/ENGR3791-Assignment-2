@@ -82,4 +82,7 @@ public class PreferenceService {
                     + "'. Must be a full day name (e.g. Monday) or 'Any'.");
         }
     }
+
+    public void managePreferences() {
+    }
 }

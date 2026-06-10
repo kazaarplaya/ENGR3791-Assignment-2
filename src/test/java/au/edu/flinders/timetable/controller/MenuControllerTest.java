@@ -1,6 +1,18 @@
 package au.edu.flinders.timetable.controller;
 
+import au.edu.flinders.timetable.model.User;
 import au.edu.flinders.timetable.service.PreferenceService;
+import au.edu.flinders.timetable.repository.PreferenceRepository;
+import au.edu.flinders.timetable.service.CSVImportService;
+import au.edu.flinders.timetable.service.ClassService;
+import au.edu.flinders.timetable.service.SearchService;
+import au.edu.flinders.timetable.service.TimetableGeneratorService;
+import au.edu.flinders.timetable.service.TimetableService;
+import au.edu.flinders.timetable.repository.ClassRepository;
+import au.edu.flinders.timetable.repository.TimetableRepository;
+import au.edu.flinders.timetable.repository.TopicRepository;
+import au.edu.flinders.timetable.ui.ConsoleView;
+import au.edu.flinders.timetable.ui.InputHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -9,22 +21,76 @@ import org.junit.jupiter.api.Test;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class MenuControllerTest {
 
-    private MenuController         menuController;
-    private ImportExportController importExportController;
-    private ClassController        classController;
-    private PreferenceService      preferenceService;
-    private TimetableController    timetableController;
+    /* Records whether importData() was called. */
+    private static class StubImportExportController extends ImportExportController {
+        boolean importCalled = false;
+        StubImportExportController() {
+            super(new CSVImportService(new TopicRepository(), new ClassRepository()),  // fixed order
+                    new ConsoleView(),
+                    new InputHelper(),
+                    new Scanner(System.in));
+        }
+        @Override public void importData() { importCalled = true; }
+    }
+
+    /* Records whether showAll() was called. */
+    private static class StubClassController extends ClassController {
+        boolean showAllCalled = false;
+        StubClassController() {
+            super(new ClassService(new ClassRepository(), new TopicRepository()),
+                    new SearchService(new ClassRepository(), new TopicRepository()),
+                    new ConsoleView());
+        }
+        @Override public void showAll() { showAllCalled = true; }
+    }
+
+    /* Records whether generate() and viewAll() were called. */
+    private static class StubTimetableController extends TimetableController {
+        boolean generateCalled = false;
+        boolean viewAllCalled  = false;
+        StubTimetableController() {
+            super(new TimetableGeneratorService(
+                            new ClassRepository(), new TopicRepository(),
+                            new PreferenceRepository(),
+                            new TimetableService(new TimetableRepository())),
+                    new TimetableService(new TimetableRepository()),
+                    new au.edu.flinders.timetable.service.CSVExportService(  // fixed: null -> real instance
+                            new ClassRepository(), new TopicRepository()),
+                    new ClassRepository(),
+                    new TopicRepository(),
+                    new ClassService(new ClassRepository(), new TopicRepository()),
+                    new ConsoleView(),
+                    new InputHelper(),
+                    new Scanner(System.in));
+        }
+        @Override public void generate(User user) { generateCalled = true; }
+        @Override public void viewAll()           { viewAllCalled  = true; }
+    }
+
+    /* Records whether managePreferences() was called. */
+    private static class StubPreferenceService extends PreferenceService {
+        boolean manageCalled = false;
+        StubPreferenceService() {
+            super(new PreferenceRepository());
+        }
+        @Override public void managePreferences() { manageCalled = true; }
+    }
+
+    private MenuController             menuController;
+    private StubImportExportController importExportController;
+    private StubClassController        classController;
+    private StubTimetableController    timetableController;
+    private StubPreferenceService      preferenceService;
 
     @BeforeEach
     void setUp() {
-        importExportController = mock(ImportExportController.class);
-        classController        = mock(ClassController.class);
-        preferenceService      = mock(PreferenceService.class);
-        timetableController    = mock(TimetableController.class);
+        importExportController = new StubImportExportController();
+        classController        = new StubClassController();
+        timetableController    = new StubTimetableController();
+        preferenceService      = new StubPreferenceService();
 
         menuController = new MenuController(
                 importExportController,
@@ -42,7 +108,7 @@ class MenuControllerTest {
     @Tag("Core")
     void displayMenu_showsBanner() {
         assertNotNull(MenuController.BANNER);
-        assertFalse(MenuController.BANNER.isBlank());
+        assertFalse(MenuController.BANNER.trim().isEmpty());  // fixed: isEmpty() always false warning
     }
 
     @Test
@@ -51,7 +117,7 @@ class MenuControllerTest {
     @Tag("Seth")
     @Tag("Core")
     void displayMenu_showsHeader() {
-        String output = menuController.displayMenu();  // fixed typo: disaplysMenu -> displayMenu
+        String output = menuController.displayMenu();
 
         assertTrue(output.contains(MenuController.MENU_HEADER));
     }
@@ -64,11 +130,11 @@ class MenuControllerTest {
     void displayMenu_showsAllSixOptions() {
         String output = menuController.displayMenu();
 
-        assertTrue(output.contains(MenuController.OPTION_IMPORT));       // fixed typo: OPTION_IMPORR
+        assertTrue(output.contains(MenuController.OPTION_IMPORT));
         assertTrue(output.contains(MenuController.OPTION_SEARCH));
-        assertTrue(output.contains(MenuController.OPTION_PREFERENCES));  // fixed typo: OPTION_PREFERENCE
+        assertTrue(output.contains(MenuController.OPTION_PREFERENCES));
         assertTrue(output.contains(MenuController.OPTION_GENERATE));
-        assertTrue(output.contains(MenuController.OPTION_VIEW_EXPORT));  // was missing
+        assertTrue(output.contains(MenuController.OPTION_VIEW_EXPORT));
         assertTrue(output.contains(MenuController.OPTION_EXIT));
     }
 
@@ -85,13 +151,13 @@ class MenuControllerTest {
 
     @Test
     @DisplayName("Input 1 delegates to ImportExportController")
-    @Tag("TC 6.05")  // fixed typo: Tc -> TC
+    @Tag("TC 6.05")
     @Tag("Seth")
     @Tag("Critical")
     void handleInput_1_delegatesToImportController() {
         menuController.handleInput("1");
 
-        verify(importExportController, times(1)).importData();
+        assertTrue(importExportController.importCalled);
     }
 
     @Test
@@ -102,7 +168,7 @@ class MenuControllerTest {
     void handleInput_2_delegatesToClassController() {
         menuController.handleInput("2");
 
-        verify(classController, times(1)).showAll();
+        assertTrue(classController.showAllCalled);
     }
 
     @Test
@@ -113,7 +179,7 @@ class MenuControllerTest {
     void handleInput_3_delegatesToPreferenceService() {
         menuController.handleInput("3");
 
-        verify(preferenceService, times(1)).managePreferences();
+        assertTrue(preferenceService.manageCalled);
     }
 
     @Test
@@ -124,7 +190,7 @@ class MenuControllerTest {
     void handleInput_4_delegatesToTimetableGenerate() {
         menuController.handleInput("4");
 
-        verify(timetableController, times(1)).generate(null);
+        assertTrue(timetableController.generateCalled);
     }
 
     @Test
@@ -135,7 +201,7 @@ class MenuControllerTest {
     void handleInput_5_delegatesToTimetableViewAll() {
         menuController.handleInput("5");
 
-        verify(timetableController, times(1)).viewAll();
+        assertTrue(timetableController.viewAllCalled);
     }
 
     @Test
@@ -146,7 +212,7 @@ class MenuControllerTest {
     void handleInput_6_returnsExitMessage() {
         String result = menuController.handleInput("6");
 
-        assertEquals(MenuController.EXIT_MESSAGE, result);  // fixed typo: EXOT_MESSAGE -> EXIT_MESSAGE
+        assertEquals(MenuController.EXIT_MESSAGE, result);
     }
 
     @Test
@@ -166,7 +232,7 @@ class MenuControllerTest {
     @Tag("Seth")
     @Tag("Core")
     void handleInput_blankInput_showsErrorMessage() {
-        String result = menuController.handleInput("   ");  // fixed: single space may not trigger isBlank()
+        String result = menuController.handleInput("   ");
 
         assertEquals(MenuController.INVALID_INPUT, result);
     }
@@ -190,7 +256,7 @@ class MenuControllerTest {
     void handleInput_withWhitespace_isTrimmed() {
         menuController.handleInput("  2  ");
 
-        verify(classController, times(1)).showAll();
+        assertTrue(classController.showAllCalled);
     }
 
     @Test
@@ -208,7 +274,7 @@ class MenuControllerTest {
     @Tag("Seth")
     @Tag("Core")
     void isExitInput_returnsFalseForOtherInput() {
-        assertFalse(menuController.isExitInput("1"));  // removed duplicate line
+        assertFalse(menuController.isExitInput("1"));
         assertFalse(menuController.isExitInput(""));
         assertFalse(menuController.isExitInput(null));
     }
