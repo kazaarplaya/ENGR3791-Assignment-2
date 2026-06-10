@@ -73,16 +73,9 @@ public class PreferenceService {
      * Accepts full English day names (Monday–Sunday) or "Any".
      */
     private void validateDay(String day) {
-        if (day == null) {
-            throw new IllegalArgumentException("day cannot be null.");
-        }
-        if (day.equalsIgnoreCase("Any")) return;
-        try {
-            DayOfWeek.valueOf(day.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(
-                "Invalid day '" + day
-                    + "'. Must be a full day name (e.g. Monday) or 'Any'.");
-        }
+
+    }
+
+    public void managePreferences() {
     }
 }
