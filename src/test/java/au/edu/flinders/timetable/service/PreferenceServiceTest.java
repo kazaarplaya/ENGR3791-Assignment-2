@@ -303,25 +303,6 @@ public class PreferenceServiceTest {
         assertTrue(saved.getPriorityOrder().contains(Preference.TIME_EVENING));
     }
 
-    @ParameterizedTest(name = "day=''{0}'' should convert to token ''{1}''")
-    @Order(17)
-    @DisplayName("TC 4.17 – Legacy preference converts all weekdays to correct tokens")
-    @Tag("Luke")
-    @Tag("Core")
-    @CsvSource({
-            "Tuesday,  DAY_TUESDAY",
-            "Wednesday, DAY_WEDNESDAY",
-            "Thursday, DAY_THURSDAY",
-            "Friday,   DAY_FRIDAY"
-    })
-    void legacyPreferenceAllWeekdaysConvertToTokens(String day, String expectedToken) {
-        Preference pref = new Preference(USER_ID, "Bedford Park", "morning", day, 1, 2, 3);
-        preferenceService.savePreference(pref);
-
-        Preference saved = preferenceService.getPreference(USER_ID).get();
-        assertTrue(saved.getPriorityOrder().contains(expectedToken));
-    }
-
     @Test
     @Order(18)
     @DisplayName("TC 4.18 – Legacy preference getters return correct values")

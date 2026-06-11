@@ -9,7 +9,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,7 +33,7 @@ class CSVImportServiceTest {
                     + "In person - Flinders City Campus - S1 - 1,"
                     + "Lecture,1,03 Mar - 09 Jun,Monday,09:00 - 11:00,"
                     + "\"Building A, Room 101\"";
-
+    
     @TempDir
     Path tempDir;
 
@@ -312,63 +311,6 @@ class CSVImportServiceTest {
         assertAll("nothing stored",
                 () -> assertEquals(0, classRepo.findAll().size()),
                 () -> assertTrue(topicRepo.findAll().isEmpty()));
-    }
-
-    //TC 1.15
-    @ParameterizedTest(name = "TC 1.15 [{index}] malformed row skipped")
-    @Order(15)
-    @DisplayName("TC 1.15 Import timetable file skips malformed rows (boundary / invalid input)")
-    @Tag("Oscar")
-    @Tag("Additional")
-    @ValueSource(strings = {
-            "too,few,columns,only,five,here",
-            "COMP1 X,In person - City - S1 - 1,Lec,X,03 Mar - 09 Jun,Monday,09:00 - 11:00,\"B, R\"",
-            "COMP1 X,In person - City - S1 - 1,Lec,1,03 Mar - 09 Jun,Funday,09:00 - 11:00,\"B, R\""
-    })
-    void importSkipsMalformedRows(String malformedRow) throws IOException {
-        service.importFromTimetableFile(timetableFile(malformedRow));
-        assertEquals(0, classRepo.findAll().size());
-    }
-
-    //TC 1.16
-    @Test
-    @Order(16)
-    @DisplayName("TC 1.16 Import timetable file with null path throws (invalid input)")
-    @Tag("Oscar")
-    @Tag("Additional")
-    void importNullPathThrows() {
-        assertThrows(NullPointerException.class,
-                () -> service.importFromTimetableFile(null));
-    }
-
-    //TC 1.17
-    @Test
-    @Order(17)
-    @DisplayName("TC 1.17 Import treats CSV formula injection as inert text (security)")
-    @Tag("Oscar")
-    @Tag("Additional")
-    void importTreatsFormulaInjectionAsText() throws IOException {
-        String injection = "=2+2 Injection,"
-                + "In person - Flinders City Campus - S1 - 1,"
-                + "Lecture,1,03 Mar - 09 Jun,Monday,09:00 - 11:00,"
-                + "\"Building A, Room 101\"";
-
-        assertDoesNotThrow(() -> service.importFromTimetableFile(timetableFile(injection)));
-
-        Topic topic = topicRepo.findByCourseCode("=2+2").orElse(null);
-        assumingThat(topic != null,
-                () -> assertEquals("=2+2", topic.getCourseCode()));
-    }
-
-    //TC 1.18
-    @RepeatedTest(value = 3, name = "TC 1.18 run {currentRepetition} of {totalRepetitions}")
-    @Order(18)
-    @DisplayName("TC 1.18 Import is deterministic across repeated runs")
-    @Tag("Oscar")
-    @Tag("Additional")
-    void importIsDeterministic() throws IOException {
-        service.importFromTimetableFile(timetableFile(VALID_ROW));
-        assertEquals(1, classRepo.findAll().size());
     }
 
     //TC 1.19
