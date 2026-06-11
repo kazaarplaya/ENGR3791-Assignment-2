@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InputHelperTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in timetable Coverage Results</a> &gt; <a href="index.source.html" class="el_package">au.edu.flinders.timetable.ui</a> &gt; <span class="el_source">InputHelperTest.java</span></div><h1>InputHelperTest.java</h1><pre class="source lang-java linenums">package au.edu.flinders.timetable.ui;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
+import java.util.Scanner;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+<span class="fc" id="L11">class InputHelperTest {</span>
+
+<span class="fc" id="L13">    private final InputHelper input = new InputHelper();</span>
+
+    private Scanner scanner(String text) {
+<span class="fc" id="L16">        return new Scanner(text);</span>
+    }
+
+    @Test
+    @DisplayName(&quot;TC 9.01 - readLine returns normal input&quot;)
+    @Tag(&quot;Hans&quot;)
+    @Tag(&quot;Core&quot;)
+    void readLineReturnsNormalInput() {
+<span class="fc" id="L24">        String result = input.readLine(scanner(&quot;hello world\n&quot;), &quot;Prompt: &quot;);</span>
+
+<span class="fc" id="L26">        assertEquals(&quot;hello world&quot;, result);</span>
+<span class="fc" id="L27">    }</span>
+
+    @Test
+    @DisplayName(&quot;TC 9.02 - readLine with q throws EarlyExitException&quot;)
+    @Tag(&quot;Hans&quot;)
+    @Tag(&quot;Critical&quot;)
+    void readLineWithQThrowsEarlyExitException() {
+<span class="fc" id="L34">        assertThrows(EarlyExitException.class,</span>
+<span class="nc" id="L35">                () -&gt; input.readLine(scanner(&quot;q\n&quot;), &quot;Prompt: &quot;));</span>
+<span class="fc" id="L36">    }</span>
+
+    @Test
+    @DisplayName(&quot;TC 9.03 - readInt accepts minimum and maximum boundaries&quot;)
+    @Tag(&quot;Hans&quot;)
+    @Tag(&quot;Core&quot;)
+    void readIntAcceptsMinimumAndMaximumBoundaries() {
+<span class="fc" id="L43">        int minResult = input.readInt(scanner(&quot;1\n&quot;), &quot;Number: &quot;, 1, 5);</span>
+<span class="fc" id="L44">        int maxResult = input.readInt(scanner(&quot;5\n&quot;), &quot;Number: &quot;, 1, 5);</span>
+
+<span class="fc" id="L46">        assertAll(</span>
+<span class="fc" id="L47">                () -&gt; assertEquals(1, minResult),</span>
+<span class="fc" id="L48">                () -&gt; assertEquals(5, maxResult)</span>
+        );
+<span class="fc" id="L50">    }</span>
+
+    @Test
+    @DisplayName(&quot;TC 9.04 - readInt re-prompts after non-numeric input&quot;)
+    @Tag(&quot;Hans&quot;)
+    @Tag(&quot;Core&quot;)
+    void readIntRepromptsAfterNonNumericInput() {
+<span class="fc" id="L57">        int result = input.readInt(scanner(&quot;abc\n3\n&quot;), &quot;Number: &quot;, 1, 5);</span>
+
+<span class="fc" id="L59">        assertEquals(3, result);</span>
+<span class="fc" id="L60">    }</span>
+
+    @Test
+    @DisplayName(&quot;TC 9.05 - readInt re-prompts after out-of-range input&quot;)
+    @Tag(&quot;Hans&quot;)
+    @Tag(&quot;Core&quot;)
+    void readIntRepromptsAfterOutOfRangeInput() {
+<span class="fc" id="L67">        int result = input.readInt(scanner(&quot;9\n4\n&quot;), &quot;Number: &quot;, 1, 5);</span>
+
+<span class="fc" id="L69">        assertEquals(4, result);</span>
+<span class="fc" id="L70">    }</span>
+
+    @Test
+    @DisplayName(&quot;TC 9.06 - readBoolean accepts y and n case-insensitively&quot;)
+    @Tag(&quot;Hans&quot;)
+    @Tag(&quot;Core&quot;)
+    void readBooleanAcceptsYAndNCaseInsensitively() {
+<span class="fc" id="L77">        boolean yes = input.readBoolean(scanner(&quot;Y\n&quot;), &quot;Confirm&quot;);</span>
+<span class="fc" id="L78">        boolean no = input.readBoolean(scanner(&quot;N\n&quot;), &quot;Confirm&quot;);</span>
+
+<span class="fc" id="L80">        assertAll(</span>
+<span class="fc" id="L81">                () -&gt; assertTrue(yes),</span>
+<span class="fc" id="L82">                () -&gt; assertFalse(no)</span>
+        );
+<span class="fc" id="L84">    }</span>
+
+    @Test
+    @DisplayName(&quot;TC 9.07 - readBoolean re-prompts after invalid answer&quot;)
+    @Tag(&quot;Hans&quot;)
+    @Tag(&quot;Core&quot;)
+    void readBooleanRepromptsAfterInvalidAnswer() {
+<span class="fc" id="L91">        boolean result = input.readBoolean(scanner(&quot;maybe\ny\n&quot;), &quot;Confirm&quot;);</span>
+
+<span class="fc" id="L93">        assertTrue(result);</span>
+<span class="fc" id="L94">    }</span>
+
+    @Test
+    @DisplayName(&quot;TC 9.08 - readNonBlank trims input and rejects blank lines&quot;)
+    @Tag(&quot;Hans&quot;)
+    @Tag(&quot;Core&quot;)
+    void readNonBlankTrimsInputAndRejectsBlankLines() {
+<span class="fc" id="L101">        String result = input.readNonBlank(scanner(&quot;   \n  COMP1001  \n&quot;), &quot;Code: &quot;);</span>
+
+<span class="fc" id="L103">        assertEquals(&quot;COMP1001&quot;, result);</span>
+<span class="fc" id="L104">    }</span>
+
+    @Test
+    @DisplayName(&quot;TC 9.09 - readNonBlank with q throws EarlyExitException&quot;)
+    @Tag(&quot;Hans&quot;)
+    @Tag(&quot;Critical&quot;)
+    void readNonBlankWithQThrowsEarlyExitException() {
+<span class="fc" id="L111">        assertThrows(EarlyExitException.class,</span>
+<span class="nc" id="L112">                () -&gt; input.readNonBlank(scanner(&quot;q\n&quot;), &quot;Code: &quot;));</span>
+<span class="fc" id="L113">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

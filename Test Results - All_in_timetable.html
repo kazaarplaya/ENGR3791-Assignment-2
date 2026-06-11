@@ -572,9 +572,9 @@ jQuery.cookie = function(name, value, options) {
     <body>
         <div id="container">
             <div id="header">
-                <div class="time" xmlns="">86 ms</div>
+                <div class="time" xmlns="">251 ms</div>
                 <h1>
-                    All in timetable: <strong><span class="total" xmlns="http://www.w3.org/1999/xhtml">91 total, </span><span class="failed">1 failed, </span><span class="passed">90 passed</span></strong>
+                    All in timetable: <strong><span class="total" xmlns="http://www.w3.org/1999/xhtml">459 total, </span><span class="error">2 error, </span><span class="failed">3 failed, </span><span class="passed">454 passed</span></strong>
                 </h1>
                 <div id="treecontrol">
                     <ul>
@@ -591,60 +591,1185 @@ jQuery.cookie = function(name, value, options) {
             </div>
             <div id="content">
                 <ul id="tree">
-                    /Library/Java/JavaVirtualMachines/temurin-25.jdk/Contents/Home/bin/java -javaagent:/Users/hanskonradpujalte/Library/Caches/JetBrains/IntelliJIdea2026.1/captureAgent/debugger-agent.jar=file:///var/folders/_n/6h6b6s_95klclg9j9rfhbr3h0000gn/T/capture13947761760897137533.props -ea -javaagent:/var/folders/_n/6h6b6s_95klclg9j9rfhbr3h0000gn/T/jacocoagent7929413873413907627.jar=destfile=/Users/hanskonradpujalte/Library/Caches/JetBrains/IntelliJIdea2026.1/coverage/ENGR3791_Assignment_2$All_in_timetable.exec,append=false -Didea.test.cyclic.buffer.size=1048576 -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=56081 -Dkotlinx.coroutines.debug.enable.creation.stack.trace=false -Ddebugger.agent.enable.coroutines=true -Dkotlinx.coroutines.debug.enable.flows.stack.trace=true -Dkotlinx.coroutines.debug.enable.mutable.state.flows.stack.trace=true -Ddebugger.async.stack.trace.for.all.threads=true -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath /Users/hanskonradpujalte/.m2/repository/org/junit/platform/junit-platform-launcher/1.10.2/junit-platform-launcher-1.10.2.jar:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar:/Applications/IntelliJ IDEA.app/Contents/plugins/junit/lib/junit5-rt.jar:/Applications/IntelliJ IDEA.app/Contents/plugins/junit/lib/junit-rt.jar:/Users/hanskonradpujalte/Documents/ENGR3791-Assignment-2/target/test-classes:/Users/hanskonradpujalte/Documents/ENGR3791-Assignment-2/target/classes:/Users/hanskonradpujalte/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.2/junit-jupiter-5.10.2.jar:/Users/hanskonradpujalte/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.2/junit-jupiter-api-5.10.2.jar:/Users/hanskonradpujalte/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/hanskonradpujalte/.m2/repository/org/junit/platform/junit-platform-commons/1.10.2/junit-platform-commons-1.10.2.jar:/Users/hanskonradpujalte/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.2/junit-jupiter-engine-5.10.2.jar:/Users/hanskonradpujalte/.m2/repository/org/junit/platform/junit-platform-engine/1.10.2/junit-platform-engine-1.10.2.jar:/Users/hanskonradpujalte/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.2/junit-jupiter-params-5.10.2.jar:/Users/hanskonradpujalte/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar com.intellij.rt.junit.JUnitStarter -ideVersion5 -junit5 @w@/private/var/folders/_n/6h6b6s_95klclg9j9rfhbr3h0000gn/T/idea_working_dirs_junit.tmp @/private/var/folders/_n/6h6b6s_95klclg9j9rfhbr3h0000gn/T/idea_junit.tmp -socket56080
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 5.08") declaration on [void au.edu.flinders.timetable.service.TimetableServiceTest.swapClassInstance_rejectsDifferentClassType()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 5.02") declaration on [void au.edu.flinders.timetable.service.TimetableServiceTest.saveTimetable_rejectsDuplicateName()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 5.03") declaration on [void au.edu.flinders.timetable.service.TimetableServiceTest.getAll_returnsSavedTimetables()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 5.04") declaration on [void au.edu.flinders.timetable.service.TimetableServiceTest.deleteTimetable_removesExisting()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 5.07") declaration on [void au.edu.flinders.timetable.service.TimetableServiceTest.swapClassInstance_rejectsDifferentCourseCode()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 5.01") declaration on [void au.edu.flinders.timetable.service.TimetableServiceTest.saveTimetable_storesByName()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 5.06") declaration on [void au.edu.flinders.timetable.service.TimetableServiceTest.swapClassInstance_replacesClassId()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 5.05") declaration on [void au.edu.flinders.timetable.service.TimetableServiceTest.deleteTimetable_missingThrowsException()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 3.04") declaration on [void au.edu.flinders.timetable.service.SearchServiceTest.criteriaSearchWithNoCriteriaReturnsAllClasses()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 3.08") declaration on [void au.edu.flinders.timetable.service.SearchServiceTest.criteriaSearchFiltersBySemester()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 3.07") declaration on [void au.edu.flinders.timetable.service.SearchServiceTest.criteriaSearchFiltersByCampus()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 3.04") declaration on [void au.edu.flinders.timetable.service.SearchServiceTest.criteriaSearchFiltersByCourseCode()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 3.05") declaration on [void au.edu.flinders.timetable.service.SearchServiceTest.criteriaSearchFiltersByTopicName()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 3.02") declaration on [void au.edu.flinders.timetable.service.SearchServiceTest.keywordSearchMatchesClassType()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 3.03") declaration on [void au.edu.flinders.timetable.service.SearchServiceTest.keywordSearchMatchesClassesWithNoValidCriteria()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 3.09") declaration on [void au.edu.flinders.timetable.service.SearchServiceTest.criteriaSearchFiltersByDay()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 3.01") declaration on [void au.edu.flinders.timetable.service.SearchServiceTest.keywordSearchMatchesCourseCode()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 3.06") declaration on [void au.edu.flinders.timetable.service.SearchServiceTest.criteriaSearchFiltersByAttendanceMode()]. Tag will be ignored.
-June 04, 2026 2:12:34 PM org.junit.jupiter.engine.descriptor.JupiterTestDescriptor lambda$getTags$1
-WARNING: Configuration error: invalid tag syntax in @Tag("TC 3.10") declaration on [void au.edu.flinders.timetable.service.SearchServiceTest.criteriaSearchAppliesMultipleCriteria()]. Tag will be ignored.
+                    /Library/Java/JavaVirtualMachines/temurin-25.jdk/Contents/Home/bin/java -javaagent:/Users/hanskonradpujalte/Library/Caches/JetBrains/IntelliJIdea2026.1/captureAgent/debugger-agent.jar=file:///var/folders/_n/6h6b6s_95klclg9j9rfhbr3h0000gn/T/capture9278949484253094746.props -ea -javaagent:/var/folders/_n/6h6b6s_95klclg9j9rfhbr3h0000gn/T/jacocoagent18124715418354006008.jar=destfile=/Users/hanskonradpujalte/Library/Caches/JetBrains/IntelliJIdea2026.1/coverage/ENGR3791_Assignment_2$All_in_timetable.exec,append=false -Didea.test.cyclic.buffer.size=1048576 -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=61684 -Dkotlinx.coroutines.debug.enable.creation.stack.trace=false -Ddebugger.agent.enable.coroutines=true -Dkotlinx.coroutines.debug.enable.flows.stack.trace=true -Dkotlinx.coroutines.debug.enable.mutable.state.flows.stack.trace=true -Ddebugger.async.stack.trace.for.all.threads=true -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath /Users/hanskonradpujalte/.m2/repository/org/junit/platform/junit-platform-launcher/1.10.2/junit-platform-launcher-1.10.2.jar:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar:/Applications/IntelliJ IDEA.app/Contents/plugins/junit/lib/junit5-rt.jar:/Applications/IntelliJ IDEA.app/Contents/plugins/junit/lib/junit-rt.jar:/Users/hanskonradpujalte/Documents/ENGR3791-Assignment-2/target/test-classes:/Users/hanskonradpujalte/Documents/ENGR3791-Assignment-2/target/classes:/Users/hanskonradpujalte/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.2/junit-jupiter-5.10.2.jar:/Users/hanskonradpujalte/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.2/junit-jupiter-api-5.10.2.jar:/Users/hanskonradpujalte/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/hanskonradpujalte/.m2/repository/org/junit/platform/junit-platform-commons/1.10.2/junit-platform-commons-1.10.2.jar:/Users/hanskonradpujalte/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.2/junit-jupiter-engine-5.10.2.jar:/Users/hanskonradpujalte/.m2/repository/org/junit/platform/junit-platform-engine/1.10.2/junit-platform-engine-1.10.2.jar:/Users/hanskonradpujalte/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.2/junit-jupiter-params-5.10.2.jar:/Users/hanskonradpujalte/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar com.intellij.rt.junit.JUnitStarter -ideVersion5 -junit5 @w@/private/var/folders/_n/6h6b6s_95klclg9j9rfhbr3h0000gn/T/idea_working_dirs_junit.tmp @/private/var/folders/_n/6h6b6s_95klclg9j9rfhbr3h0000gn/T/idea_junit.tmp -socket61683
 Process finished with exit code 255
 
-                    <li xmlns="" class="level top failed open">
+                    <li xmlns="" class="level top open">
                         <span><em class="time">
-                                <div class="time">31 ms</div>
+                                <div class="time">67 ms</div>
+                            </em>ImportExportControllerTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">59 ms</div>
+                                    </em><em class="status">passed</em>TC 13.01 - importData imports classes from a valid CSV path</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stdout">── Import Data ──────────────────────────────<br/>  Provide a path to a single .csv file or a folder of .csv files.<br/>  Path (or q to return): <br/></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout">╔─ ✓  OK ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╗<br/></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout"></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout">║ Import complete &mdash; 1 new, 0 updated  (/var/folders/_n/6h6b6s_95klclg9j9rfhbr3h0000gn/T/junit756727524583162651/timetable.csv)   ║<br/></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout"></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout">╚────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╝<br/></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout"></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">3 ms</div>
+                                    </em><em class="status">passed</em>TC 13.02 - importData with q input throws EarlyExitException</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stdout">── Import Data ──────────────────────────────<br/>  Provide a path to a single .csv file or a folder of .csv files.<br/>  Path (or q to return): <br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">3 ms</div>
+                                    </em><em class="status">passed</em>TC 13.03 - importData with nonexistent path does not crash</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stdout">── Import Data ──────────────────────────────<br/>  Provide a path to a single .csv file or a folder of .csv files.<br/></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stderr">[ERROR] Could not read timetable file '/no/such/file.csv': /no/such/file.csv (No such file or directory)<br/></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout">  Path (or q to return): <br/></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout">╔─ ✓  OK ──────────────────────────────────────────────────╗<br/></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout"></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout">║ Import complete &mdash; 0 new, 0 updated  (/no/such/file.csv)   ║<br/></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout"></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout">╚───────────────────────────────────────────────────────────╝<br/></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout"></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">2 ms</div>
+                                    </em><em class="status">passed</em>TC 13.04 - importData with folder path imports all CSVs in folder</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stdout">── Import Data ──────────────────────────────<br/>  Provide a path to a single .csv file or a folder of .csv files.<br/>  Path (or q to return): <br/></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout">╔─ ✓  OK ────────────────────────────────────────────────────────────────────────────────────────────────────────╗<br/></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout"></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout">║ Import complete &mdash; 1 new, 0 updated  (/var/folders/_n/6h6b6s_95klclg9j9rfhbr3h0000gn/T/junit70498479813856323)   ║<br/></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout"></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout">╚─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╝<br/></span>
+                                    </li>
+                                    <li class="text">
+                                        <span class="stdout"></span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top failed open">
+                        <span><em class="time">
+                                <div class="time">6 ms</div>
+                            </em>MainTest</span>
+                        <ul>
+                            <li class="level test failed open">
+                                <span><em class="time">
+                                        <div class="time">6 ms</div>
+                                    </em><em class="status">failed</em>TC 17.01 - Main starts and exits cleanly when user enters exit command</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stderr">org.opentest4j.AssertionFailedError: Unexpected exception thrown: java.util.NoSuchElementException: No line found<br/>	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)<br/>	at org.junit.jupiter.api.AssertDoesNotThrow.createAssertionFailedError(AssertDoesNotThrow.java:84)<br/>	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:53)<br/>	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:36)<br/>	at org.junit.jupiter.api.Assertions.assertDoesNotThrow(Assertions.java:3168)<br/>	at au.edu.flinders.timetable.MainTest.mainStartsAndExitsCleanlyWhenUserEntersExitCommand(MainTest.java:38)<br/>	at java.base/java.lang.reflect.Method.invoke(Method.java:565)<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)<br/>Caused by: java.util.NoSuchElementException: No line found<br/>	at java.base/java.util.Scanner.nextLine(Scanner.java:1690)<br/>	at au.edu.flinders.timetable.ui.InputHelper.readNonBlank(InputHelper.java:65)<br/>	at au.edu.flinders.timetable.controller.MenuController.start(MenuController.java:107)<br/>	at au.edu.flinders.timetable.Main.main(Main.java:66)<br/>	at au.edu.flinders.timetable.MainTest.lambda$mainStartsAndExitsCleanlyWhenUserEntersExitCommand$0(MainTest.java:38)<br/>	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:49)<br/>	... 6 more<br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top failed open">
+                        <span><em class="time">
+                                <div class="time">15 ms</div>
+                            </em>TimetableGeneratorServiceTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 6.01 - Generate returns empty timetable for user with no enrolled topics</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">3 ms</div>
+                                    </em><em class="status">passed</em>TC 6.02 - Generate single topic timetable adds non-clashing class</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 6.03 - Generate throws exception when no classes exist for enrolled topic</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">2 ms</div>
+                                    </em><em class="status">passed</em>TC 6.04 - Generate rejects city campus mixed with Bedford Park/Tonsley for same topic</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 6.05 - Generate enforces 30-minute gap between different campus classes</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 6.06 - Generate allows back-to-back classes at same campus</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 6.07 - Generate with lecture overlap disabled excludes clashing lecture</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 6.08 - Generate filters candidates by semester one</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 6.09 - Generate filters candidates by semester two</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 6.10 - Generate applies morning preference</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 6.11 - Generate applies compact preference</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 6.12 - Generate applies campus preference</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 6.13 - Generate produces clash-free timetable across multiple topics</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 6.14 - Generate uses auto-generated name when optionalName is null</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 6.15 - Generate with applyPreferences true but no saved preference still generates</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 6.16 - Generate throws with campus name in message when campus selected and no candidates</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 6.17 - Generate from selections saves explicitly chosen classes</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">2 ms</div>
+                                    </em><em class="status">passed</em>TC 6.18 - Generate from selections includes clashing class with warning</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stderr">[WARN] Clash detected for COMP2000 Lecture #1 &mdash; included in timetable; check the grid for conflicts.<br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 6.19 - Generate from selections uses auto-generated name when null</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 6.20 - Generate accepts Flinders City Campus as city campus selector</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 6.21 - Generate falls back to topic repository campus when building inference yields nothing</span>
+                            </li>
+                            <li class="level test failed open">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">failed</em>TC 6.22 - Generate throws when campus fallback also yields no candidates</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stderr">org.opentest4j.AssertionFailedError: Expected java.lang.IllegalStateException to be thrown, but nothing was thrown.<br/>	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)<br/>	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:73)<br/>	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)<br/>	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3115)<br/>	at au.edu.flinders.timetable.service.TimetableGeneratorServiceTest.generateThrowsWhenCampusFallbackAlsoYieldsNoCandidates(TimetableGeneratorServiceTest.java:519)<br/>	at java.base/java.lang.reflect.Method.invoke(Method.java:565)<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)<br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 6.23 - Generate applies Tonsley campus preference</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 6.24 - Generate applies City campus preference</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time">
+                                <div class="time">3 ms</div>
+                            </em>InputHelperTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 9.02 - readLine with q throws EarlyExitException</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stdout">Prompt: <br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 9.06 - readBoolean accepts y and n case-insensitively</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stdout">Confirm (y/n): Confirm (y/n): <br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 9.08 - readNonBlank trims input and rejects blank lines</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stdout">Code: [WARN] Input cannot be blank. Please try again.<br/>Code: <br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 9.04 - readInt re-prompts after non-numeric input</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stdout">Number: [WARN] Invalid number. Please try again.<br/>Number: <br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 9.01 - readLine returns normal input</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stdout">Prompt: <br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 9.09 - readNonBlank with q throws EarlyExitException</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stdout">Code: <br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 9.03 - readInt accepts minimum and maximum boundaries</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stdout">Number: Number: <br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 9.07 - readBoolean re-prompts after invalid answer</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stdout">Confirm (y/n): [WARN] Please enter y or n.<br/>Confirm (y/n): <br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 9.05 - readInt re-prompts after out-of-range input</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stdout">Number: [WARN] Please enter a number between 1 and 5.<br/>Number: <br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time">
+                                <div class="time">12 ms</div>
+                            </em>CSVExportServiceTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 8.01 - Export writes correct CSV header</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 8.02 - Export empty timetable writes header only</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stderr">[WARN] Class ID 'DOES-NOT-EXIST' not found; skipping export row.<br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">3 ms</div>
+                                    </em><em class="status">passed</em>TC 8.03 - Export writes correct field values for a valid entry</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 8.04 - Export writes multiple class entries</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">2 ms</div>
+                                    </em><em class="status">passed</em>TC 8.05 - Export skips missing class IDs without crashing</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">2 ms</div>
+                                    </em><em class="status">passed</em>TC 8.06 - Export handles missing topic gracefully</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 8.07 - Export escapes fields containing commas</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 8.08 - Export escapes fields containing double quotes</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 8.09 - Export with null file path throws IOException</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 8.10 - Export uses class attendance mode over topic when present</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time"></em>PreferenceRepositoryTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 20.03 - Delete</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 20.01 - Save</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 20.02 - Find By User Id</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time">
+                                <div class="time">11 ms</div>
+                            </em>ClassControllerTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.01 - showAll &ndash; empty repository prints warning</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 11.02 - showAll &ndash; classes present outputs course code</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">3 ms</div>
+                                    </em><em class="status">passed</em>TC 11.03 - showAll &ndash; matching topic name appears in browse list</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.04 - showAll &ndash; null topicRepository produces empty topic map without crashing</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.05 - viewAllDetailed &ndash; empty repository prints warning</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 11.06 - viewAllDetailed &ndash; classes present outputs course code</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.07 - viewAllDetailed &ndash; topic details shown when topic is present</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.08 - viewAll &ndash; null topicRepository prints warning</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.09 - viewAll &ndash; empty topic repository prints warning</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.10 - viewAll &ndash; topics present prints numbered list with count</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.11 - viewAll &ndash; courses sorted alphabetically by course code</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 11.12 - search(String) &ndash; matching keyword shows results</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.13 - search(String) &ndash; no match reports 0 found</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.14 - search(String) &ndash; empty query returns all classes</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.15 - search(String) &ndash; result count matches number of stored matching classes</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.16 - search() interactive &ndash; all blank, empty repo prints no-match warning</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 11.17 - search() interactive &ndash; matching courseCode criterion shows results</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.18 - search() interactive &ndash; no matching results prints warning</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.19 - search() interactive &ndash; invalid start time warns and skips field</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.20 - search() interactive &ndash; valid start time filters correctly</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.21 - search() interactive &ndash; invalid semester warns and skips field</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.22 - search() interactive &ndash; valid semester filters correctly</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.23 - deleteClass &ndash; unknown ID prints error</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.24 - deleteClass &ndash; confirmed removes class from repository</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.25 - deleteClass &ndash; confirmed prints success message</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.26 - deleteClass &ndash; cancelled keeps class in repository</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.27 - deleteClass &ndash; cancelled prints cancelled message</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.28 - editClass &ndash; unknown ID prints error</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.29 - editClass &ndash; all blank inputs keeps all original field values</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.30 - editClass &ndash; new building and room saved correctly</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.31 - editClass &ndash; valid new start and end times saved correctly</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.32 - editClass &ndash; invalid start time warns and keeps original</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.33 - editClass &ndash; invalid end time warns and keeps original</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 11.34 - editClass &ndash; valid new day saved correctly</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.35 - editClass &ndash; invalid day warns and keeps original</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 11.36 - editClass &ndash; save confirmed prints success message</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 11.37 - editClass &ndash; cancelled does not persist any changes</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 11.38 - editClass &ndash; cancelled prints cancelled message</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.39 - deleteClass &ndash; exit sentinel 'q' at ID prompt throws EarlyExitException</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 11.40 - editClass &ndash; exit sentinel 'q' at ID prompt throws EarlyExitException</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time">
+                                <div class="time">47 ms</div>
+                            </em>ConsoleViewTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 10.13 - printViewList renders topic name, campus and semester when topic present</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 10.02 - printSuccess, printError and printWarning include message text</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">23 ms</div>
+                                    </em><em class="status">passed</em>TC 10.25 - printTimetable shows empty fields for null startTime endTime building room in legend</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">3 ms</div>
+                                    </em><em class="status">passed</em>TC 10.26 - printTimetable excludes class with null times from grid slots</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.04 - printClassList renders compact class details</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.06 - printBrowseList handles empty class list with warning</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.05 - printBrowseList renders topic names from topic map</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.23 - printBrowseList truncates location longer than 9 chars</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.18 - printBrowseList truncates topic name longer than 17 chars</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.17 - printBrowseList uses empty string when topic not in map</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.19 - printBrowseList truncates type+group longer than 10 chars</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">4 ms</div>
+                                    </em><em class="status">passed</em>TC 10.24 - printTimetable shows --- for class with null day in legend</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.15 - printViewList renders separator between multiple entries</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">2 ms</div>
+                                    </em><em class="status">passed</em>TC 10.01 - printMenu renders all supplied options</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.20 - printBrowseList shows --- for null day</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">7 ms</div>
+                                    </em><em class="status">passed</em>TC 10.08 - printTimetable renders empty timetable grid without class legend</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.03 - printClassList renders no-results state for empty list</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.11 - printClassList truncates entry longer than 60 chars</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.14 - printViewList renders blank room without comma separator</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">3 ms</div>
+                                    </em><em class="status">passed</em>TC 10.09 - printTimetable marks overlapping classes with clash indicator</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.12 - printViewList shows warning for empty class list</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.16 - printTimetable shows yes for overlap and preference flags</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.21 - printBrowseList shows empty time when startTime is null</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.10 - printBanner outputs ASCII art box with STUDENT text</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 10.22 - printBrowseList shows empty location when building is null</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">3 ms</div>
+                                    </em><em class="status">passed</em>TC 10.07 - printViewList renders unknown topic when topic map has no entry</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time">
+                                <div class="time">8 ms</div>
+                            </em>ClassServiceTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 2.01 - Save Class stores by Class ID</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 2.02 - Find class by ID returns the stored class</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 2.03 - Find class by ID returns empty when class is empty</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 2.04 - Find classes by course code returns matching classes only</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 2.05 - Update class replaces exisitng class details</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 2.06 - Update missing class throws IllegalArgumentException</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 2.07 - Delete class removes it from the repository</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 2.08 - Delete missing class throws IllegalArgumentException</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">7 ms</div>
+                                    </em><em class="status">passed</em>TC 2.09 - Grouped Classes combine related date ranges</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 2.10 - Grouped classes keep seperate class instances apart</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 2.11 - getAllClasses returns all stored classes</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 2.12 - getClassesByCampus returns classes whose topic campus matches</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 2.13 - getClassesByCampus returns empty when topic campus does not match</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 2.14 - getClassesByCampus returns empty when class has no matching topic</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 2.15 - getGroupedClassesForTopic returns only entries matching course code</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 2.16 - getGroupedClasses handles invalid date string without throwing</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time"></em>TimetableRepositoryTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 21.04 - Delete</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 21.05 - Exists</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 21.03 - Find All</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 21.02 - Find By Name</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 21.01 - Save</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time"></em>SearchServiceTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.34 - Criteria search filters by end time</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.03 - Criteria search with no criteria returns all classes</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.24 - Criteria topicName filter excludes class with no linked topic</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.21 - Keyword search matches topic campus</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.08 - Criteria search filters by semester</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.17 - Keyword search matches day of week</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.20 - Keyword search matches dateTo</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.30 - Criteria search filters by dateFrom</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.19 - Keyword search matches dateFrom</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.12 - Keyword search with blank query returns all classes</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.07 - Criteria search filters by campus</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.31 - Criteria search filters by dateTo</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.32 - Criteria day filter excludes class with null day</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.29 - Criteria search filters by class instance</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.28 - Criteria search filters by class type</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.16 - Keyword search matches room</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.27 - Criteria search filters by availability number</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.04 - Criteria search filters by course code</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.13 - Criteria search with null SearchCriteria returns all classes</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.05 - Criteria search filters by topic name</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.35 - Criteria search filters by building</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.02 - Keyword search matches class type</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.15 - Keyword search matches building</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.14 - Keyword search matches class ID</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.22 - Keyword search matches topic name</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.36 - Criteria search filters by room</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.11 - Keyword search with null query returns all classes</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.37 - Keyword search returns no classes with no valid matches</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.09 - Criteria search filters by day</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.18 - Keyword search matches attendance mode</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.01 - Keyword search matches course code</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.33 - Criteria search filters by start time</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.23 - Keyword search matches topic delivery</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.26 - Criteria semester filter excludes class with no linked topic</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.06 - Criteria search filters by attendance mode</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.10 - Criteria search applies multiple criteria</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 3.25 - Criteria campus filter excludes class with no linked topic</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time">
+                                <div class="time">4 ms</div>
+                            </em>UserTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 16.01 - getUserId returns the user ID supplied at construction</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 16.02 - getName returns the display name supplied at construction</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 16.03 - getEnrolledTopics returns empty list before any enrolment</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 16.04 - enrol adds course code to enrolled topics</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">2 ms</div>
+                                    </em><em class="status">passed</em>TC 16.05 - enrol is a no-op when course code already enrolled</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 16.06 - withdraw removes course code from enrolled topics</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 16.07 - withdraw is a no-op when course code not enrolled</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 16.08 - isEnrolled returns false when course code not enrolled</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 16.09 - getEnrolledTopics returns unmodifiable list</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 16.10 - getEnrolledTopics reflects multiple enrolments in order</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">2 ms</div>
+                                    </em><em class="status">passed</em>TC 16.11 - toString returns non-null string containing userId and name</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time"></em>TopicRepositoryTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 22.03 - Find All</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 22.01 - Save</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 22.04 - Clear</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 22.02 - Find By Course Code</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time"></em>ClassRepositoryTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 19.03 - Delete</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 19.12 - Exists</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 19.10 - Find All</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 19.06 - Save</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 19.05 - Find All</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 19.02 - Update</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 19.04 - Find By Id</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 19.01 - Save</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 19.09 - Find By Id</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 19.13 - Clear</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 19.08 - Delete</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 19.11 - Find By Course Code</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 19.07 - Update</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time">
+                                <div class="time">2 ms</div>
+                            </em>TimetableTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 7.01 - Constructor creates timetable with correct name and flags</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 7.02 - addClass adds class ID to timetable</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 7.03 - addClass does not add duplicate class ID</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 7.04 - removeClass removes existing class ID</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 7.05 - removeClass does nothing when class ID not present</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 7.06 - isEmpty returns true for new timetable</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 7.07 - isEmpty returns false after class is added</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 7.08 - getClassIds returns unmodifiable list</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 7.09 - setTimetableName updates timetable name</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 7.10 - setSemester updates semester label</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 7.11 - setOverlap updates overlap flag</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 7.12 - setHasPreference updates preference flag</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 7.13 - toString returns non-null readable summary</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 7.14 - getName returns timetable name</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 7.15 - findByName returns timetable when it exists</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time">
+                                <div class="time">19 ms</div>
+                            </em>MenuControllerTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.27 - handleClasses choice 5 delegates to classController.deleteClass()</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.19 - Exit input 6 is correctly identified</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">3 ms</div>
+                                    </em><em class="status">passed</em>TC 13.36 - setPreferencesTokenMode saves selected token and prints success</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.30 - handleViewExport choice 3 delegates to timetableController.editTimetable()</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.05 - Menu displays ASCII banner</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.23 - handleClasses choice 1 delegates to classController.search()</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.22 - start() catches EarlyExitException and returns to main menu</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.33 - handlePreferences choice 1 prints no preferences when none set</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.06 - Menu displays header</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.29 - handleViewExport choice 2 delegates to timetableController.view()</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.12 - Input 4 delegates to TimetableController generate</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.15 - Invalid input shows error message</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.08 - Menu displays input prompt</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.35 - handlePreferences choice 3 clears preference and prints success</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.45 - start() choice 3 enters handlePreferences and executes switch</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.13 - Input 5 delegates to TimetableController viewAll</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.40 - setPreferencesTokenMode warns on duplicate token selection</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.16 - Blank input shows error message</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.11 - Input 3 delegates to PreferenceService</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.07 - Menu displays all six options</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.41 - start() choice 1 delegates to importExportController.importData()</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.09 - Input 1 delegates to ImportExportController</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.32 - handleViewExport choice 5 delegates to timetableController.delete()</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.28 - handleViewExport choice 1 delegates to timetableController.viewAll()</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.46 - setPreferencesTokenMode warns when number is out of range</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.17 - Null input shows error message</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.20 - Non-exit input is not identified as exit</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.26 - handleClasses choice 4 delegates to classController.editClass()</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.21 - start() creates user and exits with Goodbye on choice 6</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.24 - handleClasses choice 2 delegates to classController.viewAll()</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.31 - handleViewExport choice 4 delegates to timetableController.export()</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.42 - start() choice 4 delegates to timetableController.generate()</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.43 - start() choice 2 enters handleClasses and executes switch</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.18 - Input with surrounding whitespace is trimmed and handled correctly</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.39 - setPreferencesTokenMode warns on out-of-range number</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.44 - start() choice 5 enters handleViewExport and executes switch</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 13.34 - handlePreferences choice 1 prints existing preference</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.25 - handleClasses choice 3 delegates to classController.viewAllDetailed()</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.37 - setPreferencesTokenMode prints warning when no tokens selected</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.38 - setPreferencesTokenMode warns on non-numeric input</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.10 - Input 2 delegates to ClassController</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 13.14 - Input 6 returns exit message</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top failed open">
+                        <span><em class="time">
+                                <div class="time">20 ms</div>
                             </em>PreferenceServiceTest</span>
                         <ul>
                             <li class="level suite open">
                                 <span><em class="time">
-                                        <div class="time">19 ms</div>
-                                    </em>TC 4.01 &ndash; Save legacy preference boundary &ndash; accepts Monday and Friday</span>
+                                        <div class="time">13 ms</div>
+                                    </em>TC 4.01 - Save legacy preference boundary &ndash; accepts Monday and Friday</span>
                                 <ul>
                                     <li class="level test">
                                         <span><em class="time">
-                                                <div class="time">19 ms</div>
+                                                <div class="time">13 ms</div>
                                             </em><em class="status">passed</em>day='Monday' should be accepted</span>
                                     </li>
                                     <li class="level test">
@@ -653,14 +1778,10 @@ Process finished with exit code 255
                                 </ul>
                             </li>
                             <li class="level suite open">
-                                <span><em class="time">
-                                        <div class="time">1 ms</div>
-                                    </em>TC 4.02 &ndash; Save legacy preference boundary &ndash; accepts morning and evening edge times</span>
+                                <span><em class="time"></em>TC 4.02 - Save legacy preference boundary &ndash; accepts morning and evening edge times</span>
                                 <ul>
                                     <li class="level test">
-                                        <span><em class="time">
-                                                <div class="time">1 ms</div>
-                                            </em><em class="status">passed</em>time='morning' should be accepted</span>
+                                        <span><em class="time"></em><em class="status">passed</em>time='morning' should be accepted</span>
                                     </li>
                                     <li class="level test">
                                         <span><em class="time"></em><em class="status">passed</em>time='evening' should be accepted</span>
@@ -669,19 +1790,19 @@ Process finished with exit code 255
                             </li>
                             <li class="level suite open">
                                 <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em>TC 4.03 &ndash; Save legacy preference rejects invalid day</span>
+                                        <div class="time">5 ms</div>
+                                    </em>TC 4.03 - Save legacy preference rejects invalid day</span>
                                 <ul>
                                     <li class="level test">
-                                        <span><em class="time">
-                                                <div class="time">2 ms</div>
-                                            </em><em class="status">passed</em>day='Someday' should be rejected</span>
+                                        <span><em class="time"></em><em class="status">passed</em>day='Someday' should be rejected</span>
                                     </li>
                                     <li class="level test">
                                         <span><em class="time"></em><em class="status">passed</em>day='Mon' should be rejected</span>
                                     </li>
                                     <li class="level test">
-                                        <span><em class="time"></em><em class="status">passed</em>day='1' should be rejected</span>
+                                        <span><em class="time">
+                                                <div class="time">5 ms</div>
+                                            </em><em class="status">passed</em>day='1' should be rejected</span>
                                     </li>
                                     <li class="level test">
                                         <span><em class="time"></em><em class="status">passed</em>day='MONDAY!' should be rejected</span>
@@ -692,7 +1813,7 @@ Process finished with exit code 255
                                 </ul>
                             </li>
                             <li class="level suite open">
-                                <span><em class="time"></em>TC 4.04 &ndash; Save legacy preference rejects invalid time</span>
+                                <span><em class="time"></em>TC 4.04 - Save legacy preference rejects invalid time</span>
                                 <ul>
                                     <li class="level test">
                                         <span><em class="time"></em><em class="status">passed</em>time='dawn' should be rejected</span>
@@ -717,9 +1838,7 @@ Process finished with exit code 255
                                     </em>TC 4.05 &ndash; Save token preference accepts valid tokens</span>
                                 <ul>
                                     <li class="level test">
-                                        <span><em class="time">
-                                                <div class="time">1 ms</div>
-                                            </em><em class="status">passed</em>token='CAMPUS_BEDFORD_PARK' should be accepted</span>
+                                        <span><em class="time"></em><em class="status">passed</em>token='CAMPUS_BEDFORD_PARK' should be accepted</span>
                                     </li>
                                     <li class="level test">
                                         <span><em class="time"></em><em class="status">passed</em>token='CAMPUS_TONSLEY' should be accepted</span>
@@ -728,7 +1847,9 @@ Process finished with exit code 255
                                         <span><em class="time"></em><em class="status">passed</em>token='CAMPUS_CITY' should be accepted</span>
                                     </li>
                                     <li class="level test">
-                                        <span><em class="time"></em><em class="status">passed</em>token='CAMPUS_SAME' should be accepted</span>
+                                        <span><em class="time">
+                                                <div class="time">1 ms</div>
+                                            </em><em class="status">passed</em>token='CAMPUS_SAME' should be accepted</span>
                                     </li>
                                     <li class="level test">
                                         <span><em class="time"></em><em class="status">passed</em>token='TIME_MORNING' should be accepted</span>
@@ -763,14 +1884,10 @@ Process finished with exit code 255
                                 </ul>
                             </li>
                             <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">3 ms</div>
-                                    </em><em class="status">passed</em>TC 4.06 &ndash; Save token preference rejects empty token list</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 4.06 - Save token preference rejects empty token list</span>
                             </li>
                             <li class="level test failed open">
-                                <span><em class="time">
-                                        <div class="time">4 ms</div>
-                                    </em><em class="status">failed</em>TC 4.07 &ndash; Save token preference rejects duplicate tokens</span>
+                                <span><em class="time"></em><em class="status">failed</em>TC 4.07 - Save token preference rejects duplicate tokens</span>
                                 <ul>
                                     <li class="text">
                                         <span class="stderr">org.opentest4j.AssertionFailedError: Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown.<br/>	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)<br/>	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:73)<br/>	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)<br/>	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3115)<br/>	at au.edu.flinders.timetable.service.PreferenceServiceTest.saveTokenPreferenceDuplicateTokensThrowsIllegalArgumentException(PreferenceServiceTest.java:160)<br/>	at java.base/java.lang.reflect.Method.invoke(Method.java:565)<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)<br/></span>
@@ -778,161 +1895,369 @@ Process finished with exit code 255
                                 </ul>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>TC 4.08 &ndash; Get preferences returns preferences in insertion order</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 4.08 - Get preferences returns preferences in insertion order</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 4.09 - Reorder preferences updates priority order</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 4.10 - Clear preference removes saved preference</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 4.11 - Save legacy preference accepts Any as day</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 4.12 - Save token preference rejects unknown token string</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 4.13 - Legacy preference with Tonsley campus converts to CAMPUS_TONSLEY token</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 4.14 - Legacy preference with City campus converts to CAMPUS_CITY token</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 4.15 - Legacy preference with afternoon time converts to TIME_AFTERNOON token</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 4.16 - Legacy preference with evening time converts to TIME_EVENING token</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
                                         <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>TC 4.09 &ndash; Reorder preferences updates priority order</span>
+                                    </em><em class="status">passed</em>TC 4.18 - Legacy preference getters return correct values</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>TC 4.10 &ndash; Clear preference removes saved preference</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 4.19 - toString returns non-null readable summary</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 4.20 - Legacy preference with null campus defaults to Any</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 4.21 - Legacy preference with null timeOfDay defaults to Any</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 4.22 - Legacy preference with null day defaults to Any</span>
                             </li>
                         </ul>
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">7 ms</div>
-                            </em>TimetableGeneratorServiceTest</span>
+                                <div class="time">2 ms</div>
+                            </em>TopicTest</span>
                         <ul>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>TC 6.01 &ndash; Generate returns empty timetable for user with no enrolled topics</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.01 - getCourseCode returns constructed course code</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>TC 6.02 &ndash; Generate single topic timetable adds non-clashing class</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.02 - getTopicName returns constructed topic name</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>TC 6.03 &ndash; Generate throws exception when no classes exist for enrolled topic</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.03 - getCampus returns constructed campus</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>TC 6.04 &ndash; Generate rejects city campus mixed with Bedford Park/Tonsley for same topic</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.04 - getSemester returns constructed semester</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>TC 6.05 &ndash; Generate enforces 30-minute gap between different campus classes</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.05 - getDelivery returns constructed delivery mode</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>TC 6.06 &ndash; Generate allows back-to-back classes at same campus</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.06 - getNumOfClasses returns constructed number of classes</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>TC 6.07 &ndash; Generate with lecture overlap disabled excludes clashing lecture</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.07 - getAttendanceMode returns constructed attendance mode</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>TC 6.08 &ndash; Generate filters candidates by semester one</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.08 - null topicName defaults to empty string</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>TC 6.09 &ndash; Generate filters candidates by semester two</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.09 - null attendanceMode defaults to empty string</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>TC 6.10 &ndash; Generate applies morning preference</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.10 - null courseCode throws IllegalArgumentException</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>TC 6.11 &ndash; Generate applies compact preference</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.11 - blank courseCode throws IllegalArgumentException</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.12 - 6-arg constructor sets attendanceMode to empty string</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.13 - equals returns true for same course code</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
                                         <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>TC 6.12 &ndash; Generate applies campus preference</span>
+                                    </em><em class="status">passed</em>TC 15.14 - equals returns false for different course code</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.15 - equals returns true for same instance</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.16 - equals returns false for non-Topic object</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 15.17 - equal topics have same hash code</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
                                         <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>TC 6.13 &ndash; Generate produces clash-free timetable across multiple topics</span>
+                                    </em><em class="status">passed</em>TC 15.18 - toString contains courseCode, topicName, campus and semester</span>
                             </li>
                         </ul>
                     </li>
-                    <li class="level top open">
+                    <li class="level top failed open">
                         <span><em class="time">
-                                <div class="time">7 ms</div>
-                            </em>ClassServiceTest</span>
+                                <div class="time">15 ms</div>
+                            </em>TimetableControllerTest</span>
                         <ul>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Save Class stores by Class ID</span>
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 12.01 - viewAll prints all saved timetable names</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Find class by ID returns the stored class</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.02 - viewAll prints none message when no timetables saved</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Find class by ID returns empty when class is empty</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.03 - view displays timetable when selected</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Find classes by course code returns matching classes only</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.04 - view prints warning when no timetables exist</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Update class replaces exisitng class details</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.05 - delete removes timetable after confirmation</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Update missing class throws IllegalArgumentException</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.06 - delete cancels when user declines confirmation</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Delete class removes it from the repository</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Delete missing class throws IllegalArgumentException</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.07 - delete prints warning when no timetables exist</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">7 ms</div>
-                                    </em><em class="status">passed</em>Grouped Classes combine related date ranges</span>
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 12.08 - export writes timetable to file</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Grouped classes keep seperate class instances apart</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.09 - export prints warning when no timetables exist</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">3 ms</div>
+                                    </em><em class="status">passed</em>TC 12.10 - export uses custom name when provided</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.11 - export uses custom path when provided</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.12 - delete cancels when user enters n</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.13 - delete removes timetable when user enters y</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.14 - generate prints warning when no classes selected</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 12.15 - generate cancels when user declines confirmation</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.16 - generate creates timetable when user confirms</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.17 - generate infers City campus from Festival Tower building</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.18 - generate infers Tonsley campus from Tonsley building</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.19 - generate infers Bedford Park from unrecognised building</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 12.20 - editTimetable prints warning when timetable has no classes</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 12.21 - editTimetable prints warning when no alternatives available</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">5 ms</div>
+                                    </em><em class="status">passed</em>TC 12.22 - editTimetable swaps class when confirmed</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.23 - editTimetable cancels swap when user declines</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.24 - generate prints message when empty input entered during enrolment</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.25 - generate prints message when out of range number entered during enrolment</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.26 - generate prints message when invalid course code entered</span>
+                            </li>
+                            <li class="level test failed open">
+                                <span><em class="time"></em><em class="status">error</em>TC 12.27 - generate prints message when already enrolled in course</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stderr">java.util.NoSuchElementException: No line found<br/>	at java.base/java.util.Scanner.nextLine(Scanner.java:1690)<br/>	at au.edu.flinders.timetable.ui.InputHelper.readBoolean(InputHelper.java:50)<br/>	at au.edu.flinders.timetable.controller.TimetableController.generate(TimetableController.java:271)<br/>	at au.edu.flinders.timetable.controller.TimetableControllerTest.generatePrintsMessageWhenAlreadyEnrolledInCourse(TimetableControllerTest.java:576)<br/>	at java.base/java.lang.reflect.Method.invoke(Method.java:565)<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)<br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.28 - generate accepts numeric course selection during enrolment</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.29 - generate accepts campus by number selection</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 12.30 - generate accepts campus by name selection</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.31 - generate prints message when invalid campus name entered</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.32 - generate prints message when out of range campus number entered</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.33 - generate selects semester one when user enters 1</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.34 - generate selects semester two when user enters 2</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.35 - generate prints message when invalid semester input entered</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.36 - generate auto-selects when only one class instance exists</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.37 - generate prompts user to select when multiple class instances exist</span>
+                            </li>
+                            <li class="level test failed open">
+                                <span><em class="time"></em><em class="status">error</em>TC 12.38 - generate prints warning when campus filter removes all classes</span>
+                                <ul>
+                                    <li class="text">
+                                        <span class="stderr">java.util.NoSuchElementException: No line found<br/>	at java.base/java.util.Scanner.nextLine(Scanner.java:1690)<br/>	at au.edu.flinders.timetable.ui.InputHelper.readBoolean(InputHelper.java:50)<br/>	at au.edu.flinders.timetable.controller.TimetableController.generate(TimetableController.java:271)<br/>	at au.edu.flinders.timetable.controller.TimetableControllerTest.generatePrintsWarningWhenCampusFilterRemovesAllClasses(TimetableControllerTest.java:808)<br/>	at java.base/java.lang.reflect.Method.invoke(Method.java:565)<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)<br/></span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.39 - generate prints error when timetable name already exists</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 12.40 - editTimetable prints warning when no timetables exist</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 12.41 - editTimetable shows alternatives list with building and room</span>
                             </li>
                         </ul>
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">41 ms</div>
+                                <div class="time">18 ms</div>
                             </em>CSVImportServiceTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">20 ms</div>
-                                    </em><em class="status">passed</em>TC 1.01 Import timetable file creates class entries for valid rows</span>
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 1.01 - Import timetable file creates class entries for valid rows</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
                                         <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>TC 1.02 Import timetable file extracts topic code and topic name</span>
+                                    </em><em class="status">passed</em>TC 1.02 - Import timetable file extracts topic code and topic name</span>
                             </li>
                             <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 1.03 - Import timetable file extracts attendance mode</span>
+                            </li>
+                            <li class="level suite open">
                                 <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">passed</em>TC 1.03 Import timetable file extracts attendance mode</span>
+                                        <div class="time">1 ms</div>
+                                    </em>TC 1.04 Import timetable file normalises Flinders City Campus to City</span>
+                                <ul>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">1 ms</div>
+                                            </em><em class="status">passed</em>TC 1.04 [1] Flinders City Campus -&gt; City</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time"></em><em class="status">passed</em>TC 1.04 [2] Bedford Park -&gt; Bedford Park</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time"></em><em class="status">passed</em>TC 1.04 [3] Tonsley -&gt; Tonsley</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time"></em><em class="status">passed</em>TC 1.04 [4] Sturt -&gt; Sturt</span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level suite open">
+                                <span><em class="time">
+                                        <div class="time">5 ms</div>
+                                    </em>TC 1.05 - Import timetable file extracts semester from availability</span>
+                                <ul>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">4 ms</div>
+                                            </em><em class="status">passed</em>TC 1.05 [1] S1 -&gt; semester 1</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">1 ms</div>
+                                            </em><em class="status">passed</em>TC 1.05 [2] S2 -&gt; semester 2</span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 1.06 - Import timetable file extracts availability number</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
                                         <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>TC 1.06 Import timetable file extracts availability number</span>
+                                    </em><em class="status">passed</em>TC 1.07 - Import timetable file parses date range into dateFrom and dateTo</span>
+                            </li>
+                            <li class="level suite open">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em>TC 1.08 Import timetable file strips day qualifier from once-only day values</span>
+                                <ul>
+                                    <li class="level test">
+                                        <span><em class="time">
+                                                <div class="time">1 ms</div>
+                                            </em><em class="status">passed</em>TC 1.08 [1] Monday (once-only) -&gt; MONDAY</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time"></em><em class="status">passed</em>TC 1.08 [2] Friday -&gt; FRIDAY</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time"></em><em class="status">passed</em>TC 1.08 [3] Wednesday (once-only) -&gt; WEDNESDAY</span>
+                                    </li>
+                                    <li class="level test">
+                                        <span><em class="time"></em><em class="status">passed</em>TC 1.08 [4] Tuesday -&gt; TUESDAY</span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 1.09 - Import timetable file parses start and end time</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 1.10 - Import timetable file splits location into building and room</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
                                         <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>TC 1.07 Import timetable file parses date range into dateFrom and dateTo</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">passed</em>TC 1.09 Import timetable file parses start and end time</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">passed</em>TC 1.10 Import timetable file splits location into building and room</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">passed</em>TC 1.11 Import timetable file skips invalid rows without stopping import</span>
+                                    </em><em class="status">passed</em>TC 1.11 - Import timetable file skips invalid rows without stopping import</span>
                                 <ul>
                                     <li class="text">
                                         <span class="stderr">[WARN] Skipping row 2: For input string: "NOT_A_NUMBER"<br/></span>
@@ -941,8 +2266,8 @@ Process finished with exit code 255
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">passed</em>TC 1.12 Import topics skips rows with invalid numeric fields</span>
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 1.12 - Import topics skips rows with invalid numeric fields</span>
                                 <ul>
                                     <li class="text">
                                         <span class="stderr">[WARN] Skipping Topics row 2: For input string: "NOT_A_NUMBER"<br/></span>
@@ -950,9 +2275,7 @@ Process finished with exit code 255
                                 </ul>
                             </li>
                             <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>TC 1.13 Import classes skips rows with missing course code</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 1.13 - Import classes skips rows with missing course code</span>
                                 <ul>
                                     <li class="text">
                                         <span class="stderr">[WARN] Skipping Classes row 2: courseCode (column 9) cannot be blank.<br/></span>
@@ -962,104 +2285,270 @@ Process finished with exit code 255
                             <li class="level test">
                                 <span><em class="time">
                                         <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>TC 1.14 Import timetable file with only a header imports nothing</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>TC 1.16 Import timetable file with null path throws (invalid input)</span>
+                                    </em><em class="status">passed</em>TC 1.14 - Import timetable file with only a header imports nothing</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">passed</em>TC 1.17 Import treats CSV formula injection as inert text (security)</span>
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 1.19 - importFromPath with single file imports correctly</span>
                             </li>
-                            <li class="level suite open">
-                                <span><em class="time">
-                                        <div class="time">4 ms</div>
-                                    </em>TC 1.18 Import is deterministic across repeated runs</span>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 1.20 - importFromPath with directory imports all CSVs</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 1.21 - importFromPath with empty directory returns zero</span>
                                 <ul>
-                                    <li class="level test">
-                                        <span><em class="time">
-                                                <div class="time">2 ms</div>
-                                            </em><em class="status">passed</em>TC 1.18 run 1 of 3</span>
-                                    </li>
-                                    <li class="level test">
-                                        <span><em class="time">
-                                                <div class="time">1 ms</div>
-                                            </em><em class="status">passed</em>TC 1.18 run 2 of 3</span>
-                                    </li>
-                                    <li class="level test">
-                                        <span><em class="time">
-                                                <div class="time">1 ms</div>
-                                            </em><em class="status">passed</em>TC 1.18 run 3 of 3</span>
+                                    <li class="text">
+                                        <span class="stderr">[WARN] No CSV files found in: /var/folders/_n/6h6b6s_95klclg9j9rfhbr3h0000gn/T/junit13763264115091086393/empty<br/></span>
                                     </li>
                                 </ul>
                             </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 1.22 - Location without comma sets building only and room empty</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 1.23 - Single date with no range sets dateFrom and dateTo equal</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 1.24 - Topic with course code only and no name stores empty name</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 1.25 - Duplicate course code rows save topic only once</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 1.26 - Blank lines in middle of file are skipped</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 1.27 - CSV tokeniser handles embedded double quotes</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 1.28 - Availability with no semester token defaults to semester 1</span>
+                            </li>
                         </ul>
                     </li>
                     <li class="level top open">
-                        <span><em class="time"></em>TimetableServiceTest</span>
+                        <span><em class="time">
+                                <div class="time">1 ms</div>
+                            </em>ClassEntryTest</span>
                         <ul>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Swap class instance rejects different class type</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.01 - getClassId returns constructed ID</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Save timetable rejects duplicate timetable name</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.02 - getType returns constructed type</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Get all timetables returns saved timetables</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.03 - getDate returns constructed date</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Delete timetable removes existing timetable</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.04 - getStartTime returns constructed start time</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Swap class instance rejects different course code</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.05 - getEndTime returns constructed end time</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Save timetable stores timetable by name</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.06 - getDay returns constructed day</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Swap class instance replaces old class ID with new class ID</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.07 - getBuilding returns constructed building</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Delete missing timetable throws exception</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.08 - getRoom returns constructed room</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.09 - getCourseCode returns constructed course code</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.10 - getAttendanceMode returns constructed attendance mode</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.11 - getAvailabilityNumber returns constructed availability number</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.12 - getClassInstance returns constructed class instance</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.13 - getDateFrom returns constructed dateFrom</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.14 - getDateTo returns constructed dateTo</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.15 - null attendanceMode defaults to empty string</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.16 - null dateFrom defaults to empty string</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.17 - 9-arg constructor sets extended fields to defaults</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.18 - durationMinutes returns correct duration</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.19 - durationMinutes returns 30 for half-hour class</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.20 - isLecture returns true for Lecture type</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.21 - isLecture returns true case-insensitively</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.22 - isLecture returns false for non-Lecture type</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.23 - toString contains classId and courseCode</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.24 - toString shows recurring when date is null</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 14.25 - fromCsvRow parses valid 9-column row</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.26 - fromCsvRow parses valid 14-column row with extended fields</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.27 - fromCsvRow throws for fewer than 9 columns</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.28 - fromCsvRow throws for invalid date format</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.29 - fromCsvRow throws for invalid startTime format</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.30 - fromCsvRow throws for invalid endTime format</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.31 - fromCsvRow throws for invalid day value</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.32 - fromCsvRow throws for blank courseCode</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.33 - fromCsvRow ignores non-numeric availabilityNumber and classInstance</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.34 - fromCsvRow treats empty availabilityNumber column as zero</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 14.35 - fromCsvRow treats empty classInstance column as zero</span>
                             </li>
                         </ul>
                     </li>
                     <li class="level top open">
-                        <span><em class="time"></em>SearchServiceTest</span>
+                        <span><em class="time"></em>PreferenceTest</span>
                         <ul>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Criteria search with no criteria returns all classes</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 18.04 - Get Day</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Criteria search filters by semester</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 18.10 - To String</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Criteria search filters by campus</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 18.09 - Has Any Criteria</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Criteria search filters by course code</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 18.08 - Get Priority Order</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Criteria search filters by topic name</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 18.03 - Get Time Of Day</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Keyword search matches class type</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 18.05 - Get Campus Priority</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Keyword search returns no classes with no valid matches</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 18.02 - Get Campus</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Criteria search filters by day</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 18.01 - Get User Id</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Keyword search matches course code</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 18.06 - Get Time Of Day Priority</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Criteria search filters by attendance mode</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 18.07 - Get Day Priority</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time">
+                                <div class="time">1 ms</div>
+                            </em>TimetableServiceTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.15 - swapClassInstance with repo throws when new class not in repository</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time"></em><em class="status">passed</em>Criteria search applies multiple criteria</span>
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.14 - swapClassInstance with repo throws when old class not in repository</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.08 - Swap class instance rejects different class type</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.02 - Save timetable rejects duplicate timetable name</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.03 - Get all timetables returns saved timetables</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.04 - Delete timetable removes existing timetable</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.18 - swapClassInstance with repo succeeds when classes are compatible</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.20 - generateUniqueName returns unique name on each call</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.07 - Swap class instance rejects different course code</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.11 - swapClassInstance throws when timetable not found</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.09 - getByName returns present when timetable exists</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.01 - Save timetable stores timetable by name</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.17 - swapClassInstance with repo throws when class types differ</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.13 - swapClassInstance succeeds without class repository validation</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.06 - Swap class instance replaces old class ID with new class ID</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.05 - Delete missing timetable throws exception</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1 ms</div>
+                                    </em><em class="status">passed</em>TC 5.16 - swapClassInstance with repo throws when course codes differ</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.12 - swapClassInstance throws when old class not in timetable</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.10 - getByName returns empty when timetable does not exist</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time"></em><em class="status">passed</em>TC 5.19 - generateUniqueName returns sequentially numbered names</span>
                             </li>
                         </ul>
                     </li>
@@ -1067,7 +2556,7 @@ Process finished with exit code 255
             </div>
         </div>
         <div id="footer">
-            <p>Generated by IntelliJ IDEA on 4/6/26, 2:12 pm</p>
+            <p>Generated by IntelliJ IDEA on 11/6/26, 10:19 am</p>
         </div>
     </body>
 </html>

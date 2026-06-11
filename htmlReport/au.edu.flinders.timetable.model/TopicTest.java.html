@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TopicTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in timetable Coverage Results</a> &gt; <a href="index.source.html" class="el_package">au.edu.flinders.timetable.model</a> &gt; <span class="el_source">TopicTest.java</span></div><h1>TopicTest.java</h1><pre class="source lang-java linenums">package au.edu.flinders.timetable.model;
+
+import org.junit.jupiter.api.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+<span class="fc" id="L8">class TopicTest {</span>
+
+    private Topic topic;
+
+    @BeforeEach
+    void setUp() {
+<span class="fc" id="L14">        topic = new Topic(&quot;COMP1001&quot;, &quot;Computing Fundamentals&quot;, &quot;Bedford Park&quot;,</span>
+                1, &quot;Internal&quot;, 3, &quot;In person&quot;);
+<span class="fc" id="L16">    }</span>
+
+    @AfterEach
+<span class="fc" id="L19">    void tearDown() {}</span>
+
+
+    @Test
+    @Order(1)
+    @DisplayName(&quot;TC 15.01 - getCourseCode returns constructed course code&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void getCourseCodeReturnsConstructedValue() {
+<span class="fc" id="L28">        assertEquals(&quot;COMP1001&quot;, topic.getCourseCode());</span>
+<span class="fc" id="L29">    }</span>
+
+    @Test
+    @Order(2)
+    @DisplayName(&quot;TC 15.02 - getTopicName returns constructed topic name&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void getTopicNameReturnsConstructedValue() {
+<span class="fc" id="L37">        assertEquals(&quot;Computing Fundamentals&quot;, topic.getTopicName());</span>
+<span class="fc" id="L38">    }</span>
+
+    @Test
+    @Order(3)
+    @DisplayName(&quot;TC 15.03 - getCampus returns constructed campus&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void getCampusReturnsConstructedValue() {
+<span class="fc" id="L46">        assertEquals(&quot;Bedford Park&quot;, topic.getCampus());</span>
+<span class="fc" id="L47">    }</span>
+
+    @Test
+    @Order(4)
+    @DisplayName(&quot;TC 15.04 - getSemester returns constructed semester&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void getSemesterReturnsConstructedValue() {
+<span class="fc" id="L55">        assertEquals(1, topic.getSemester());</span>
+<span class="fc" id="L56">    }</span>
+
+    @Test
+    @Order(5)
+    @DisplayName(&quot;TC 15.05 - getDelivery returns constructed delivery mode&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void getDeliveryReturnsConstructedValue() {
+<span class="fc" id="L64">        assertEquals(&quot;Internal&quot;, topic.getDelivery());</span>
+<span class="fc" id="L65">    }</span>
+
+    @Test
+    @Order(6)
+    @DisplayName(&quot;TC 15.06 - getNumOfClasses returns constructed number of classes&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void getNumOfClassesReturnsConstructedValue() {
+<span class="fc" id="L73">        assertEquals(3, topic.getNumOfClasses());</span>
+<span class="fc" id="L74">    }</span>
+
+    @Test
+    @Order(7)
+    @DisplayName(&quot;TC 15.07 - getAttendanceMode returns constructed attendance mode&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void getAttendanceModeReturnsConstructedValue() {
+<span class="fc" id="L82">        assertEquals(&quot;In person&quot;, topic.getAttendanceMode());</span>
+<span class="fc" id="L83">    }</span>
+
+    @Test
+    @Order(8)
+    @DisplayName(&quot;TC 15.08 - null topicName defaults to empty string&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void nullTopicNameDefaultsToEmptyString() {
+<span class="fc" id="L91">        Topic t = new Topic(&quot;COMP1001&quot;, null, &quot;Bedford Park&quot;, 1, &quot;Internal&quot;, 1, &quot;In person&quot;);</span>
+<span class="fc" id="L92">        assertEquals(&quot;&quot;, t.getTopicName());</span>
+<span class="fc" id="L93">    }</span>
+
+    @Test
+    @Order(9)
+    @DisplayName(&quot;TC 15.09 - null attendanceMode defaults to empty string&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void nullAttendanceModeDefaultsToEmptyString() {
+<span class="fc" id="L101">        Topic t = new Topic(&quot;COMP1001&quot;, &quot;Computing&quot;, &quot;Bedford Park&quot;, 1, &quot;Internal&quot;, 1, null);</span>
+<span class="fc" id="L102">        assertEquals(&quot;&quot;, t.getAttendanceMode());</span>
+<span class="fc" id="L103">    }</span>
+
+    @Test
+    @Order(10)
+    @DisplayName(&quot;TC 15.10 - null courseCode throws IllegalArgumentException&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void nullCourseCodeThrowsIllegalArgumentException() {
+<span class="fc" id="L111">        assertThrows(IllegalArgumentException.class,</span>
+<span class="nc" id="L112">                () -&gt; new Topic(null, &quot;Computing&quot;, &quot;Bedford Park&quot;, 1, &quot;Internal&quot;, 1, &quot;In person&quot;));</span>
+<span class="fc" id="L113">    }</span>
+
+    @Test
+    @Order(11)
+    @DisplayName(&quot;TC 15.11 - blank courseCode throws IllegalArgumentException&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void blankCourseCodeThrowsIllegalArgumentException() {
+<span class="fc" id="L121">        assertThrows(IllegalArgumentException.class,</span>
+<span class="nc" id="L122">                () -&gt; new Topic(&quot;   &quot;, &quot;Computing&quot;, &quot;Bedford Park&quot;, 1, &quot;Internal&quot;, 1, &quot;In person&quot;));</span>
+<span class="fc" id="L123">    }</span>
+
+    @Test
+    @Order(12)
+    @DisplayName(&quot;TC 15.12 - 6-arg constructor sets attendanceMode to empty string&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void sixArgConstructorSetsAttendanceModeToEmptyString() {
+<span class="fc" id="L131">        Topic t = new Topic(&quot;COMP1001&quot;, &quot;Computing&quot;, &quot;Bedford Park&quot;, 1, &quot;Internal&quot;, 2);</span>
+<span class="fc" id="L132">        assertEquals(&quot;&quot;, t.getAttendanceMode());</span>
+<span class="fc" id="L133">    }</span>
+
+    @Test
+    @Order(13)
+    @DisplayName(&quot;TC 15.13 - equals returns true for same course code&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void equalsReturnsTrueForSameCourseCode() {
+<span class="fc" id="L141">        Topic other = new Topic(&quot;COMP1001&quot;, &quot;Different Name&quot;, &quot;Tonsley&quot;, 2, &quot;External&quot;, 1, &quot;Online&quot;);</span>
+<span class="fc" id="L142">        assertEquals(topic, other);</span>
+<span class="fc" id="L143">    }</span>
+
+    @Test
+    @Order(14)
+    @DisplayName(&quot;TC 15.14 - equals returns false for different course code&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void equalsReturnsFalseForDifferentCourseCode() {
+<span class="fc" id="L151">        Topic other = new Topic(&quot;MATH1001&quot;, &quot;Calculus&quot;, &quot;Bedford Park&quot;, 1, &quot;Internal&quot;, 2, &quot;In person&quot;);</span>
+<span class="fc" id="L152">        assertNotEquals(topic, other);</span>
+<span class="fc" id="L153">    }</span>
+
+    @Test
+    @Order(15)
+    @DisplayName(&quot;TC 15.15 - equals returns true for same instance&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void equalsReturnsTrueForSameInstance() {
+<span class="fc" id="L161">        assertEquals(topic, topic);</span>
+<span class="fc" id="L162">    }</span>
+
+    @Test
+    @Order(16)
+    @DisplayName(&quot;TC 15.16 - equals returns false for non-Topic object&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void equalsReturnsFalseForNonTopicObject() {
+<span class="fc" id="L170">        assertNotEquals(topic, &quot;COMP1001&quot;);</span>
+<span class="fc" id="L171">    }</span>
+
+    @Test
+    @Order(17)
+    @DisplayName(&quot;TC 15.17 - equal topics have same hash code&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void equalTopicsHaveSameHashCode() {
+<span class="fc" id="L179">        Topic other = new Topic(&quot;COMP1001&quot;, &quot;Other Name&quot;, &quot;Tonsley&quot;, 2, &quot;External&quot;, 1);</span>
+<span class="fc" id="L180">        assertEquals(topic.hashCode(), other.hashCode());</span>
+<span class="fc" id="L181">    }</span>
+
+
+    @Test
+    @Order(18)
+    @DisplayName(&quot;TC 15.18 - toString contains courseCode, topicName, campus and semester&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void toStringContainsAllKeyFields() {
+<span class="fc" id="L190">        String s = topic.toString();</span>
+<span class="fc" id="L191">        assertAll(</span>
+<span class="fc" id="L192">                () -&gt; assertTrue(s.contains(&quot;COMP1001&quot;)),</span>
+<span class="fc" id="L193">                () -&gt; assertTrue(s.contains(&quot;Computing Fundamentals&quot;)),</span>
+<span class="fc" id="L194">                () -&gt; assertTrue(s.contains(&quot;Bedford Park&quot;)),</span>
+<span class="fc" id="L195">                () -&gt; assertTrue(s.contains(&quot;Semester 1&quot;))</span>
+        );
+<span class="fc" id="L197">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -24,7 +24,7 @@ class ClassEntryTest {
 
     @Test
     @Order(1)
-    @DisplayName("TC X.01 – getClassId returns constructed ID")
+    @DisplayName("TC 14.01 - getClassId returns constructed ID")
     @Tag("Luke")
     @Tag("Core")
     void getClassIdReturnsConstructedId() {
@@ -33,7 +33,7 @@ class ClassEntryTest {
 
     @Test
     @Order(2)
-    @DisplayName("TC X.02 – getType returns constructed type")
+    @DisplayName("TC 14.02 - getType returns constructed type")
     @Tag("Luke")
     @Tag("Core")
     void getTypeReturnsConstructedType() {
@@ -42,7 +42,7 @@ class ClassEntryTest {
 
     @Test
     @Order(3)
-    @DisplayName("TC X.03 – getDate returns constructed date")
+    @DisplayName("TC 14.03 - getDate returns constructed date")
     @Tag("Luke")
     @Tag("Core")
     void getDateReturnsConstructedDate() {
@@ -51,7 +51,7 @@ class ClassEntryTest {
 
     @Test
     @Order(4)
-    @DisplayName("TC X.04 – getStartTime returns constructed start time")
+    @DisplayName("TC 14.04 - getStartTime returns constructed start time")
     @Tag("Luke")
     @Tag("Core")
     void getStartTimeReturnsConstructedStartTime() {
@@ -60,7 +60,7 @@ class ClassEntryTest {
 
     @Test
     @Order(5)
-    @DisplayName("TC X.05 – getEndTime returns constructed end time")
+    @DisplayName("TC 14.05 - getEndTime returns constructed end time")
     @Tag("Luke")
     @Tag("Core")
     void getEndTimeReturnsConstructedEndTime() {
@@ -69,7 +69,7 @@ class ClassEntryTest {
 
     @Test
     @Order(6)
-    @DisplayName("TC X.06 – getDay returns constructed day")
+    @DisplayName("TC 14.06 - getDay returns constructed day")
     @Tag("Luke")
     @Tag("Core")
     void getDayReturnsConstructedDay() {
@@ -78,7 +78,7 @@ class ClassEntryTest {
 
     @Test
     @Order(7)
-    @DisplayName("TC X.07 – getBuilding returns constructed building")
+    @DisplayName("TC 14.07 - getBuilding returns constructed building")
     @Tag("Luke")
     @Tag("Core")
     void getBuildingReturnsConstructedBuilding() {
@@ -87,7 +87,7 @@ class ClassEntryTest {
 
     @Test
     @Order(8)
-    @DisplayName("TC X.08 – getRoom returns constructed room")
+    @DisplayName("TC 14.08 - getRoom returns constructed room")
     @Tag("Luke")
     @Tag("Core")
     void getRoomReturnsConstructedRoom() {
@@ -96,7 +96,7 @@ class ClassEntryTest {
 
     @Test
     @Order(9)
-    @DisplayName("TC X.09 – getCourseCode returns constructed course code")
+    @DisplayName("TC 14.09 - getCourseCode returns constructed course code")
     @Tag("Luke")
     @Tag("Core")
     void getCourseCodeReturnsConstructedCourseCode() {
@@ -105,7 +105,7 @@ class ClassEntryTest {
 
     @Test
     @Order(10)
-    @DisplayName("TC X.10 – getAttendanceMode returns constructed attendance mode")
+    @DisplayName("TC 14.10 - getAttendanceMode returns constructed attendance mode")
     @Tag("Luke")
     @Tag("Core")
     void getAttendanceModeReturnsConstructedMode() {
@@ -114,7 +114,7 @@ class ClassEntryTest {
 
     @Test
     @Order(11)
-    @DisplayName("TC X.11 – getAvailabilityNumber returns constructed availability number")
+    @DisplayName("TC 14.11 - getAvailabilityNumber returns constructed availability number")
     @Tag("Luke")
     @Tag("Core")
     void getAvailabilityNumberReturnsConstructedValue() {
@@ -123,7 +123,7 @@ class ClassEntryTest {
 
     @Test
     @Order(12)
-    @DisplayName("TC X.12 – getClassInstance returns constructed class instance")
+    @DisplayName("TC 14.12 - getClassInstance returns constructed class instance")
     @Tag("Luke")
     @Tag("Core")
     void getClassInstanceReturnsConstructedValue() {
@@ -132,7 +132,7 @@ class ClassEntryTest {
 
     @Test
     @Order(13)
-    @DisplayName("TC X.13 – getDateFrom returns constructed dateFrom")
+    @DisplayName("TC 14.13 - getDateFrom returns constructed dateFrom")
     @Tag("Luke")
     @Tag("Core")
     void getDateFromReturnsConstructedValue() {
@@ -141,7 +141,7 @@ class ClassEntryTest {
 
     @Test
     @Order(14)
-    @DisplayName("TC X.14 – getDateTo returns constructed dateTo")
+    @DisplayName("TC 14.14 - getDateTo returns constructed dateTo")
     @Tag("Luke")
     @Tag("Core")
     void getDateToReturnsConstructedValue() {
@@ -151,7 +151,7 @@ class ClassEntryTest {
 
     @Test
     @Order(15)
-    @DisplayName("TC X.15 – null attendanceMode defaults to empty string")
+    @DisplayName("TC 14.15 - null attendanceMode defaults to empty string")
     @Tag("Luke")
     @Tag("Core")
     void nullAttendanceModeDefaultsToEmptyString() {
@@ -164,7 +164,7 @@ class ClassEntryTest {
 
     @Test
     @Order(16)
-    @DisplayName("TC X.16 – null dateFrom defaults to empty string")
+    @DisplayName("TC 14.16 - null dateFrom defaults to empty string")
     @Tag("Luke")
     @Tag("Core")
     void nullDateFromDefaultsToEmptyString() {
@@ -179,7 +179,7 @@ class ClassEntryTest {
 
     @Test
     @Order(17)
-    @DisplayName("TC X.17 – 9-arg constructor sets extended fields to defaults")
+    @DisplayName("TC 14.17 - 9-arg constructor sets extended fields to defaults")
     @Tag("Luke")
     @Tag("Core")
     void nineArgConstructorSetsExtendedFieldsToDefaults() {
@@ -198,7 +198,7 @@ class ClassEntryTest {
 
     @Test
     @Order(18)
-    @DisplayName("TC X.18 – durationMinutes returns correct duration")
+    @DisplayName("TC 14.18 - durationMinutes returns correct duration")
     @Tag("Luke")
     @Tag("Core")
     void durationMinutesReturnsCorrectDuration() {
@@ -207,7 +207,7 @@ class ClassEntryTest {
 
     @Test
     @Order(19)
-    @DisplayName("TC X.19 – durationMinutes returns 30 for half-hour class")
+    @DisplayName("TC 14.19 - durationMinutes returns 30 for half-hour class")
     @Tag("Luke")
     @Tag("Core")
     void durationMinutesReturns30ForHalfHourClass() {
@@ -220,7 +220,7 @@ class ClassEntryTest {
 
     @Test
     @Order(20)
-    @DisplayName("TC X.20 – isLecture returns true for Lecture type")
+    @DisplayName("TC 14.20 - isLecture returns true for Lecture type")
     @Tag("Luke")
     @Tag("Core")
     void isLectureReturnsTrueForLectureType() {
@@ -229,7 +229,7 @@ class ClassEntryTest {
 
     @Test
     @Order(21)
-    @DisplayName("TC X.21 – isLecture returns true case-insensitively")
+    @DisplayName("TC 14.21 - isLecture returns true case-insensitively")
     @Tag("Luke")
     @Tag("Core")
     void isLectureReturnsTrueCaseInsensitively() {
@@ -241,7 +241,7 @@ class ClassEntryTest {
 
     @Test
     @Order(22)
-    @DisplayName("TC X.22 – isLecture returns false for non-Lecture type")
+    @DisplayName("TC 14.22 - isLecture returns false for non-Lecture type")
     @Tag("Luke")
     @Tag("Core")
     void isLectureReturnsFalseForTutorial() {
@@ -254,7 +254,7 @@ class ClassEntryTest {
 
     @Test
     @Order(23)
-    @DisplayName("TC X.23 – toString contains classId and courseCode")
+    @DisplayName("TC 14.23 - toString contains classId and courseCode")
     @Tag("Luke")
     @Tag("Core")
     void toStringContainsClassIdAndCourseCode() {
@@ -268,7 +268,7 @@ class ClassEntryTest {
 
     @Test
     @Order(24)
-    @DisplayName("TC X.24 – toString shows recurring when date is null")
+    @DisplayName("TC 14.24 - toString shows recurring when date is null")
     @Tag("Luke")
     @Tag("Core")
     void toStringShowsRecurringWhenDateNull() {
@@ -281,7 +281,7 @@ class ClassEntryTest {
 
     @Test
     @Order(25)
-    @DisplayName("TC X.25 – fromCsvRow parses valid 9-column row")
+    @DisplayName("TC 14.25 - fromCsvRow parses valid 9-column row")
     @Tag("Luke")
     @Tag("Core")
     void fromCsvRowParsesValid9ColumnRow() {
@@ -299,7 +299,7 @@ class ClassEntryTest {
 
     @Test
     @Order(26)
-    @DisplayName("TC X.26 – fromCsvRow parses valid 14-column row with extended fields")
+    @DisplayName("TC 14.26 - fromCsvRow parses valid 14-column row with extended fields")
     @Tag("Luke")
     @Tag("Core")
     void fromCsvRowParsesValid14ColumnRow() {
@@ -318,7 +318,7 @@ class ClassEntryTest {
 
     @Test
     @Order(27)
-    @DisplayName("TC X.27 – fromCsvRow throws for fewer than 9 columns")
+    @DisplayName("TC 14.27 - fromCsvRow throws for fewer than 9 columns")
     @Tag("Luke")
     @Tag("Core")
     void fromCsvRowThrowsForTooFewColumns() {
@@ -328,7 +328,7 @@ class ClassEntryTest {
 
     @Test
     @Order(28)
-    @DisplayName("TC X.28 – fromCsvRow throws for invalid date format")
+    @DisplayName("TC 14.28 - fromCsvRow throws for invalid date format")
     @Tag("Luke")
     @Tag("Core")
     void fromCsvRowThrowsForInvalidDate() {
@@ -338,7 +338,7 @@ class ClassEntryTest {
 
     @Test
     @Order(29)
-    @DisplayName("TC X.29 – fromCsvRow throws for invalid startTime format")
+    @DisplayName("TC 14.29 - fromCsvRow throws for invalid startTime format")
     @Tag("Luke")
     @Tag("Core")
     void fromCsvRowThrowsForInvalidStartTime() {
@@ -348,7 +348,7 @@ class ClassEntryTest {
 
     @Test
     @Order(30)
-    @DisplayName("TC X.30 – fromCsvRow throws for invalid endTime format")
+    @DisplayName("TC 14.30 - fromCsvRow throws for invalid endTime format")
     @Tag("Luke")
     @Tag("Core")
     void fromCsvRowThrowsForInvalidEndTime() {
@@ -358,7 +358,7 @@ class ClassEntryTest {
 
     @Test
     @Order(31)
-    @DisplayName("TC X.31 – fromCsvRow throws for invalid day value")
+    @DisplayName("TC 14.31 - fromCsvRow throws for invalid day value")
     @Tag("Luke")
     @Tag("Core")
     void fromCsvRowThrowsForInvalidDay() {
@@ -368,7 +368,7 @@ class ClassEntryTest {
 
     @Test
     @Order(32)
-    @DisplayName("TC X.32 – fromCsvRow throws for blank courseCode")
+    @DisplayName("TC 14.32 - fromCsvRow throws for blank courseCode")
     @Tag("Luke")
     @Tag("Core")
     void fromCsvRowThrowsForBlankCourseCode() {
@@ -378,7 +378,7 @@ class ClassEntryTest {
 
     @Test
     @Order(33)
-    @DisplayName("TC X.33 – fromCsvRow ignores non-numeric availabilityNumber and classInstance")
+    @DisplayName("TC 14.33 - fromCsvRow ignores non-numeric availabilityNumber and classInstance")
     @Tag("Luke")
     @Tag("Core")
     void fromCsvRowIgnoresNonNumericExtendedIntegers() {
@@ -393,7 +393,7 @@ class ClassEntryTest {
 
     @Test
     @Order(34)
-    @DisplayName("TC X.34 – fromCsvRow treats empty availabilityNumber column as zero")
+    @DisplayName("TC 14.34 - fromCsvRow treats empty availabilityNumber column as zero")
     @Tag("Luke")
     @Tag("Core")
     void fromCsvRowEmptyAvailabilityNumberDefaultsToZero() {
@@ -406,7 +406,7 @@ class ClassEntryTest {
 
     @Test
     @Order(35)
-    @DisplayName("TC X.35 – fromCsvRow treats empty classInstance column as zero")
+    @DisplayName("TC 14.35 - fromCsvRow treats empty classInstance column as zero")
     @Tag("Luke")
     @Tag("Core")
     void fromCsvRowEmptyClassInstanceDefaultsToZero() {

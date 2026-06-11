@@ -17,7 +17,7 @@ class InputHelperTest {
     }
 
     @Test
-    @DisplayName("TC 9.01 readLine returns normal input")
+    @DisplayName("TC 9.01 - readLine returns normal input")
     @Tag("Hans")
     @Tag("Core")
     void readLineReturnsNormalInput() {
@@ -27,7 +27,7 @@ class InputHelperTest {
     }
 
     @Test
-    @DisplayName("TC 9.02 readLine with q throws EarlyExitException")
+    @DisplayName("TC 9.02 - readLine with q throws EarlyExitException")
     @Tag("Hans")
     @Tag("Critical")
     void readLineWithQThrowsEarlyExitException() {
@@ -36,7 +36,7 @@ class InputHelperTest {
     }
 
     @Test
-    @DisplayName("TC 9.03 readInt accepts minimum and maximum boundaries")
+    @DisplayName("TC 9.03 - readInt accepts minimum and maximum boundaries")
     @Tag("Hans")
     @Tag("Core")
     void readIntAcceptsMinimumAndMaximumBoundaries() {
@@ -50,7 +50,7 @@ class InputHelperTest {
     }
 
     @Test
-    @DisplayName("TC 9.04 readInt re-prompts after non-numeric input")
+    @DisplayName("TC 9.04 - readInt re-prompts after non-numeric input")
     @Tag("Hans")
     @Tag("Core")
     void readIntRepromptsAfterNonNumericInput() {
@@ -60,7 +60,7 @@ class InputHelperTest {
     }
 
     @Test
-    @DisplayName("TC 9.05 readInt re-prompts after out-of-range input")
+    @DisplayName("TC 9.05 - readInt re-prompts after out-of-range input")
     @Tag("Hans")
     @Tag("Core")
     void readIntRepromptsAfterOutOfRangeInput() {
@@ -70,7 +70,7 @@ class InputHelperTest {
     }
 
     @Test
-    @DisplayName("TC 9.06 readBoolean accepts y and n case-insensitively")
+    @DisplayName("TC 9.06 - readBoolean accepts y and n case-insensitively")
     @Tag("Hans")
     @Tag("Core")
     void readBooleanAcceptsYAndNCaseInsensitively() {
@@ -84,7 +84,7 @@ class InputHelperTest {
     }
 
     @Test
-    @DisplayName("TC 9.07 readBoolean re-prompts after invalid answer")
+    @DisplayName("TC 9.07 - readBoolean re-prompts after invalid answer")
     @Tag("Hans")
     @Tag("Core")
     void readBooleanRepromptsAfterInvalidAnswer() {
@@ -94,7 +94,7 @@ class InputHelperTest {
     }
 
     @Test
-    @DisplayName("TC 9.08 readNonBlank trims input and rejects blank lines")
+    @DisplayName("TC 9.08 - readNonBlank trims input and rejects blank lines")
     @Tag("Hans")
     @Tag("Core")
     void readNonBlankTrimsInputAndRejectsBlankLines() {
@@ -104,7 +104,7 @@ class InputHelperTest {
     }
 
     @Test
-    @DisplayName("TC 9.09 readNonBlank with q throws EarlyExitException")
+    @DisplayName("TC 9.09 - readNonBlank with q throws EarlyExitException")
     @Tag("Hans")
     @Tag("Critical")
     void readNonBlankWithQThrowsEarlyExitException() {

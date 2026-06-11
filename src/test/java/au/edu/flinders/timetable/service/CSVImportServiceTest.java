@@ -88,7 +88,7 @@ class CSVImportServiceTest {
     //TC 1.01
     @Test
     @Order(1)
-    @DisplayName("TC 1.01 Import timetable file creates class entries for valid rows")
+    @DisplayName("TC 1.01 - Import timetable file creates class entries for valid rows")
     @Tag("Oscar")
     @Tag("Critical")
     void importCreatesClassEntriesForValidRows() throws IOException {
@@ -103,7 +103,7 @@ class CSVImportServiceTest {
     //TC 1.02
     @Test
     @Order(2)
-    @DisplayName("TC 1.02 Import timetable file extracts topic code and topic name")
+    @DisplayName("TC 1.02 - Import timetable file extracts topic code and topic name")
     @Tag("Oscar")
     @Tag("Critical")
     void importExtractsTopicCodeAndName() throws IOException {
@@ -118,7 +118,7 @@ class CSVImportServiceTest {
     //TC 1.03
     @Test
     @Order(3)
-    @DisplayName("TC 1.03 Import timetable file extracts attendance mode")
+    @DisplayName("TC 1.03 - Import timetable file extracts attendance mode")
     @Tag("Oscar")
     @Tag("Core")
     void importExtractsAttendanceMode() throws IOException {
@@ -151,7 +151,7 @@ class CSVImportServiceTest {
     //TC 1.05
     @ParameterizedTest(name = "TC 1.05 [{index}] {0} -> semester {1}")
     @Order(5)
-    @DisplayName("TC 1.05 Import timetable file extracts semester from availability")
+    @DisplayName("TC 1.05 - Import timetable file extracts semester from availability")
     @Tag("Oscar")
     @Tag("Critical")
     @CsvSource({ "S1, 1", "S2, 2" })
@@ -166,7 +166,7 @@ class CSVImportServiceTest {
     //TC 1.06
     @Test
     @Order(6)
-    @DisplayName("TC 1.06 Import timetable file extracts availability number")
+    @DisplayName("TC 1.06 - Import timetable file extracts availability number")
     @Tag("Oscar")
     @Tag("Core")
     void importExtractsAvailabilityNumber() throws IOException {
@@ -179,7 +179,7 @@ class CSVImportServiceTest {
     //TC 1.07
     @Test
     @Order(7)
-    @DisplayName("TC 1.07 Import timetable file parses date range into dateFrom and dateTo")
+    @DisplayName("TC 1.07 - Import timetable file parses date range into dateFrom and dateTo")
     @Tag("Oscar")
     @Tag("Core")
     void importParsesDateRange() throws IOException {
@@ -213,7 +213,7 @@ class CSVImportServiceTest {
     //TC 1.09
     @Test
     @Order(9)
-    @DisplayName("TC 1.09 Import timetable file parses start and end time")
+    @DisplayName("TC 1.09 - Import timetable file parses start and end time")
     @Tag("Oscar")
     @Tag("Critical")
     void importParsesStartAndEndTime() throws IOException {
@@ -228,7 +228,7 @@ class CSVImportServiceTest {
     //TC 1.10
     @Test
     @Order(10)
-    @DisplayName("TC 1.10 Import timetable file splits location into building and room")
+    @DisplayName("TC 1.10 - Import timetable file splits location into building and room")
     @Tag("Oscar")
     @Tag("Core")
     void importSplitsLocation() throws IOException {
@@ -243,7 +243,7 @@ class CSVImportServiceTest {
     //TC 1.11
     @Test
     @Order(11)
-    @DisplayName("TC 1.11 Import timetable file skips invalid rows without stopping import")
+    @DisplayName("TC 1.11 - Import timetable file skips invalid rows without stopping import")
     @Tag("Oscar")
     @Tag("Critical")
     void importSkipsInvalidRowsAndContinues() throws IOException {
@@ -264,7 +264,7 @@ class CSVImportServiceTest {
     //TC 1.12
     @Test
     @Order(12)
-    @DisplayName("TC 1.12 Import topics skips rows with invalid numeric fields")
+    @DisplayName("TC 1.12 - Import topics skips rows with invalid numeric fields")
     @Tag("Oscar")
     @Tag("Core")
     void importTopicsSkipsInvalidNumericFields() throws IOException {
@@ -284,7 +284,7 @@ class CSVImportServiceTest {
     //TC 1.13
     @Test
     @Order(13)
-    @DisplayName("TC 1.13 Import classes skips rows with missing course code")
+    @DisplayName("TC 1.13 - Import classes skips rows with missing course code")
     @Tag("Oscar")
     @Tag("Core")
     void importClassesSkipsMissingCourseCode() throws IOException {
@@ -302,7 +302,7 @@ class CSVImportServiceTest {
     //TC 1.14
     @Test
     @Order(14)
-    @DisplayName("TC 1.14 Import timetable file with only a header imports nothing")
+    @DisplayName("TC 1.14 - Import timetable file with only a header imports nothing")
     @Tag("Oscar")
     @Tag("Additional")
     void importHeaderOnlyImportsNothing() throws IOException {
@@ -316,7 +316,7 @@ class CSVImportServiceTest {
     //TC 1.19
     @Test
     @Order(19)
-    @DisplayName("TC 1.19 importFromPath with single file imports correctly")
+    @DisplayName("TC 1.19 - importFromPath with single file imports correctly")
     @Tag("Oscar")
     @Tag("Core")
     void importFromPathSingleFile() throws IOException {
@@ -331,7 +331,7 @@ class CSVImportServiceTest {
     //TC 1.20
     @Test
     @Order(20)
-    @DisplayName("TC 1.20 importFromPath with directory imports all CSVs")
+    @DisplayName("TC 1.20 - importFromPath with directory imports all CSVs")
     @Tag("Oscar")
     @Tag("Core")
     void importFromPathDirectory() throws IOException {
@@ -350,7 +350,7 @@ class CSVImportServiceTest {
     //TC 1.21
     @Test
     @Order(21)
-    @DisplayName("TC 1.21 importFromPath with empty directory returns zero")
+    @DisplayName("TC 1.21 - importFromPath with empty directory returns zero")
     @Tag("Oscar")
     @Tag("Core")
     void importFromPathEmptyDirectory() throws IOException {
@@ -365,7 +365,7 @@ class CSVImportServiceTest {
     //TC 1.22
     @Test
     @Order(22)
-    @DisplayName("TC 1.22 Location without comma sets building only and room empty")
+    @DisplayName("TC 1.22 - Location without comma sets building only and room empty")
     @Tag("Oscar")
     @Tag("Core")
     void locationWithoutCommaGivesBuildingOnly() throws IOException {
@@ -384,7 +384,7 @@ class CSVImportServiceTest {
     //TC 1.23
     @Test
     @Order(23)
-    @DisplayName("TC 1.23 Single date with no range sets dateFrom and dateTo equal")
+    @DisplayName("TC 1.23 - Single date with no range sets dateFrom and dateTo equal")
     @Tag("Oscar")
     @Tag("Core")
     void singleDateSetsBothFromAndTo() throws IOException {
@@ -403,7 +403,7 @@ class CSVImportServiceTest {
     //TC 1.24
     @Test
     @Order(24)
-    @DisplayName("TC 1.24 Topic with course code only and no name stores empty name")
+    @DisplayName("TC 1.24 - Topic with course code only and no name stores empty name")
     @Tag("Oscar")
     @Tag("Additional")
     void topicCodeOnlyStoresEmptyName() throws IOException {
@@ -420,7 +420,7 @@ class CSVImportServiceTest {
     //TC 1.25
     @Test
     @Order(25)
-    @DisplayName("TC 1.25 Duplicate course code rows save topic only once")
+    @DisplayName("TC 1.25 - Duplicate course code rows save topic only once")
     @Tag("Oscar")
     @Tag("Core")
     void duplicateCourseCodeSavesTopicOnce() throws IOException {
@@ -437,7 +437,7 @@ class CSVImportServiceTest {
     //TC 1.26
     @Test
     @Order(26)
-    @DisplayName("TC 1.26 Blank lines in middle of file are skipped")
+    @DisplayName("TC 1.26 - Blank lines in middle of file are skipped")
     @Tag("Oscar")
     @Tag("Additional")
     void blankLinesAreSkipped() throws IOException {
@@ -452,7 +452,7 @@ class CSVImportServiceTest {
     //TC 1.27
     @Test
     @Order(27)
-    @DisplayName("TC 1.27 CSV tokeniser handles embedded double quotes")
+    @DisplayName("TC 1.27 - CSV tokeniser handles embedded double quotes")
     @Tag("Oscar")
     @Tag("Additional")
     void csvTokeniserHandlesEmbeddedQuotes() throws IOException {
@@ -474,7 +474,7 @@ class CSVImportServiceTest {
     //TC 1.28
     @Test
     @Order(28)
-    @DisplayName("TC 1.28 Availability with no semester token defaults to semester 1")
+    @DisplayName("TC 1.28 - Availability with no semester token defaults to semester 1")
     @Tag("Oscar")
     @Tag("Additional")
     void noSemesterTokenDefaultsToOne() throws IOException {

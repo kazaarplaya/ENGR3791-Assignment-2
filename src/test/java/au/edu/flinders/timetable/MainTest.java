@@ -28,7 +28,7 @@ class MainTest {
 
     @Test
     @Order(1)
-    @DisplayName("TC X.01 – Main starts and exits cleanly when user enters exit command")
+    @DisplayName("TC 17.01 - Main starts and exits cleanly when user enters exit command")
     @Tag("Luke")
     @Tag("Core")
     void mainStartsAndExitsCleanlyWhenUserEntersExitCommand() {

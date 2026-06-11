@@ -165,8 +165,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Menu displays ASCII banner")
-    @Tag("TC 6.01")
+    @DisplayName("TC 13.05 - Menu displays ASCII banner")
     @Tag("Seth")
     @Tag("Core")
     void displayMenu_showsBanner() {
@@ -175,8 +174,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Menu displays header")
-    @Tag("TC 6.02")
+    @DisplayName("TC 13.06 - Menu displays header")
     @Tag("Seth")
     @Tag("Core")
     void displayMenu_showsHeader() {
@@ -186,8 +184,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Menu displays all six options")
-    @Tag("TC 6.03")
+    @DisplayName("TC 13.07 - Menu displays all six options")
     @Tag("Seth")
     @Tag("Core")
     void displayMenu_showsAllSixOptions() {
@@ -202,8 +199,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Menu displays input prompt")
-    @Tag("TC 6.04")
+    @DisplayName("TC 13.08 - Menu displays input prompt")
     @Tag("Seth")
     @Tag("Core")
     void displayMenu_showsPrompt() {
@@ -213,8 +209,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Input 1 delegates to ImportExportController")
-    @Tag("TC 6.05")
+    @DisplayName("TC 13.09 - Input 1 delegates to ImportExportController")
     @Tag("Seth")
     @Tag("Critical")
     void handleInput_1_delegatesToImportController() {
@@ -224,8 +219,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Input 2 delegates to ClassController")
-    @Tag("TC 6.06")
+    @DisplayName("TC 13.10 - Input 2 delegates to ClassController")
     @Tag("Seth")
     @Tag("Critical")
     void handleInput_2_delegatesToClassController() {
@@ -235,8 +229,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Input 3 delegates to PreferenceService")
-    @Tag("TC 6.07")
+    @DisplayName("TC 13.11 - Input 3 delegates to PreferenceService")
     @Tag("Seth")
     @Tag("Critical")
     void handleInput_3_delegatesToPreferenceService() {
@@ -246,8 +239,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Input 4 delegates to TimetableController generate")
-    @Tag("TC 6.08")
+    @DisplayName("TC 13.12 - Input 4 delegates to TimetableController generate")
     @Tag("Seth")
     @Tag("Critical")
     void handleInput_4_delegatesToTimetableGenerate() {
@@ -257,8 +249,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Input 5 delegates to TimetableController viewAll")
-    @Tag("TC 6.09")
+    @DisplayName("TC 13.13 - Input 5 delegates to TimetableController viewAll")
     @Tag("Seth")
     @Tag("Critical")
     void handleInput_5_delegatesToTimetableViewAll() {
@@ -268,8 +259,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Input 6 returns exit message")
-    @Tag("TC 6.10")
+    @DisplayName("TC 13.14 - Input 6 returns exit message")
     @Tag("Seth")
     @Tag("Critical")
     void handleInput_6_returnsExitMessage() {
@@ -279,8 +269,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Invalid input shows error message")
-    @Tag("TC 6.11")
+    @DisplayName("TC 13.15 - Invalid input shows error message")
     @Tag("Seth")
     @Tag("Core")
     void handleInput_invalidOption_showsErrorMessage() {
@@ -290,8 +279,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Blank input shows error message")
-    @Tag("TC 6.12")
+    @DisplayName("TC 13.16 - Blank input shows error message")
     @Tag("Seth")
     @Tag("Core")
     void handleInput_blankInput_showsErrorMessage() {
@@ -301,8 +289,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Null input shows error message")
-    @Tag("TC 6.13")
+    @DisplayName("TC 13.17 - Null input shows error message")
     @Tag("Seth")
     @Tag("Core")
     void handleInput_nullInput_showsErrorMessage() {
@@ -312,8 +299,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Input with surrounding whitespace is trimmed and handled correctly")
-    @Tag("TC 6.14")
+    @DisplayName("TC 13.18 - Input with surrounding whitespace is trimmed and handled correctly")
     @Tag("Seth")
     @Tag("Core")
     void handleInput_withWhitespace_isTrimmed() {
@@ -323,8 +309,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Exit input 6 is correctly identified")
-    @Tag("TC 6.15")
+    @DisplayName("TC 13.19 - Exit input 6 is correctly identified")
     @Tag("Seth")
     @Tag("Core")
     void isExitInput_returnsTrueForSix() {
@@ -332,8 +317,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("Non-exit input is not identified as exit")
-    @Tag("TC 6.16")
+    @DisplayName("TC 13.20 - Non-exit input is not identified as exit")
     @Tag("Seth")
     @Tag("Core")
     void isExitInput_returnsFalseForOtherInput() {
@@ -343,8 +327,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.17 – start() creates user and exits with Goodbye on choice 6")
-    @Tag("TC 6.17")
+    @DisplayName("TC 13.21 - start() creates user and exits with Goodbye on choice 6")
     @Tag("Luke")
     @Tag("Core")
     void startCreatesUserAndExitsOnChoiceSix() {
@@ -363,8 +346,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.18 – start() catches EarlyExitException and returns to main menu")
-    @Tag("TC 6.18")
+    @DisplayName("TC 13.22 - start() catches EarlyExitException and returns to main menu")
     @Tag("Luke")
     @Tag("Core")
     void startCatchesEarlyExitExceptionAndContinuesLoop() {
@@ -381,8 +363,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.19 – handleClasses choice 1 delegates to classController.search()")
-    @Tag("TC 6.19")
+    @DisplayName("TC 13.23 - handleClasses choice 1 delegates to classController.search()")
     @Tag("Luke")
     @Tag("Core")
     void handleClassesChoice1DelegatesToSearch() {
@@ -397,8 +378,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.20 – handleClasses choice 2 delegates to classController.viewAll()")
-    @Tag("TC 6.20")
+    @DisplayName("TC 13.24 - handleClasses choice 2 delegates to classController.viewAll()")
     @Tag("Luke")
     @Tag("Core")
     void handleClassesChoice2DelegatesToViewAll() {
@@ -412,8 +392,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.21 – handleClasses choice 3 delegates to classController.viewAllDetailed()")
-    @Tag("TC 6.21")
+    @DisplayName("TC 13.25 - handleClasses choice 3 delegates to classController.viewAllDetailed()")
     @Tag("Luke")
     @Tag("Core")
     void handleClassesChoice3DelegatesToViewAllDetailed() {
@@ -427,8 +406,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.22 – handleClasses choice 4 delegates to classController.editClass()")
-    @Tag("TC 6.22")
+    @DisplayName("TC 13.26 - handleClasses choice 4 delegates to classController.editClass()")
     @Tag("Luke")
     @Tag("Core")
     void handleClassesChoice4DelegatesToEditClass() {
@@ -442,8 +420,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.23 – handleClasses choice 5 delegates to classController.deleteClass()")
-    @Tag("TC 6.23")
+    @DisplayName("TC 13.27 - handleClasses choice 5 delegates to classController.deleteClass()")
     @Tag("Luke")
     @Tag("Core")
     void handleClassesChoice5DelegatesToDeleteClass() {
@@ -457,8 +434,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.24 – handleViewExport choice 1 delegates to timetableController.viewAll()")
-    @Tag("TC 6.24")
+    @DisplayName("TC 13.28 - handleViewExport choice 1 delegates to timetableController.viewAll()")
     @Tag("Luke")
     @Tag("Core")
     void handleViewExportChoice1DelegatesToViewAll() {
@@ -472,8 +448,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.25 – handleViewExport choice 2 delegates to timetableController.view()")
-    @Tag("TC 6.25")
+    @DisplayName("TC 13.29 - handleViewExport choice 2 delegates to timetableController.view()")
     @Tag("Luke")
     @Tag("Core")
     void handleViewExportChoice2DelegatesToView() {
@@ -487,8 +462,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.26 – handleViewExport choice 3 delegates to timetableController.editTimetable()")
-    @Tag("TC 6.26")
+    @DisplayName("TC 13.30 - handleViewExport choice 3 delegates to timetableController.editTimetable()")
     @Tag("Luke")
     @Tag("Core")
     void handleViewExportChoice3DelegatesToEditTimetable() {
@@ -502,8 +476,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.27 – handleViewExport choice 4 delegates to timetableController.export()")
-    @Tag("TC 6.27")
+    @DisplayName("TC 13.31 - handleViewExport choice 4 delegates to timetableController.export()")
     @Tag("Luke")
     @Tag("Core")
     void handleViewExportChoice4DelegatesToExport() {
@@ -517,8 +490,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.28 – handleViewExport choice 5 delegates to timetableController.delete()")
-    @Tag("TC 6.28")
+    @DisplayName("TC 13.32 - handleViewExport choice 5 delegates to timetableController.delete()")
     @Tag("Luke")
     @Tag("Core")
     void handleViewExportChoice5DelegatesToDelete() {
@@ -532,8 +504,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.29 – handlePreferences choice 1 prints no preferences when none set")
-    @Tag("TC 6.29")
+    @DisplayName("TC 13.33 - handlePreferences choice 1 prints no preferences when none set")
     @Tag("Luke")
     @Tag("Core")
     void handlePreferencesChoice1PrintsNoneWhenNoPreferencesSet() {
@@ -549,8 +520,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.30 – handlePreferences choice 1 prints existing preference")
-    @Tag("TC 6.30")
+    @DisplayName("TC 13.34 - handlePreferences choice 1 prints existing preference")
     @Tag("Luke")
     @Tag("Core")
     void handlePreferencesChoice1PrintsExistingPreference() {
@@ -568,8 +538,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.31 – handlePreferences choice 3 clears preference and prints success")
-    @Tag("TC 6.31")
+    @DisplayName("TC 13.35 - handlePreferences choice 3 clears preference and prints success")
     @Tag("Luke")
     @Tag("Core")
     void handlePreferencesChoice3ClearsPreference() {
@@ -588,8 +557,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.32 – setPreferencesTokenMode saves selected token and prints success")
-    @Tag("TC 6.32")
+    @DisplayName("TC 13.36 - setPreferencesTokenMode saves selected token and prints success")
     @Tag("Luke")
     @Tag("Core")
     void setPreferencesTokenModeSavesSelectedToken() {
@@ -607,8 +575,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.33 – setPreferencesTokenMode prints warning when no tokens selected")
-    @Tag("TC 6.33")
+    @DisplayName("TC 13.37 - setPreferencesTokenMode prints warning when no tokens selected")
     @Tag("Luke")
     @Tag("Core")
     void setPreferencesTokenModeWarnsWhenNoTokensSelected() {
@@ -624,8 +591,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.34 – setPreferencesTokenMode warns on non-numeric input")
-    @Tag("TC 6.34")
+    @DisplayName("TC 13.38 - setPreferencesTokenMode warns on non-numeric input")
     @Tag("Luke")
     @Tag("Core")
     void setPreferencesTokenModeWarnsOnNonNumericInput() {
@@ -641,8 +607,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.35 – setPreferencesTokenMode warns on out-of-range number")
-    @Tag("TC 6.35")
+    @DisplayName("TC 13.39 - setPreferencesTokenMode warns on out-of-range number")
     @Tag("Luke")
     @Tag("Core")
     void setPreferencesTokenModeWarnsOnOutOfRangeNumber() {
@@ -658,8 +623,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.36 – setPreferencesTokenMode warns on duplicate token selection")
-    @Tag("TC 6.36")
+    @DisplayName("TC 13.40 - setPreferencesTokenMode warns on duplicate token selection")
     @Tag("Luke")
     @Tag("Core")
     void setPreferencesTokenModeWarnsOnDuplicateToken() {
@@ -675,8 +639,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.37 – start() choice 1 delegates to importExportController.importData()")
-    @Tag("TC 6.37")
+    @DisplayName("TC 13.41 - start() choice 1 delegates to importExportController.importData()")
     @Tag("Luke")
     @Tag("Core")
     void startChoice1DelegatesToImportData() {
@@ -691,8 +654,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.38 – start() choice 4 delegates to timetableController.generate()")
-    @Tag("TC 6.38")
+    @DisplayName("TC 13.42 - start() choice 4 delegates to timetableController.generate()")
     @Tag("Luke")
     @Tag("Core")
     void startChoice4DelegatesToGenerate() {
@@ -707,8 +669,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.39 – start() choice 2 enters handleClasses and executes switch")
-    @Tag("TC 6.39")
+    @DisplayName("TC 13.43 - start() choice 2 enters handleClasses and executes switch")
     @Tag("Luke")
     @Tag("Core")
     void startChoice2EntersHandleClassesSwitch() {
@@ -723,8 +684,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.40 – start() choice 5 enters handleViewExport and executes switch")
-    @Tag("TC 6.40")
+    @DisplayName("TC 13.44 - start() choice 5 enters handleViewExport and executes switch")
     @Tag("Luke")
     @Tag("Core")
     void startChoice5EntersHandleViewExportSwitch() {
@@ -739,8 +699,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.41 – start() choice 3 enters handlePreferences and executes switch")
-    @Tag("TC 6.41")
+    @DisplayName("TC 13.45 - start() choice 3 enters handlePreferences and executes switch")
     @Tag("Luke")
     @Tag("Core")
     void startChoice3EntersHandlePreferencesSwitch() {
@@ -755,8 +714,7 @@ class MenuControllerTest {
     }
 
     @Test
-    @DisplayName("TC 6.42 – setPreferencesTokenMode warns when number is out of range")
-    @Tag("TC 6.42")
+    @DisplayName("TC 13.46 - setPreferencesTokenMode warns when number is out of range")
     @Tag("Luke")
     @Tag("Core")
     void setPreferencesTokenModeWarnsOnOutOfRange() {

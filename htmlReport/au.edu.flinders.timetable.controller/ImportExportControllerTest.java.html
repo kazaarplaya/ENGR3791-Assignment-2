@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImportExportControllerTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in timetable Coverage Results</a> &gt; <a href="index.source.html" class="el_package">au.edu.flinders.timetable.controller</a> &gt; <span class="el_source">ImportExportControllerTest.java</span></div><h1>ImportExportControllerTest.java</h1><pre class="source lang-java linenums">package au.edu.flinders.timetable.controller;
+
+import au.edu.flinders.timetable.model.ClassEntry;
+import au.edu.flinders.timetable.repository.ClassRepository;
+import au.edu.flinders.timetable.repository.TopicRepository;
+import au.edu.flinders.timetable.service.CSVImportService;
+import au.edu.flinders.timetable.ui.ConsoleView;
+import au.edu.flinders.timetable.ui.EarlyExitException;
+import au.edu.flinders.timetable.ui.InputHelper;
+
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Scanner;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+<span class="fc" id="L23">class ImportExportControllerTest {</span>
+
+    @TempDir
+    Path tempDir;
+
+    private TopicRepository topicRepo;
+    private ClassRepository classRepo;
+    private CSVImportService importService;
+
+    @BeforeAll
+    static void initSuite() {
+<span class="fc" id="L34">    }</span>
+
+    @AfterAll
+    static void endSuite() {
+<span class="fc" id="L38">    }</span>
+
+    @BeforeEach
+    void setUp() {
+<span class="fc" id="L42">        topicRepo = new TopicRepository();</span>
+<span class="fc" id="L43">        classRepo = new ClassRepository();</span>
+<span class="fc" id="L44">        importService = new CSVImportService(topicRepo, classRepo);</span>
+<span class="fc" id="L45">    }</span>
+
+    @AfterEach
+    void tearDown() {
+<span class="fc" id="L49">        topicRepo.clear();</span>
+<span class="fc" id="L50">        classRepo.clear();</span>
+<span class="fc" id="L51">    }</span>
+
+    
+    private ImportExportController buildController(String userInput) {
+<span class="fc" id="L55">        Scanner sc = new Scanner(userInput);</span>
+<span class="fc" id="L56">        return new ImportExportController(importService, new ConsoleView(), new InputHelper(), sc);</span>
+    }
+
+    private String writeTimetableCsv() throws IOException {
+<span class="fc" id="L60">        String header = &quot;Topic,Availability,Class,Class instance,Date,Day,Time,Location&quot;;</span>
+<span class="fc" id="L61">        String row = &quot;COMP1234 Introduction to Programming,&quot;</span>
+                + &quot;In person - Flinders City Campus - S1 - 1,&quot;
+                + &quot;Lecture,1,03 Mar - 09 Jun,Monday,09:00 - 11:00,&quot;
+                + &quot;\&quot;Building A, Room 101\&quot;&quot;;
+<span class="fc" id="L65">        Path file = tempDir.resolve(&quot;timetable.csv&quot;);</span>
+<span class="fc" id="L66">        Files.write(file, List.of(header, row));</span>
+<span class="fc" id="L67">        return file.toString();</span>
+    }
+
+    //TC 01
+    @Test
+    @Order(1)
+    @DisplayName(&quot;TC 13.01 - importData imports classes from a valid CSV path&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Critical&quot;)
+    void importDataImportsFromValidPath() throws IOException {
+<span class="fc" id="L77">        String csvPath = writeTimetableCsv();</span>
+<span class="fc" id="L78">        ImportExportController controller = buildController(csvPath + &quot;\n&quot;);</span>
+
+<span class="fc" id="L80">        controller.importData();</span>
+
+<span class="fc" id="L82">        List&lt;ClassEntry&gt; stored = classRepo.findAll();</span>
+<span class="fc" id="L83">        assertFalse(stored.isEmpty());</span>
+<span class="fc" id="L84">        assertEquals(&quot;COMP1234&quot;, stored.get(0).getCourseCode());</span>
+<span class="fc" id="L85">    }</span>
+
+    //TC 02
+    @Test
+    @Order(2)
+    @DisplayName(&quot;TC 13.02 - importData with q input throws EarlyExitException&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void importDataWithQuitInputThrowsEarlyExit() {
+<span class="fc" id="L94">        ImportExportController controller = buildController(&quot;q\n&quot;);</span>
+
+<span class="pc" id="L96">        assertThrows(EarlyExitException.class, () -&gt; controller.importData());</span>
+<span class="fc" id="L97">    }</span>
+
+    //TC 03
+    @Test
+    @Order(3)
+    @DisplayName(&quot;TC 13.03 - importData with nonexistent path does not crash&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void importDataWithBadPathDoesNotCrash() {
+<span class="fc" id="L106">        ImportExportController controller = buildController(&quot;/no/such/file.csv\n&quot;);</span>
+
+<span class="fc" id="L108">        assertDoesNotThrow(() -&gt; controller.importData());</span>
+<span class="fc" id="L109">        assertTrue(classRepo.findAll().isEmpty());</span>
+<span class="fc" id="L110">    }</span>
+
+    //TC 04
+    @Test
+    @Order(4)
+    @DisplayName(&quot;TC 13.04 - importData with folder path imports all CSVs in folder&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void importDataWithFolderImportsAllCsvs() throws IOException {
+<span class="fc" id="L119">        writeTimetableCsv(); // writes timetable.csv into tempDir</span>
+<span class="fc" id="L120">        ImportExportController controller = buildController(tempDir.toString() + &quot;\n&quot;);</span>
+
+<span class="fc" id="L122">        controller.importData();</span>
+
+<span class="fc" id="L124">        assertFalse(classRepo.findAll().isEmpty());</span>
+<span class="fc" id="L125">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

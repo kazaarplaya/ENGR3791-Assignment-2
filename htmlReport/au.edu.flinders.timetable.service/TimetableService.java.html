@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TimetableService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in timetable Coverage Results</a> &gt; <a href="index.source.html" class="el_package">au.edu.flinders.timetable.service</a> &gt; <span class="el_source">TimetableService.java</span></div><h1>TimetableService.java</h1><pre class="source lang-java linenums">package au.edu.flinders.timetable.service;
+
+import au.edu.flinders.timetable.model.ClassEntry;
+import au.edu.flinders.timetable.model.Timetable;
+import au.edu.flinders.timetable.repository.ClassRepository;
+import au.edu.flinders.timetable.repository.TimetableRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+/** Manages persistence, naming, and editing of Timetable objects. */
+public class TimetableService {
+
+    private final TimetableRepository timetableRepository;
+    private final ClassRepository     classRepository; // may be null (backward compat)
+<span class="fc" id="L16">    private int nameCounter = 0;</span>
+
+    /**
+     * Single-argument constructor preserved for backward compatibility with unit tests.
+     * swapClassInstance() class-validation is skipped when classRepository is null.
+     */
+    public TimetableService(TimetableRepository timetableRepository) {
+<span class="fc" id="L23">        this(timetableRepository, null);</span>
+<span class="fc" id="L24">    }</span>
+
+    /** Full constructor used in production wiring via Main. */
+    public TimetableService(TimetableRepository timetableRepository,
+<span class="fc" id="L28">                             ClassRepository classRepository) {</span>
+<span class="fc" id="L29">        this.timetableRepository = timetableRepository;</span>
+<span class="fc" id="L30">        this.classRepository     = classRepository;</span>
+<span class="fc" id="L31">    }</span>
+
+    /**
+     * Saves the given Timetable.
+     * Throws IllegalArgumentException if a timetable with that name already exists.
+     */
+    public void save(Timetable t) {
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (timetableRepository.exists(t.getTimetableName())) {</span>
+<span class="fc" id="L39">            throw new IllegalArgumentException(</span>
+                &quot;A timetable with that name already exists.&quot;);
+        }
+<span class="fc" id="L42">        timetableRepository.save(t);</span>
+<span class="fc" id="L43">    }</span>
+
+    /** Returns the Timetable with the given name, or empty if not found. */
+    public Optional&lt;Timetable&gt; getByName(String name) {
+<span class="fc" id="L47">        return timetableRepository.findByName(name);</span>
+    }
+
+    /** Returns all stored Timetables. */
+    public List&lt;Timetable&gt; getAll() {
+<span class="fc" id="L52">        return timetableRepository.findAll();</span>
+    }
+
+    /**
+     * Deletes the Timetable with the given name.
+     * Throws IllegalArgumentException if no such timetable exists.
+     */
+    public void delete(String name) {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (!timetableRepository.exists(name)) {</span>
+<span class="fc" id="L61">            throw new IllegalArgumentException(</span>
+                &quot;No timetable named '&quot; + name + &quot;' exists.&quot;);
+        }
+<span class="fc" id="L64">        timetableRepository.delete(name);</span>
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Replaces oldClassId with newClassId in the named timetable.
+     * Both classes must share the same courseCode and classType.
+     * Throws IllegalArgumentException if the timetable is not found, either class ID
+     * is missing from the repository, or courseCode/classType do not match.
+     */
+    public void swapClassInstance(String timetableName, String oldClassId, String newClassId) {
+<span class="fc" id="L74">        Timetable t = timetableRepository.findByName(timetableName)</span>
+<span class="fc" id="L75">            .orElseThrow(() -&gt; new IllegalArgumentException(</span>
+                &quot;Timetable '&quot; + timetableName + &quot;' not found.&quot;));
+
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (!t.getClassIds().contains(oldClassId)) {</span>
+<span class="fc" id="L79">            throw new IllegalArgumentException(</span>
+                &quot;Class '&quot; + oldClassId + &quot;' is not in timetable '&quot; + timetableName + &quot;'.&quot;);
+        }
+
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        if (classRepository != null) {</span>
+<span class="fc" id="L84">            ClassEntry oldEntry = classRepository.findById(oldClassId)</span>
+<span class="fc" id="L85">                .orElseThrow(() -&gt; new IllegalArgumentException(</span>
+                    &quot;Class '&quot; + oldClassId + &quot;' not found in repository.&quot;));
+<span class="fc" id="L87">            ClassEntry newEntry = classRepository.findById(newClassId)</span>
+<span class="fc" id="L88">                .orElseThrow(() -&gt; new IllegalArgumentException(</span>
+                    &quot;Class '&quot; + newClassId + &quot;' not found in repository.&quot;));
+
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            if (!oldEntry.getCourseCode().equalsIgnoreCase(newEntry.getCourseCode())) {</span>
+<span class="fc" id="L92">                throw new IllegalArgumentException(</span>
+                    &quot;Cannot swap: course codes differ (&quot;
+<span class="fc" id="L94">                    + oldEntry.getCourseCode() + &quot; vs &quot; + newEntry.getCourseCode() + &quot;).&quot;);</span>
+            }
+<span class="fc bfc" id="L96" title="All 2 branches covered.">            if (!oldEntry.getType().equalsIgnoreCase(newEntry.getType())) {</span>
+<span class="fc" id="L97">                throw new IllegalArgumentException(</span>
+                    &quot;Cannot swap: class types differ (&quot;
+<span class="fc" id="L99">                    + oldEntry.getType() + &quot; vs &quot; + newEntry.getType() + &quot;).&quot;);</span>
+            }
+        }
+
+<span class="fc" id="L103">        t.removeClass(oldClassId);</span>
+<span class="fc" id="L104">        t.addClass(newClassId);</span>
+<span class="fc" id="L105">        timetableRepository.save(t);</span>
+<span class="fc" id="L106">    }</span>
+
+    /**
+     * Generates a unique sequential timetable name for this session.
+     * Returns names in the format Timetable_1, Timetable_2, etc.
+     */
+    public String generateUniqueName() {
+<span class="fc" id="L113">        nameCounter++;</span>
+<span class="fc" id="L114">        return &quot;Timetable_&quot; + nameCounter;</span>
+    }
+
+    public void swapClass(String swapTest, ClassEntry oldClass, ClassEntry newClass) {
+<span class="nc" id="L118">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

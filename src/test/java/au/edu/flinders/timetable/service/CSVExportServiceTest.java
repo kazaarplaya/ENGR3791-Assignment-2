@@ -76,7 +76,7 @@ public class CSVExportServiceTest {
     //TC 6.01
     @Test
     @Order(1)
-    @DisplayName("TC 6.01 Export writes correct CSV header")
+    @DisplayName("TC 8.01 - Export writes correct CSV header")
     @Tag("Oscar")
     @Tag("Critical")
     void exportWritesCorrectHeader() throws IOException {
@@ -93,7 +93,7 @@ public class CSVExportServiceTest {
     //TC 6.02
     @Test
     @Order(2)
-    @DisplayName("TC 6.02 Export empty timetable writes header only")
+    @DisplayName("TC 8.02 - Export empty timetable writes header only")
     @Tag("Oscar")
     @Tag("Core")
     void exportEmptyTimetableWritesHeaderOnly() throws IOException {
@@ -107,7 +107,7 @@ public class CSVExportServiceTest {
     //TC 6.03
     @Test
     @Order(3)
-    @DisplayName("TC 6.03 Export writes correct field values for a valid entry")
+    @DisplayName("TC 8.03 - Export writes correct field values for a valid entry")
     @Tag("Oscar")
     @Tag("Critical")
     void exportWritesCorrectFieldValues() throws IOException {
@@ -137,7 +137,7 @@ public class CSVExportServiceTest {
     //TC 6.04
     @Test
     @Order(4)
-    @DisplayName("TC 6.04 Export writes multiple class entries")
+    @DisplayName("TC 8.04 - Export writes multiple class entries")
     @Tag("Oscar")
     @Tag("Core")
     void exportWritesMultipleEntries() throws IOException {
@@ -158,7 +158,7 @@ public class CSVExportServiceTest {
     //TC 6.05
     @Test
     @Order(5)
-    @DisplayName("TC 6.05 Export skips missing class IDs without crashing")
+    @DisplayName("TC 8.05 - Export skips missing class IDs without crashing")
     @Tag("Oscar")
     @Tag("Critical")
     void exportSkipsMissingClassIds() throws IOException {
@@ -179,7 +179,7 @@ public class CSVExportServiceTest {
     //TC 6.06
     @Test
     @Order(6)
-    @DisplayName("TC 6.06 Export handles missing topic gracefully")
+    @DisplayName("TC 8.06 - Export handles missing topic gracefully")
     @Tag("Oscar")
     @Tag("Core")
     void exportHandlesMissingTopic() throws IOException {
@@ -197,7 +197,7 @@ public class CSVExportServiceTest {
     //TC 6.07
     @Test
     @Order(7)
-    @DisplayName("TC 6.07 Export escapes fields containing commas")
+    @DisplayName("TC 8.07 - Export escapes fields containing commas")
     @Tag("Oscar")
     @Tag("Core")
     void exportEscapesCommasInFields() throws IOException {
@@ -222,7 +222,7 @@ public class CSVExportServiceTest {
     //TC 6.08
     @Test
     @Order(8)
-    @DisplayName("TC 6.08 Export escapes fields containing double quotes")
+    @DisplayName("TC 8.08 - Export escapes fields containing double quotes")
     @Tag("Oscar")
     @Tag("Core")
     void exportEscapesQuotesInFields() throws IOException {
@@ -247,7 +247,7 @@ public class CSVExportServiceTest {
     //TC 6.09
     @Test
     @Order(9)
-    @DisplayName("TC 6.09 Export with null file path throws IOException")
+    @DisplayName("TC 8.09 - Export with null file path throws IOException")
     @Tag("Oscar")
     @Tag("Additional")
     void exportNullPathThrows() {
@@ -260,7 +260,7 @@ public class CSVExportServiceTest {
     //TC 6.10
     @Test
     @Order(10)
-    @DisplayName("TC 6.10 Export uses class attendance mode over topic when present")
+    @DisplayName("TC 8.10 - Export uses class attendance mode over topic when present")
     @Tag("Oscar")
     @Tag("Additional")
     void exportPrefersClassAttendanceModeOverTopic() throws IOException {

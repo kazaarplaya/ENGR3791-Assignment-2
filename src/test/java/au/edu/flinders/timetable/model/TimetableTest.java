@@ -24,7 +24,7 @@ class TimetableTest {
 
     @Test
     @Order(1)
-    @DisplayName("TC 7.01 – Constructor creates timetable with correct name and flags")
+    @DisplayName("TC 7.01 - Constructor creates timetable with correct name and flags")
     @Tag("Luke")
     @Tag("Core")
     void constructorCreatesTimetableWithCorrectNameAndFlags() {
@@ -39,7 +39,7 @@ class TimetableTest {
 
     @Test
     @Order(2)
-    @DisplayName("TC 7.02 – addClass adds class ID to timetable")
+    @DisplayName("TC 7.02 - addClass adds class ID to timetable")
     @Tag("Luke")
     @Tag("Core")
     void addClassAddsClassIdToTimetable() {
@@ -51,7 +51,7 @@ class TimetableTest {
 
     @Test
     @Order(3)
-    @DisplayName("TC 7.03 – addClass does not add duplicate class ID")
+    @DisplayName("TC 7.03 - addClass does not add duplicate class ID")
     @Tag("Luke")
     @Tag("Core")
     void addClassDoesNotAddDuplicateClassId() {
@@ -65,7 +65,7 @@ class TimetableTest {
 
     @Test
     @Order(4)
-    @DisplayName("TC 7.04 – removeClass removes existing class ID")
+    @DisplayName("TC 7.04 - removeClass removes existing class ID")
     @Tag("Luke")
     @Tag("Core")
     void removeClassRemovesExistingClassId() {
@@ -78,7 +78,7 @@ class TimetableTest {
 
     @Test
     @Order(5)
-    @DisplayName("TC 7.05 – removeClass does nothing when class ID not present")
+    @DisplayName("TC 7.05 - removeClass does nothing when class ID not present")
     @Tag("Luke")
     @Tag("Core")
     void removeClassDoesNothingWhenClassIdNotPresent() {
@@ -89,7 +89,7 @@ class TimetableTest {
 
     @Test
     @Order(6)
-    @DisplayName("TC 7.06 – isEmpty returns true for new timetable")
+    @DisplayName("TC 7.06 - isEmpty returns true for new timetable")
     @Tag("Luke")
     @Tag("Core")
     void isEmptyReturnsTrueForNewTimetable() {
@@ -99,7 +99,7 @@ class TimetableTest {
 
     @Test
     @Order(7)
-    @DisplayName("TC 7.07 – isEmpty returns false after class is added")
+    @DisplayName("TC 7.07 - isEmpty returns false after class is added")
     @Tag("Luke")
     @Tag("Core")
     void isEmptyReturnsFalseAfterClassIsAdded() {
@@ -111,7 +111,7 @@ class TimetableTest {
 
     @Test
     @Order(8)
-    @DisplayName("TC 7.08 – getClassIds returns unmodifiable list")
+    @DisplayName("TC 7.08 - getClassIds returns unmodifiable list")
     @Tag("Luke")
     @Tag("Core")
     void getClassIdsReturnsUnmodifiableList() {
@@ -126,7 +126,7 @@ class TimetableTest {
 
     @Test
     @Order(9)
-    @DisplayName("TC 7.09 – setTimetableName updates timetable name")
+    @DisplayName("TC 7.09 - setTimetableName updates timetable name")
     @Tag("Luke")
     @Tag("Core")
     void setTimetableNameUpdatesTimetableName() {
@@ -138,7 +138,7 @@ class TimetableTest {
 
     @Test
     @Order(10)
-    @DisplayName("TC 7.10 – setSemester updates semester label")
+    @DisplayName("TC 7.10 - setSemester updates semester label")
     @Tag("Luke")
     @Tag("Core")
     void setSemesterUpdatesSemesterLabel() {
@@ -150,7 +150,7 @@ class TimetableTest {
 
     @Test
     @Order(11)
-    @DisplayName("TC 7.11 – setOverlap updates overlap flag")
+    @DisplayName("TC 7.11 - setOverlap updates overlap flag")
     @Tag("Luke")
     @Tag("Core")
     void setOverlapUpdatesOverlapFlag() {
@@ -162,7 +162,7 @@ class TimetableTest {
 
     @Test
     @Order(12)
-    @DisplayName("TC 7.12 – setHasPreference updates preference flag")
+    @DisplayName("TC 7.12 - setHasPreference updates preference flag")
     @Tag("Luke")
     @Tag("Core")
     void setHasPreferenceUpdatesPreferenceFlag() {
@@ -174,7 +174,7 @@ class TimetableTest {
 
     @Test
     @Order(13)
-    @DisplayName("TC 7.13 – toString returns non-null readable summary")
+    @DisplayName("TC 7.13 - toString returns non-null readable summary")
     @Tag("Luke")
     @Tag("Core")
     void toStringReturnsNonNullReadableSummary() {
@@ -187,7 +187,7 @@ class TimetableTest {
 
     @Test
     @Order(14)
-    @DisplayName("TC 7.14 – getName returns timetable name")
+    @DisplayName("TC 7.14 - getName returns timetable name")
     @Tag("Luke")
     @Tag("Core")
     void getNameReturnsTimetableName() {
@@ -197,7 +197,7 @@ class TimetableTest {
 
     @Test
     @Order(15)
-    @DisplayName("TC 7.15 – findByName returns timetable when it exists")
+    @DisplayName("TC 7.15 - findByName returns timetable when it exists")
     @Tag("Luke")
     @Tag("Core")
     void findByNameReturnsTimetableWhenItExists() {

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Timetable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in timetable Coverage Results</a> &gt; <a href="index.source.html" class="el_package">au.edu.flinders.timetable.model</a> &gt; <span class="el_source">Timetable.java</span></div><h1>Timetable.java</h1><pre class="source lang-java linenums">package au.edu.flinders.timetable.model;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/** Represents a student's generated weekly timetable. */
+public class Timetable {
+
+    private String       timetableName;
+    private String       semester;
+    private List&lt;String&gt; classIds;
+    private boolean      isOverlap;
+    private boolean      hasPreference;
+    private String       name;
+
+    /** Constructs a new empty Timetable with the given name and configuration flags. */
+    public Timetable(String timetableName, String semester,
+<span class="fc" id="L19">                     boolean isOverlap, boolean hasPreference) {</span>
+<span class="fc" id="L20">        this.timetableName = timetableName;</span>
+<span class="fc" id="L21">        this.semester      = semester;</span>
+<span class="fc" id="L22">        this.classIds      = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L23">        this.isOverlap     = isOverlap;</span>
+<span class="fc" id="L24">        this.hasPreference = hasPreference;</span>
+<span class="fc" id="L25">    }</span>
+
+    /** Adds a class ID to this timetable if not already present. */
+    public void addClass(String classId) {
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (!classIds.contains(classId)) {</span>
+<span class="fc" id="L30">            classIds.add(classId);</span>
+        }
+<span class="fc" id="L32">    }</span>
+
+    /** Removes a class ID from this timetable. */
+    public void removeClass(String classId) {
+<span class="fc" id="L36">        classIds.remove(classId);</span>
+<span class="fc" id="L37">    }</span>
+
+    /** Returns true when this timetable contains no classes. */
+    public boolean isEmpty() {
+<span class="fc" id="L41">        return classIds.isEmpty();</span>
+    }
+
+    /** Returns the timetable name. */
+<span class="fc" id="L45">    public String getTimetableName() { return timetableName; }</span>
+
+    /** Sets the timetable name. */
+<span class="fc" id="L48">    public void setTimetableName(String timetableName) { this.timetableName = timetableName; }</span>
+
+    /** Returns the semester label. */
+<span class="fc" id="L51">    public String getSemester() { return semester; }</span>
+
+    /** Sets the semester label. */
+<span class="fc" id="L54">    public void setSemester(String semester) { this.semester = semester; }</span>
+
+    /** Returns an unmodifiable view of the class ID list. */
+<span class="fc" id="L57">    public List&lt;String&gt; getClassIds() { return Collections.unmodifiableList(classIds); }</span>
+
+    /** Returns true if lecture overlap is enabled for this timetable. */
+<span class="fc" id="L60">    public boolean isOverlap() { return isOverlap; }</span>
+
+    /** Sets whether lecture overlap is enabled. */
+<span class="fc" id="L63">    public void setOverlap(boolean overlap) { isOverlap = overlap; }</span>
+
+    /** Returns true if preferences were applied when generating this timetable. */
+<span class="fc" id="L66">    public boolean isHasPreference() { return hasPreference; }</span>
+
+    /** Sets whether preferences were applied. */
+<span class="fc" id="L69">    public void setHasPreference(boolean hasPreference) { this.hasPreference = hasPreference; }</span>
+
+    /** Returns a readable summary of this timetable. */
+    @Override
+    public String toString() {
+<span class="fc" id="L74">        return String.format(&quot;Timetable[name=%s, semester=%s, classes=%d, overlap=%b, prefs=%b]&quot;,</span>
+<span class="fc" id="L75">            timetableName, semester, classIds.size(), isOverlap, hasPreference);</span>
+    }
+
+    public String getName() {
+<span class="fc" id="L79">        return timetableName;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -90,10 +90,10 @@ class ClassControllerTest {
 
     @Test
     @Order(1)
-    @DisplayName("showAll – empty repository prints warning")
-    @Tag("ClassController")
+    @DisplayName("TC 11.01 - showAll – empty repository prints warning")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void showAll_emptyRepo_printsWarning() {
         controller("").showAll();
         assertTrue(out().contains("No classes have been imported yet."));
@@ -101,10 +101,10 @@ class ClassControllerTest {
 
     @Test
     @Order(2)
-    @DisplayName("showAll – classes present outputs course code")
-    @Tag("ClassController")
+    @DisplayName("TC 11.02 - showAll – classes present outputs course code")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void showAll_withClasses_outputsCourseCode() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("").showAll();
@@ -113,10 +113,10 @@ class ClassControllerTest {
 
     @Test
     @Order(3)
-    @DisplayName("showAll – matching topic name appears in browse list")
-    @Tag("ClassController")
+    @DisplayName("TC 11.03 - showAll – matching topic name appears in browse list")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void showAll_withMatchingTopic_showsTopicName() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         topicRepo.save(topic("COMP1001", "Programming"));
@@ -126,10 +126,10 @@ class ClassControllerTest {
 
     @Test
     @Order(4)
-    @DisplayName("showAll – null topicRepository produces empty topic map without crashing")
-    @Tag("ClassController")
+    @DisplayName("TC 11.04 - showAll – null topicRepository produces empty topic map without crashing")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void showAll_nullTopicRepo_doesNotCrash() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         assertDoesNotThrow(() -> controllerNullTopicRepo("").showAll());
@@ -142,10 +142,10 @@ class ClassControllerTest {
 
     @Test
     @Order(5)
-    @DisplayName("viewAllDetailed – empty repository prints warning")
-    @Tag("ClassController")
+    @DisplayName("TC 11.05 - viewAllDetailed – empty repository prints warning")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void viewAllDetailed_emptyRepo_printsWarning() {
         controller("").viewAllDetailed();
         assertTrue(out().contains("No classes have been imported yet."));
@@ -153,10 +153,10 @@ class ClassControllerTest {
 
     @Test
     @Order(6)
-    @DisplayName("viewAllDetailed – classes present outputs course code")
-    @Tag("ClassController")
+    @DisplayName("TC 11.06 - viewAllDetailed – classes present outputs course code")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void viewAllDetailed_withClasses_outputsCourseCode() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("").viewAllDetailed();
@@ -165,10 +165,10 @@ class ClassControllerTest {
 
     @Test
     @Order(7)
-    @DisplayName("viewAllDetailed – topic details shown when topic is present")
-    @Tag("ClassController")
+    @DisplayName("TC 11.07 - viewAllDetailed – topic details shown when topic is present")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void viewAllDetailed_withTopic_showsTopicDetails() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         topicRepo.save(topic("COMP1001", "Computer Programming 1"));
@@ -182,10 +182,10 @@ class ClassControllerTest {
 
     @Test
     @Order(8)
-    @DisplayName("viewAll – null topicRepository prints warning")
-    @Tag("ClassController")
+    @DisplayName("TC 11.08 - viewAll – null topicRepository prints warning")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void viewAll_nullTopicRepo_printsWarning() {
         controllerNullTopicRepo("").viewAll();
         assertTrue(out().contains("No course data available."));
@@ -193,10 +193,10 @@ class ClassControllerTest {
 
     @Test
     @Order(9)
-    @DisplayName("viewAll – empty topic repository prints warning")
-    @Tag("ClassController")
+    @DisplayName("TC 11.09 - viewAll – empty topic repository prints warning")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void viewAll_emptyTopicRepo_printsWarning() {
         controller("").viewAll();
         assertTrue(out().contains("No courses have been imported yet."));
@@ -204,10 +204,10 @@ class ClassControllerTest {
 
     @Test
     @Order(10)
-    @DisplayName("viewAll – topics present prints numbered list with count")
-    @Tag("ClassController")
+    @DisplayName("TC 11.10 - viewAll – topics present prints numbered list with count")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void viewAll_withTopics_printsNumberedList() {
         topicRepo.save(topic("COMP1001", "Computer Programming 1"));
         topicRepo.save(topic("MATH1001", "Mathematics 1"));
@@ -220,10 +220,10 @@ class ClassControllerTest {
 
     @Test
     @Order(11)
-    @DisplayName("viewAll – courses sorted alphabetically by course code")
-    @Tag("ClassController")
+    @DisplayName("TC 11.11 - viewAll – courses sorted alphabetically by course code")
     @Tag("Thomas")
     @Tag("Additional")
+    @Tag("ClassController")
     void viewAll_multipleTopics_sortedAlphabetically() {
         topicRepo.save(topic("MATH1001", "Mathematics 1"));
         topicRepo.save(topic("COMP1001", "Computer Programming 1"));
@@ -238,10 +238,10 @@ class ClassControllerTest {
 
     @Test
     @Order(12)
-    @DisplayName("search(String) – matching keyword shows results")
-    @Tag("ClassController")
+    @DisplayName("TC 11.12 - search(String) – matching keyword shows results")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void searchKeyword_matchFound_showsResults() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("").search("COMP1001");
@@ -250,10 +250,10 @@ class ClassControllerTest {
 
     @Test
     @Order(13)
-    @DisplayName("search(String) – no match reports 0 found")
-    @Tag("ClassController")
+    @DisplayName("TC 11.13 - search(String) – no match reports 0 found")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void searchKeyword_noMatch_reportsZeroFound() {
         controller("").search("ZZZZ9999");
         assertTrue(out().contains("0 found"));
@@ -261,10 +261,10 @@ class ClassControllerTest {
 
     @Test
     @Order(14)
-    @DisplayName("search(String) – empty query returns all classes")
-    @Tag("ClassController")
+    @DisplayName("TC 11.14 - search(String) – empty query returns all classes")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void searchKeyword_emptyQuery_returnsAllClasses() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         classRepo.save(entry("MATH1001-LEC-1-TUE-1000-01Mar", "MATH1001"));
@@ -274,10 +274,10 @@ class ClassControllerTest {
 
     @Test
     @Order(15)
-    @DisplayName("search(String) – result count matches number of stored matching classes")
-    @Tag("ClassController")
+    @DisplayName("TC 11.15 - search(String) – result count matches number of stored matching classes")
     @Tag("Thomas")
     @Tag("Additional")
+    @Tag("ClassController")
     void searchKeyword_multipleMatches_correctCount() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         classRepo.save(entry("COMP1001-LAB-1-WED-1400-01Mar", "COMP1001"));
@@ -296,10 +296,10 @@ class ClassControllerTest {
 
     @Test
     @Order(16)
-    @DisplayName("search() interactive – all blank, empty repo prints no-match warning")
-    @Tag("ClassController")
+    @DisplayName("TC 11.16 - search() interactive – all blank, empty repo prints no-match warning")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void searchInteractive_allBlank_emptyRepo_noMatchWarning() {
         controller("\n\n\n\n\n\n\n\n").search();
         assertTrue(out().contains("No classes matched those criteria."));
@@ -307,10 +307,10 @@ class ClassControllerTest {
 
     @Test
     @Order(17)
-    @DisplayName("search() interactive – matching courseCode criterion shows results")
-    @Tag("ClassController")
+    @DisplayName("TC 11.17 - search() interactive – matching courseCode criterion shows results")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void searchInteractive_courseCodeCriterion_showsResults() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         // courseCode=COMP1001, rest blank
@@ -320,10 +320,10 @@ class ClassControllerTest {
 
     @Test
     @Order(18)
-    @DisplayName("search() interactive – no matching results prints warning")
-    @Tag("ClassController")
+    @DisplayName("TC 11.18 - search() interactive – no matching results prints warning")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void searchInteractive_noMatch_printsWarning() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         // courseCode=MATH9999 — no match
@@ -333,10 +333,10 @@ class ClassControllerTest {
 
     @Test
     @Order(19)
-    @DisplayName("search() interactive – invalid start time warns and skips field")
-    @Tag("ClassController")
+    @DisplayName("TC 11.19 - search() interactive – invalid start time warns and skips field")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void searchInteractive_invalidStartTime_warnsAndSkipsField() {
         controller("\n\n\n\n\n\nNOT_A_TIME\n\n").search();
         assertTrue(out().contains("Invalid start time"));
@@ -344,10 +344,10 @@ class ClassControllerTest {
 
     @Test
     @Order(20)
-    @DisplayName("search() interactive – valid start time filters correctly")
-    @Tag("ClassController")
+    @DisplayName("TC 11.20 - search() interactive – valid start time filters correctly")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void searchInteractive_validStartTime_filtersResults() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         // all blank except startTime=09:00
@@ -357,10 +357,10 @@ class ClassControllerTest {
 
     @Test
     @Order(21)
-    @DisplayName("search() interactive – invalid semester warns and skips field")
-    @Tag("ClassController")
+    @DisplayName("TC 11.21 - search() interactive – invalid semester warns and skips field")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void searchInteractive_invalidSemester_warnsAndSkipsField() {
         controller("\n\n\n\n\n\n\nABC\n").search();
         assertTrue(out().contains("Invalid semester"));
@@ -368,10 +368,10 @@ class ClassControllerTest {
 
     @Test
     @Order(22)
-    @DisplayName("search() interactive – valid semester filters correctly")
-    @Tag("ClassController")
+    @DisplayName("TC 11.22 - search() interactive – valid semester filters correctly")
     @Tag("Thomas")
     @Tag("Additional")
+    @Tag("ClassController")
     void searchInteractive_validSemester_filtersResults() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         topicRepo.save(topic("COMP1001", "Computer Programming 1"));
@@ -383,10 +383,10 @@ class ClassControllerTest {
 
     @Test
     @Order(23)
-    @DisplayName("deleteClass – unknown ID prints error")
-    @Tag("ClassController")
+    @DisplayName("TC 11.23 - deleteClass – unknown ID prints error")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void deleteClass_unknownId_printsError() {
         controller("DOES-NOT-EXIST\n").deleteClass();
         assertTrue(out().contains("not found"));
@@ -394,10 +394,10 @@ class ClassControllerTest {
 
     @Test
     @Order(24)
-    @DisplayName("deleteClass – confirmed removes class from repository")
-    @Tag("ClassController")
+    @DisplayName("TC 11.24 - deleteClass – confirmed removes class from repository")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void deleteClass_confirmed_removesClass() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("COMP1001-LEC-1-MON-0900-01Mar\ny\n").deleteClass();
@@ -406,10 +406,10 @@ class ClassControllerTest {
 
     @Test
     @Order(25)
-    @DisplayName("deleteClass – confirmed prints success message")
-    @Tag("ClassController")
+    @DisplayName("TC 11.25 - deleteClass – confirmed prints success message")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void deleteClass_confirmed_printsSuccess() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("COMP1001-LEC-1-MON-0900-01Mar\ny\n").deleteClass();
@@ -418,10 +418,10 @@ class ClassControllerTest {
 
     @Test
     @Order(26)
-    @DisplayName("deleteClass – cancelled keeps class in repository")
-    @Tag("ClassController")
+    @DisplayName("TC 11.26 - deleteClass – cancelled keeps class in repository")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void deleteClass_cancelled_keepsClass() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("COMP1001-LEC-1-MON-0900-01Mar\nn\n").deleteClass();
@@ -430,10 +430,10 @@ class ClassControllerTest {
 
     @Test
     @Order(27)
-    @DisplayName("deleteClass – cancelled prints cancelled message")
-    @Tag("ClassController")
+    @DisplayName("TC 11.27 - deleteClass – cancelled prints cancelled message")
     @Tag("Thomas")
     @Tag("Additional")
+    @Tag("ClassController")
     void deleteClass_cancelled_printsCancelledMessage() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("COMP1001-LEC-1-MON-0900-01Mar\nn\n").deleteClass();
@@ -443,10 +443,10 @@ class ClassControllerTest {
 
     @Test
     @Order(28)
-    @DisplayName("editClass – unknown ID prints error")
-    @Tag("ClassController")
+    @DisplayName("TC 11.28 - editClass – unknown ID prints error")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void editClass_unknownId_printsError() {
         controller("DOES-NOT-EXIST\n").editClass();
         assertTrue(out().contains("not found"));
@@ -454,10 +454,10 @@ class ClassControllerTest {
 
     @Test
     @Order(29)
-    @DisplayName("editClass – all blank inputs keeps all original field values")
-    @Tag("ClassController")
+    @DisplayName("TC 11.29 - editClass – all blank inputs keeps all original field values")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void editClass_allBlankInputs_keepsOriginalValues() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("COMP1001-LEC-1-MON-0900-01Mar\n\n\n\n\n\ny\n").editClass();
@@ -471,10 +471,10 @@ class ClassControllerTest {
 
     @Test
     @Order(30)
-    @DisplayName("editClass – new building and room saved correctly")
-    @Tag("ClassController")
+    @DisplayName("TC 11.30 - editClass – new building and room saved correctly")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void editClass_newBuildingAndRoom_savedCorrectly() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("COMP1001-LEC-1-MON-0900-01Mar\nBuilding2\nR999\n\n\n\ny\n").editClass();
@@ -485,10 +485,10 @@ class ClassControllerTest {
 
     @Test
     @Order(31)
-    @DisplayName("editClass – valid new start and end times saved correctly")
-    @Tag("ClassController")
+    @DisplayName("TC 11.31 - editClass – valid new start and end times saved correctly")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void editClass_validNewTimes_savedCorrectly() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("COMP1001-LEC-1-MON-0900-01Mar\n\n\n14:00\n16:00\n\ny\n").editClass();
@@ -499,10 +499,10 @@ class ClassControllerTest {
 
     @Test
     @Order(32)
-    @DisplayName("editClass – invalid start time warns and keeps original")
-    @Tag("ClassController")
+    @DisplayName("TC 11.32 - editClass – invalid start time warns and keeps original")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void editClass_invalidStartTime_warnsAndKeepsOriginal() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("COMP1001-LEC-1-MON-0900-01Mar\n\n\nBAD_TIME\n\n\ny\n").editClass();
@@ -513,10 +513,10 @@ class ClassControllerTest {
 
     @Test
     @Order(33)
-    @DisplayName("editClass – invalid end time warns and keeps original")
-    @Tag("ClassController")
+    @DisplayName("TC 11.33 - editClass – invalid end time warns and keeps original")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void editClass_invalidEndTime_warnsAndKeepsOriginal() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("COMP1001-LEC-1-MON-0900-01Mar\n\n\n\nBAD_TIME\n\ny\n").editClass();
@@ -527,10 +527,10 @@ class ClassControllerTest {
 
     @Test
     @Order(34)
-    @DisplayName("editClass – valid new day saved correctly")
-    @Tag("ClassController")
+    @DisplayName("TC 11.34 - editClass – valid new day saved correctly")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void editClass_validNewDay_savedCorrectly() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("COMP1001-LEC-1-MON-0900-01Mar\n\n\n\n\nFRIDAY\ny\n").editClass();
@@ -540,10 +540,10 @@ class ClassControllerTest {
 
     @Test
     @Order(35)
-    @DisplayName("editClass – invalid day warns and keeps original")
-    @Tag("ClassController")
+    @DisplayName("TC 11.35 - editClass – invalid day warns and keeps original")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void editClass_invalidDay_warnsAndKeepsOriginal() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("COMP1001-LEC-1-MON-0900-01Mar\n\n\n\n\nBADDAY\ny\n").editClass();
@@ -554,10 +554,10 @@ class ClassControllerTest {
 
     @Test
     @Order(36)
-    @DisplayName("editClass – save confirmed prints success message")
-    @Tag("ClassController")
+    @DisplayName("TC 11.36 - editClass – save confirmed prints success message")
     @Tag("Thomas")
     @Tag("Core")
+    @Tag("ClassController")
     void editClass_saveConfirmed_printsSuccess() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("COMP1001-LEC-1-MON-0900-01Mar\n\n\n\n\n\ny\n").editClass();
@@ -566,10 +566,10 @@ class ClassControllerTest {
 
     @Test
     @Order(37)
-    @DisplayName("editClass – cancelled does not persist any changes")
-    @Tag("ClassController")
+    @DisplayName("TC 11.37 - editClass – cancelled does not persist any changes")
     @Tag("Thomas")
     @Tag("Critical")
+    @Tag("ClassController")
     void editClass_cancelled_doesNotPersistChanges() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         // Provide new values for every field but cancel
@@ -584,10 +584,10 @@ class ClassControllerTest {
 
     @Test
     @Order(38)
-    @DisplayName("editClass – cancelled prints cancelled message")
-    @Tag("ClassController")
+    @DisplayName("TC 11.38 - editClass – cancelled prints cancelled message")
     @Tag("Thomas")
     @Tag("Additional")
+    @Tag("ClassController")
     void editClass_cancelled_printsCancelledMessage() {
         classRepo.save(entry("COMP1001-LEC-1-MON-0900-01Mar", "COMP1001"));
         controller("COMP1001-LEC-1-MON-0900-01Mar\n\n\n\n\n\nn\n").editClass();
@@ -600,10 +600,10 @@ class ClassControllerTest {
 
     @Test
     @Order(39)
-    @DisplayName("deleteClass – exit sentinel 'q' at ID prompt throws EarlyExitException")
-    @Tag("ClassController")
+    @DisplayName("TC 11.39 - deleteClass – exit sentinel 'q' at ID prompt throws EarlyExitException")
     @Tag("Thomas")
     @Tag("Additional")
+    @Tag("ClassController")
     void deleteClass_exitSentinel_throwsEarlyExitException() {
         assertThrows(EarlyExitException.class,
                 () -> controller("q\n").deleteClass());
@@ -611,10 +611,10 @@ class ClassControllerTest {
 
     @Test
     @Order(40)
-    @DisplayName("editClass – exit sentinel 'q' at ID prompt throws EarlyExitException")
-    @Tag("ClassController")
+    @DisplayName("TC 11.40 - editClass – exit sentinel 'q' at ID prompt throws EarlyExitException")
     @Tag("Thomas")
     @Tag("Additional")
+    @Tag("ClassController")
     void editClass_exitSentinel_throwsEarlyExitException() {
         assertThrows(EarlyExitException.class,
                 () -> controller("q\n").editClass());

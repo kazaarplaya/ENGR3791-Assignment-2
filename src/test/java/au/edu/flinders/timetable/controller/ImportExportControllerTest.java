@@ -70,7 +70,7 @@ class ImportExportControllerTest {
     //TC 01
     @Test
     @Order(1)
-    @DisplayName("TC 7.01 importData imports classes from a valid CSV path")
+    @DisplayName("TC 13.01 - importData imports classes from a valid CSV path")
     @Tag("Oscar")
     @Tag("Critical")
     void importDataImportsFromValidPath() throws IOException {
@@ -87,7 +87,7 @@ class ImportExportControllerTest {
     //TC 02
     @Test
     @Order(2)
-    @DisplayName("TC 7.02 importData with q input throws EarlyExitException")
+    @DisplayName("TC 13.02 - importData with q input throws EarlyExitException")
     @Tag("Oscar")
     @Tag("Core")
     void importDataWithQuitInputThrowsEarlyExit() {
@@ -99,7 +99,7 @@ class ImportExportControllerTest {
     //TC 03
     @Test
     @Order(3)
-    @DisplayName("TC 7.03 importData with nonexistent path does not crash")
+    @DisplayName("TC 13.03 - importData with nonexistent path does not crash")
     @Tag("Oscar")
     @Tag("Core")
     void importDataWithBadPathDoesNotCrash() {
@@ -112,7 +112,7 @@ class ImportExportControllerTest {
     //TC 04
     @Test
     @Order(4)
-    @DisplayName("TC 7.04 importData with folder path imports all CSVs in folder")
+    @DisplayName("TC 13.04 - importData with folder path imports all CSVs in folder")
     @Tag("Oscar")
     @Tag("Core")
     void importDataWithFolderImportsAllCsvs() throws IOException {

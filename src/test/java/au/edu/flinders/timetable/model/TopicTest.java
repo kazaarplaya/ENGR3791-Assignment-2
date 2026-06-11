@@ -21,7 +21,7 @@ class TopicTest {
 
     @Test
     @Order(1)
-    @DisplayName("TC X.01 – getCourseCode returns constructed course code")
+    @DisplayName("TC 15.01 - getCourseCode returns constructed course code")
     @Tag("Luke")
     @Tag("Core")
     void getCourseCodeReturnsConstructedValue() {
@@ -30,7 +30,7 @@ class TopicTest {
 
     @Test
     @Order(2)
-    @DisplayName("TC X.02 – getTopicName returns constructed topic name")
+    @DisplayName("TC 15.02 - getTopicName returns constructed topic name")
     @Tag("Luke")
     @Tag("Core")
     void getTopicNameReturnsConstructedValue() {
@@ -39,7 +39,7 @@ class TopicTest {
 
     @Test
     @Order(3)
-    @DisplayName("TC X.03 – getCampus returns constructed campus")
+    @DisplayName("TC 15.03 - getCampus returns constructed campus")
     @Tag("Luke")
     @Tag("Core")
     void getCampusReturnsConstructedValue() {
@@ -48,7 +48,7 @@ class TopicTest {
 
     @Test
     @Order(4)
-    @DisplayName("TC X.04 – getSemester returns constructed semester")
+    @DisplayName("TC 15.04 - getSemester returns constructed semester")
     @Tag("Luke")
     @Tag("Core")
     void getSemesterReturnsConstructedValue() {
@@ -57,7 +57,7 @@ class TopicTest {
 
     @Test
     @Order(5)
-    @DisplayName("TC X.05 – getDelivery returns constructed delivery mode")
+    @DisplayName("TC 15.05 - getDelivery returns constructed delivery mode")
     @Tag("Luke")
     @Tag("Core")
     void getDeliveryReturnsConstructedValue() {
@@ -66,7 +66,7 @@ class TopicTest {
 
     @Test
     @Order(6)
-    @DisplayName("TC X.06 – getNumOfClasses returns constructed number of classes")
+    @DisplayName("TC 15.06 - getNumOfClasses returns constructed number of classes")
     @Tag("Luke")
     @Tag("Core")
     void getNumOfClassesReturnsConstructedValue() {
@@ -75,7 +75,7 @@ class TopicTest {
 
     @Test
     @Order(7)
-    @DisplayName("TC X.07 – getAttendanceMode returns constructed attendance mode")
+    @DisplayName("TC 15.07 - getAttendanceMode returns constructed attendance mode")
     @Tag("Luke")
     @Tag("Core")
     void getAttendanceModeReturnsConstructedValue() {
@@ -84,7 +84,7 @@ class TopicTest {
 
     @Test
     @Order(8)
-    @DisplayName("TC X.08 – null topicName defaults to empty string")
+    @DisplayName("TC 15.08 - null topicName defaults to empty string")
     @Tag("Luke")
     @Tag("Core")
     void nullTopicNameDefaultsToEmptyString() {
@@ -94,7 +94,7 @@ class TopicTest {
 
     @Test
     @Order(9)
-    @DisplayName("TC X.09 – null attendanceMode defaults to empty string")
+    @DisplayName("TC 15.09 - null attendanceMode defaults to empty string")
     @Tag("Luke")
     @Tag("Core")
     void nullAttendanceModeDefaultsToEmptyString() {
@@ -104,7 +104,7 @@ class TopicTest {
 
     @Test
     @Order(10)
-    @DisplayName("TC X.10 – null courseCode throws IllegalArgumentException")
+    @DisplayName("TC 15.10 - null courseCode throws IllegalArgumentException")
     @Tag("Luke")
     @Tag("Core")
     void nullCourseCodeThrowsIllegalArgumentException() {
@@ -114,7 +114,7 @@ class TopicTest {
 
     @Test
     @Order(11)
-    @DisplayName("TC X.11 – blank courseCode throws IllegalArgumentException")
+    @DisplayName("TC 15.11 - blank courseCode throws IllegalArgumentException")
     @Tag("Luke")
     @Tag("Core")
     void blankCourseCodeThrowsIllegalArgumentException() {
@@ -124,7 +124,7 @@ class TopicTest {
 
     @Test
     @Order(12)
-    @DisplayName("TC X.12 – 6-arg constructor sets attendanceMode to empty string")
+    @DisplayName("TC 15.12 - 6-arg constructor sets attendanceMode to empty string")
     @Tag("Luke")
     @Tag("Core")
     void sixArgConstructorSetsAttendanceModeToEmptyString() {
@@ -134,7 +134,7 @@ class TopicTest {
 
     @Test
     @Order(13)
-    @DisplayName("TC X.13 – equals returns true for same course code")
+    @DisplayName("TC 15.13 - equals returns true for same course code")
     @Tag("Luke")
     @Tag("Core")
     void equalsReturnsTrueForSameCourseCode() {
@@ -144,7 +144,7 @@ class TopicTest {
 
     @Test
     @Order(14)
-    @DisplayName("TC X.14 – equals returns false for different course code")
+    @DisplayName("TC 15.14 - equals returns false for different course code")
     @Tag("Luke")
     @Tag("Core")
     void equalsReturnsFalseForDifferentCourseCode() {
@@ -154,7 +154,7 @@ class TopicTest {
 
     @Test
     @Order(15)
-    @DisplayName("TC X.15 – equals returns true for same instance")
+    @DisplayName("TC 15.15 - equals returns true for same instance")
     @Tag("Luke")
     @Tag("Core")
     void equalsReturnsTrueForSameInstance() {
@@ -163,7 +163,7 @@ class TopicTest {
 
     @Test
     @Order(16)
-    @DisplayName("TC X.16 – equals returns false for non-Topic object")
+    @DisplayName("TC 15.16 - equals returns false for non-Topic object")
     @Tag("Luke")
     @Tag("Core")
     void equalsReturnsFalseForNonTopicObject() {
@@ -172,7 +172,7 @@ class TopicTest {
 
     @Test
     @Order(17)
-    @DisplayName("TC X.17 – equal topics have same hash code")
+    @DisplayName("TC 15.17 - equal topics have same hash code")
     @Tag("Luke")
     @Tag("Core")
     void equalTopicsHaveSameHashCode() {
@@ -183,7 +183,7 @@ class TopicTest {
 
     @Test
     @Order(18)
-    @DisplayName("TC X.18 – toString contains courseCode, topicName, campus and semester")
+    @DisplayName("TC 15.18 - toString contains courseCode, topicName, campus and semester")
     @Tag("Luke")
     @Tag("Core")
     void toStringContainsAllKeyFields() {

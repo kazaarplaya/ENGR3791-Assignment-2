@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImportExportController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in timetable Coverage Results</a> &gt; <a href="index.source.html" class="el_package">au.edu.flinders.timetable.controller</a> &gt; <span class="el_source">ImportExportController.java</span></div><h1>ImportExportController.java</h1><pre class="source lang-java linenums">package au.edu.flinders.timetable.controller;
+
+import au.edu.flinders.timetable.service.CSVImportService;
+import au.edu.flinders.timetable.ui.ConsoleView;
+import au.edu.flinders.timetable.ui.InputHelper;
+
+import java.util.Scanner;
+
+/** Routes data import actions to CSVImportService and reports results to the user. */
+public class ImportExportController {
+
+    private final CSVImportService importService;
+    private final ConsoleView      view;
+    private final InputHelper      input;
+    private final Scanner          sc;
+
+    /** Constructs the controller with its required dependencies. */
+    public ImportExportController(CSVImportService importService,
+                                   ConsoleView view,
+                                   InputHelper input,
+<span class="fc" id="L21">                                   Scanner sc) {</span>
+<span class="fc" id="L22">        this.importService = importService;</span>
+<span class="fc" id="L23">        this.view          = view;</span>
+<span class="fc" id="L24">        this.input         = input;</span>
+<span class="fc" id="L25">        this.sc            = sc;</span>
+<span class="fc" id="L26">    }</span>
+
+    /**
+     * Prompts for a path to a single CSV file or a folder of CSV files and imports all data.
+     */
+    public void importData() {
+<span class="fc" id="L32">        System.out.println(&quot;\n── Import Data ──────────────────────────────&quot;);</span>
+<span class="fc" id="L33">        System.out.println(&quot;  Provide a path to a single .csv file or a folder of .csv files.&quot;);</span>
+<span class="fc" id="L34">        String path = input.readNonBlank(sc, &quot;  Path (or q to return): &quot;);</span>
+<span class="fc" id="L35">        CSVImportService.ImportResult result = importService.importFromPath(path);</span>
+<span class="fc" id="L36">        view.printSuccess(&quot;Import complete — &quot;</span>
+<span class="fc" id="L37">            + result.newCount()     + &quot; new, &quot;</span>
+<span class="fc" id="L38">            + result.updatedCount() + &quot; updated  (&quot; + path + &quot;)&quot;);</span>
+<span class="fc" id="L39">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

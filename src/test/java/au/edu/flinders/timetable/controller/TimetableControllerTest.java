@@ -83,8 +83,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(1)
-    @DisplayName("TC X.01 – viewAll prints all saved timetable names")
-    @Tag("TC X.01")
+    @DisplayName("TC 12.01 - viewAll prints all saved timetable names")
     @Tag("Luke")
     @Tag("Core")
     void viewAllPrintsAllSavedTimetableNames() {
@@ -104,8 +103,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(2)
-    @DisplayName("TC X.02 – viewAll prints none message when no timetables saved")
-    @Tag("TC X.02")
+    @DisplayName("TC 12.02 - viewAll prints none message when no timetables saved")
     @Tag("Luke")
     @Tag("Core")
     void viewAllPrintsNoneMessageWhenNoTimetablesSaved() {
@@ -118,8 +116,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(3)
-    @DisplayName("TC X.03 – view displays timetable when selected")
-    @Tag("TC X.03")
+    @DisplayName("TC 12.03 - view displays timetable when selected")
     @Tag("Luke")
     @Tag("Core")
     void viewDisplaysTimetableWhenSelected() {
@@ -135,8 +132,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(4)
-    @DisplayName("TC X.04 – view prints warning when no timetables exist")
-    @Tag("TC X.04")
+    @DisplayName("TC 12.04 - view prints warning when no timetables exist")
     @Tag("Luke")
     @Tag("Core")
     void viewPrintsWarningWhenNoTimetablesExist() {
@@ -149,8 +145,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(5)
-    @DisplayName("TC X.05 – delete removes timetable after confirmation")
-    @Tag("TC X.05")
+    @DisplayName("TC 12.05 - delete removes timetable after confirmation")
     @Tag("Luke")
     @Tag("Core")
     void deletesRemovesTimetableAfterConfirmation() {
@@ -167,8 +162,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(6)
-    @DisplayName("TC X.06 – delete cancels when user declines confirmation")
-    @Tag("TC X.06")
+    @DisplayName("TC 12.06 - delete cancels when user declines confirmation")
     @Tag("Luke")
     @Tag("Core")
     void deleteCancelsWhenUserDeclinesConfirmation() {
@@ -185,8 +179,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(7)
-    @DisplayName("TC X.07 – delete prints warning when no timetables exist")
-    @Tag("TC X.07")
+    @DisplayName("TC 12.07 - delete prints warning when no timetables exist")
     @Tag("Luke")
     @Tag("Core")
     void deletePrintsWarningWhenNoTimetablesExist() {
@@ -199,8 +192,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(8)
-    @DisplayName("TC X.08 – export writes timetable to file")
-    @Tag("TC X.08")
+    @DisplayName("TC 12.08 - export writes timetable to file")
     @Tag("Luke")
     @Tag("Core")
     void exportWritesTimetableToFile() {
@@ -216,8 +208,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(9)
-    @DisplayName("TC X.09 – export prints warning when no timetables exist")
-    @Tag("TC X.09")
+    @DisplayName("TC 12.09 - export prints warning when no timetables exist")
     @Tag("Luke")
     @Tag("Core")
     void exportPrintsWarningWhenNoTimetablesExist() {
@@ -230,8 +221,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(10)
-    @DisplayName("TC X.10 – export uses custom name when provided")
-    @Tag("TC X.10")
+    @DisplayName("TC 12.10 - export uses custom name when provided")
     @Tag("Luke")
     @Tag("Core")
     void exportUsesCustomNameWhenProvided() {
@@ -247,8 +237,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(11)
-    @DisplayName("TC X.11 – export uses custom path when provided")
-    @Tag("TC X.11")
+    @DisplayName("TC 12.11 - export uses custom path when provided")
     @Tag("Luke")
     @Tag("Core")
     void exportUsesCustomPathWhenProvided() {
@@ -264,8 +253,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(12)
-    @DisplayName("TC X.12 – delete cancels when user enters n")
-    @Tag("TC X.12")
+    @DisplayName("TC 12.12 - delete cancels when user enters n")
     @Tag("Luke")
     @Tag("Core")
     void deleteCancelsWhenUserEntersN() {
@@ -282,8 +270,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(13)
-    @DisplayName("TC X.13 – delete removes timetable when user enters y")
-    @Tag("TC X.13")
+    @DisplayName("TC 12.13 - delete removes timetable when user enters y")
     @Tag("Luke")
     @Tag("Core")
     void deleteRemovesTimetableWhenUserEntersY() {
@@ -297,12 +284,11 @@ class TimetableControllerTest {
         assertTrue(capturedOut.toString().toLowerCase().contains("deleted"));
     }
 
-// ── TC X.14 ───────────────────────────────────────────────────────────────
+// ── TC 12.14 ──────────────────────────────────────────────────────────────
 
     @Test
     @Order(14)
-    @DisplayName("TC X.14 – generate prints warning when no classes selected")
-    @Tag("TC X.14")
+    @DisplayName("TC 12.14 - generate prints warning when no classes selected")
     @Tag("Luke")
     @Tag("Core")
     void generatePrintsWarningWhenNoClassesSelected() {
@@ -319,8 +305,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(15)
-    @DisplayName("TC X.15 – generate cancels when user declines confirmation")
-    @Tag("TC X.15")
+    @DisplayName("TC 12.15 - generate cancels when user declines confirmation")
     @Tag("Luke")
     @Tag("Core")
     void generateCancelsWhenUserDeclinesConfirmation() {
@@ -343,8 +328,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(16)
-    @DisplayName("TC X.16 – generate creates timetable when user confirms")
-    @Tag("TC X.16")
+    @DisplayName("TC 12.16 - generate creates timetable when user confirms")
     @Tag("Luke")
     @Tag("Core")
     void generateCreatesTimetableWhenUserConfirms() {
@@ -368,8 +352,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(17)
-    @DisplayName("TC X.17 – generate infers City campus from Festival Tower building")
-    @Tag("TC X.17")
+    @DisplayName("TC 12.17 - generate infers City campus from Festival Tower building")
     @Tag("Luke")
     @Tag("Core")
     void generateInfersCityCampusFromFestivalTowerBuilding() {
@@ -395,8 +378,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(18)
-    @DisplayName("TC X.18 – generate infers Tonsley campus from Tonsley building")
-    @Tag("TC X.18")
+    @DisplayName("TC 12.18 - generate infers Tonsley campus from Tonsley building")
     @Tag("Luke")
     @Tag("Core")
     void generateInfersTonslyCampusFromTonsleyBuilding() {
@@ -421,8 +403,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(19)
-    @DisplayName("TC X.19 – generate infers Bedford Park from unrecognised building")
-    @Tag("TC X.19")
+    @DisplayName("TC 12.19 - generate infers Bedford Park from unrecognised building")
     @Tag("Luke")
     @Tag("Core")
     void generateInfersBedfordParkFromUnrecognisedBuilding() {
@@ -445,8 +426,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(20)
-    @DisplayName("TC X.20 – editTimetable prints warning when timetable has no classes")
-    @Tag("TC X.20")
+    @DisplayName("TC 12.20 - editTimetable prints warning when timetable has no classes")
     @Tag("Luke")
     @Tag("Core")
     void editTimetablePrintsWarningWhenTimetableHasNoClasses() {
@@ -462,8 +442,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(21)
-    @DisplayName("TC X.21 – editTimetable prints warning when no alternatives available")
-    @Tag("TC X.21")
+    @DisplayName("TC 12.21 - editTimetable prints warning when no alternatives available")
     @Tag("Luke")
     @Tag("Core")
     void editTimetablePrintsWarningWhenNoAlternativesAvailable() {
@@ -484,8 +463,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(22)
-    @DisplayName("TC X.22 – editTimetable swaps class when confirmed")
-    @Tag("TC X.22")
+    @DisplayName("TC 12.22 - editTimetable swaps class when confirmed")
     @Tag("Luke")
     @Tag("Core")
     void editTimetableSwapsClassWhenConfirmed() {
@@ -512,8 +490,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(23)
-    @DisplayName("TC X.23 – editTimetable cancels swap when user declines")
-    @Tag("TC X.23")
+    @DisplayName("TC 12.23 - editTimetable cancels swap when user declines")
     @Tag("Luke")
     @Tag("Core")
     void editTimetableCancelsSwapWhenUserDeclines() {
@@ -539,8 +516,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(24)
-    @DisplayName("TC X.24 – generate prints message when empty input entered during enrolment")
-    @Tag("TC X.24")
+    @DisplayName("TC 12.24 - generate prints message when empty input entered during enrolment")
     @Tag("Luke")
     @Tag("Core")
     void generatePrintsMessageWhenEmptyInputEnteredDuringEnrolment() {
@@ -554,8 +530,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(25)
-    @DisplayName("TC X.25 – generate prints message when out of range number entered during enrolment")
-    @Tag("TC X.25")
+    @DisplayName("TC 12.25 - generate prints message when out of range number entered during enrolment")
     @Tag("Luke")
     @Tag("Core")
     void generatePrintsMessageWhenOutOfRangeNumberEnteredDuringEnrolment() {
@@ -572,8 +547,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(26)
-    @DisplayName("TC X.26 – generate prints message when invalid course code entered")
-    @Tag("TC X.26")
+    @DisplayName("TC 12.26 - generate prints message when invalid course code entered")
     @Tag("Luke")
     @Tag("Core")
     void generatePrintsMessageWhenInvalidCourseCodeEntered() {
@@ -587,8 +561,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(27)
-    @DisplayName("TC X.27 – generate prints message when already enrolled in course")
-    @Tag("TC X.27")
+    @DisplayName("TC 12.27 - generate prints message when already enrolled in course")
     @Tag("Luke")
     @Tag("Core")
     void generatePrintsMessageWhenAlreadyEnrolledInCourse() {
@@ -607,8 +580,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(28)
-    @DisplayName("TC X.28 – generate accepts numeric course selection during enrolment")
-    @Tag("TC X.28")
+    @DisplayName("TC 12.28 - generate accepts numeric course selection during enrolment")
     @Tag("Luke")
     @Tag("Core")
     void generateAcceptsNumericCourseSelectionDuringEnrolment() {
@@ -627,8 +599,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(29)
-    @DisplayName("TC X.29 – generate accepts campus by number selection")
-    @Tag("TC X.29")
+    @DisplayName("TC 12.29 - generate accepts campus by number selection")
     @Tag("Luke")
     @Tag("Core")
     void generateAcceptsCampusByNumberSelection() {
@@ -648,8 +619,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(30)
-    @DisplayName("TC X.30 – generate accepts campus by name selection")
-    @Tag("TC X.30")
+    @DisplayName("TC 12.30 - generate accepts campus by name selection")
     @Tag("Luke")
     @Tag("Core")
     void generateAcceptsCampusByNameSelection() {
@@ -669,8 +639,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(31)
-    @DisplayName("TC X.31 – generate prints message when invalid campus name entered")
-    @Tag("TC X.31")
+    @DisplayName("TC 12.31 - generate prints message when invalid campus name entered")
     @Tag("Luke")
     @Tag("Core")
     void generatePrintsMessageWhenInvalidCampusNameEntered() {
@@ -690,8 +659,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(32)
-    @DisplayName("TC X.32 – generate prints message when out of range campus number entered")
-    @Tag("TC X.32")
+    @DisplayName("TC 12.32 - generate prints message when out of range campus number entered")
     @Tag("Luke")
     @Tag("Core")
     void generatePrintsMessageWhenOutOfRangeCampusNumberEntered() {
@@ -711,8 +679,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(33)
-    @DisplayName("TC X.33 – generate selects semester one when user enters 1")
-    @Tag("TC X.33")
+    @DisplayName("TC 12.33 - generate selects semester one when user enters 1")
     @Tag("Luke")
     @Tag("Core")
     void generateSelectsSemesterOneWhenUserEnters1() {
@@ -731,8 +698,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(34)
-    @DisplayName("TC X.34 – generate selects semester two when user enters 2")
-    @Tag("TC X.34")
+    @DisplayName("TC 12.34 - generate selects semester two when user enters 2")
     @Tag("Luke")
     @Tag("Core")
     void generateSelectsSemesterTwoWhenUserEnters2() {
@@ -751,8 +717,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(35)
-    @DisplayName("TC X.35 – generate prints message when invalid semester input entered")
-    @Tag("TC X.35")
+    @DisplayName("TC 12.35 - generate prints message when invalid semester input entered")
     @Tag("Luke")
     @Tag("Core")
     void generatePrintsMessageWhenInvalidSemesterInputEntered() {
@@ -772,8 +737,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(36)
-    @DisplayName("TC X.36 – generate auto-selects when only one class instance exists")
-    @Tag("TC X.36")
+    @DisplayName("TC 12.36 - generate auto-selects when only one class instance exists")
     @Tag("Luke")
     @Tag("Core")
     void generateAutoSelectsWhenOnlyOneClassInstanceExists() {
@@ -792,8 +756,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(37)
-    @DisplayName("TC X.37 – generate prompts user to select when multiple class instances exist")
-    @Tag("TC X.37")
+    @DisplayName("TC 12.37 - generate prompts user to select when multiple class instances exist")
     @Tag("Luke")
     @Tag("Core")
     void generatePromptsUserToSelectWhenMultipleClassInstancesExist() {
@@ -819,8 +782,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(38)
-    @DisplayName("TC X.38 – generate prints warning when campus filter removes all classes")
-    @Tag("TC X.38")
+    @DisplayName("TC 12.38 - generate prints warning when campus filter removes all classes")
     @Tag("Luke")
     @Tag("Core")
     void generatePrintsWarningWhenCampusFilterRemovesAllClasses() {
@@ -851,8 +813,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(39)
-    @DisplayName("TC X.39 – generate prints error when timetable name already exists")
-    @Tag("TC X.39")
+    @DisplayName("TC 12.39 - generate prints error when timetable name already exists")
     @Tag("Luke")
     @Tag("Core")
     void generatePrintsErrorWhenTimetableNameAlreadyExists() {
@@ -873,8 +834,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(40)
-    @DisplayName("TC X.40 – editTimetable prints warning when no timetables exist")
-    @Tag("TC X.40")
+    @DisplayName("TC 12.40 - editTimetable prints warning when no timetables exist")
     @Tag("Luke")
     @Tag("Core")
     void editTimetablePrintsWarningWhenNoTimetablesExist() {
@@ -886,8 +846,7 @@ class TimetableControllerTest {
 
     @Test
     @Order(41)
-    @DisplayName("TC X.41 – editTimetable shows alternatives list with building and room")
-    @Tag("TC X.41")
+    @DisplayName("TC 12.41 - editTimetable shows alternatives list with building and room")
     @Tag("Luke")
     @Tag("Core")
     void editTimetableShowsAlternativesListWithBuildingAndRoom() {

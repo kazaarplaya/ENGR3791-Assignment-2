@@ -55,7 +55,7 @@ public class PreferenceServiceTest {
 
     @ParameterizedTest(name = "day=''{1}'' should be accepted")
     @Order(1)
-    @DisplayName("TC 4.01 – Save legacy preference boundary – accepts Monday and Friday")
+    @DisplayName("TC 4.01 - Save legacy preference boundary – accepts Monday and Friday")
     @Tag("Luke")
     @Tag("Core")
     @CsvSource({"morning, Monday", "afternoon, Friday"})
@@ -70,7 +70,7 @@ public class PreferenceServiceTest {
 
     @ParameterizedTest(name = "time=''{0}'' should be accepted")
     @Order(2)
-    @DisplayName("TC 4.02 – Save legacy preference boundary – accepts morning and evening edge times")
+    @DisplayName("TC 4.02 - Save legacy preference boundary – accepts morning and evening edge times")
     @Tag("Luke")
     @Tag("Core")
     @CsvSource({"morning, Monday", "evening, Friday"})
@@ -85,7 +85,7 @@ public class PreferenceServiceTest {
 
     @ParameterizedTest(name = "day=''{0}'' should be rejected")
     @Order(3)
-    @DisplayName("TC 4.03 – Save legacy preference rejects invalid day")
+    @DisplayName("TC 4.03 - Save legacy preference rejects invalid day")
     @Tag("Luke")
     @Tag("Core")
     @ValueSource(strings = {"Someday", "Mon", "1", "MONDAY!", ""})
@@ -98,7 +98,7 @@ public class PreferenceServiceTest {
 
     @ParameterizedTest(name = "time=''{0}'' should be rejected")
     @Order(4)
-    @DisplayName("TC 4.04 – Save legacy preference rejects invalid time")
+    @DisplayName("TC 4.04 - Save legacy preference rejects invalid time")
     @Tag("Luke")
     @Tag("Core")
     @ValueSource(strings = {"dawn", "midnight", "24:00", "", "null"})
@@ -132,7 +132,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(6)
-    @DisplayName("TC 4.06 – Save token preference rejects empty token list")
+    @DisplayName("TC 4.06 - Save token preference rejects empty token list")
     @Tag("Luke")
     @Tag("Core")
     void saveTokenPreferenceEmptyListSavedWithNoTokens() {
@@ -150,7 +150,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(7)
-    @DisplayName("TC 4.07 – Save token preference rejects duplicate tokens")
+    @DisplayName("TC 4.07 - Save token preference rejects duplicate tokens")
     @Tag("Luke")
     @Tag("Core")
     void saveTokenPreferenceDuplicateTokensThrowsIllegalArgumentException() {
@@ -163,7 +163,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(8)
-    @DisplayName("TC 4.08 – Get preferences returns preferences in insertion order")
+    @DisplayName("TC 4.08 - Get preferences returns preferences in insertion order")
     @Tag("Luke")
     @Tag("Core")
     void getPreferenceTokenOrderMatchesInsertionOrder() {
@@ -182,7 +182,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(9)
-    @DisplayName("TC 4.09 – Reorder preferences updates priority order")
+    @DisplayName("TC 4.09 - Reorder preferences updates priority order")
     @Tag("Luke")
     @Tag("Core")
     void reorderPreferencesNewTokenOrderIsReflectedAfterSave() {
@@ -207,7 +207,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(10)
-    @DisplayName("TC 4.10 – Clear preference removes saved preference")
+    @DisplayName("TC 4.10 - Clear preference removes saved preference")
     @Tag("Luke")
     @Tag("Core")
     void clearPreferenceAfterSavePreferenceIsAbsent() {
@@ -226,7 +226,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(11)
-    @DisplayName("TC 4.11 – Save legacy preference accepts Any as day")
+    @DisplayName("TC 4.11 - Save legacy preference accepts Any as day")
     @Tag("Luke")
     @Tag("Core")
     void saveLegacyPreferenceAnyDayIsAccepted() {
@@ -240,7 +240,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(12)
-    @DisplayName("TC 4.12 – Save token preference rejects unknown token string")
+    @DisplayName("TC 4.12 - Save token preference rejects unknown token string")
     @Tag("Luke")
     @Tag("Core")
     void saveTokenPreferenceUnknownTokenThrowsIllegalArgumentException() {
@@ -253,7 +253,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(13)
-    @DisplayName("TC 4.13 – Legacy preference with Tonsley campus converts to CAMPUS_TONSLEY token")
+    @DisplayName("TC 4.13 - Legacy preference with Tonsley campus converts to CAMPUS_TONSLEY token")
     @Tag("Luke")
     @Tag("Core")
     void legacyPreferenceTonslyCampusConvertsToToken() {
@@ -266,7 +266,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(14)
-    @DisplayName("TC 4.14 – Legacy preference with City campus converts to CAMPUS_CITY token")
+    @DisplayName("TC 4.14 - Legacy preference with City campus converts to CAMPUS_CITY token")
     @Tag("Luke")
     @Tag("Core")
     void legacyPreferenceCityCampusConvertsToToken() {
@@ -279,7 +279,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(15)
-    @DisplayName("TC 4.15 – Legacy preference with afternoon time converts to TIME_AFTERNOON token")
+    @DisplayName("TC 4.15 - Legacy preference with afternoon time converts to TIME_AFTERNOON token")
     @Tag("Luke")
     @Tag("Core")
     void legacyPreferenceAfternoonTimeConvertsToToken() {
@@ -292,7 +292,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(16)
-    @DisplayName("TC 4.16 – Legacy preference with evening time converts to TIME_EVENING token")
+    @DisplayName("TC 4.16 - Legacy preference with evening time converts to TIME_EVENING token")
     @Tag("Luke")
     @Tag("Core")
     void legacyPreferenceEveningTimeConvertsToToken() {
@@ -305,7 +305,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(18)
-    @DisplayName("TC 4.18 – Legacy preference getters return correct values")
+    @DisplayName("TC 4.18 - Legacy preference getters return correct values")
     @Tag("Luke")
     @Tag("Core")
     void legacyPreferenceGettersReturnCorrectValues() {
@@ -324,7 +324,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(19)
-    @DisplayName("TC 4.19 – toString returns non-null readable summary")
+    @DisplayName("TC 4.19 - toString returns non-null readable summary")
     @Tag("Luke")
     @Tag("Core")
     void toStringReturnsNonNullSummary() {
@@ -337,7 +337,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(20)
-    @DisplayName("TC 4.20 – Legacy preference with null campus defaults to Any")
+    @DisplayName("TC 4.20 - Legacy preference with null campus defaults to Any")
     @Tag("Luke")
     @Tag("Core")
     void legacyPreferenceNullCampusDefaultsToAny() {
@@ -354,7 +354,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(21)
-    @DisplayName("TC 4.21 – Legacy preference with null timeOfDay defaults to Any")
+    @DisplayName("TC 4.21 - Legacy preference with null timeOfDay defaults to Any")
     @Tag("Luke")
     @Tag("Core")
     void legacyPreferenceNullTimeOfDayDefaultsToAny() {
@@ -371,7 +371,7 @@ public class PreferenceServiceTest {
 
     @Test
     @Order(22)
-    @DisplayName("TC 4.22 – Legacy preference with null day defaults to Any")
+    @DisplayName("TC 4.22 - Legacy preference with null day defaults to Any")
     @Tag("Luke")
     @Tag("Core")
     void legacyPreferenceNullDayDefaultsToAny() {

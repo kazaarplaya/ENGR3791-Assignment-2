@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassEntry.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in timetable Coverage Results</a> &gt; <a href="index.source.html" class="el_package">au.edu.flinders.timetable.model</a> &gt; <span class="el_source">ClassEntry.java</span></div><h1>ClassEntry.java</h1><pre class="source lang-java linenums">package au.edu.flinders.timetable.model;
+
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
+
+/** Represents a single scheduled class session belonging to a topic. */
+public class ClassEntry {
+
+    private final String    classId;
+    private final String    type;
+    private final LocalDate date;           // nullable for recurring classes
+    private final LocalTime startTime;
+    private final LocalTime endTime;
+    private final DayOfWeek day;
+    private final String    building;
+    private final String    room;
+    private final String    courseCode;
+    // Extended fields
+    private final String    attendanceMode;      // e.g. &quot;In person&quot;
+    private final int       availabilityNumber;  // trailing integer in &quot;S1 - 1&quot;
+    private final int       classInstance;       // group number (1, 2, 3 …)
+    private final String    dateFrom;            // start of date range e.g. &quot;02 Mar&quot;
+    private final String    dateTo;              // end of date range   e.g. &quot;16 Mar&quot;
+
+    /** Full 14-argument constructor. date may be null for recurring classes. */
+    public ClassEntry(String classId, String type, LocalDate date,
+                      LocalTime startTime, LocalTime endTime,
+                      DayOfWeek day, String building, String room, String courseCode,
+                      String attendanceMode, int availabilityNumber, int classInstance,
+<span class="fc" id="L33">                      String dateFrom, String dateTo) {</span>
+<span class="fc" id="L34">        this.classId            = classId;</span>
+<span class="fc" id="L35">        this.type               = type;</span>
+<span class="fc" id="L36">        this.date               = date;</span>
+<span class="fc" id="L37">        this.startTime          = startTime;</span>
+<span class="fc" id="L38">        this.endTime            = endTime;</span>
+<span class="fc" id="L39">        this.day                = day;</span>
+<span class="fc" id="L40">        this.building           = building;</span>
+<span class="fc" id="L41">        this.room               = room;</span>
+<span class="fc" id="L42">        this.courseCode         = courseCode;</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        this.attendanceMode     = attendanceMode    != null ? attendanceMode    : &quot;&quot;;</span>
+<span class="fc" id="L44">        this.availabilityNumber = availabilityNumber;</span>
+<span class="fc" id="L45">        this.classInstance      = classInstance;</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        this.dateFrom           = dateFrom          != null ? dateFrom          : &quot;&quot;;</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        this.dateTo             = dateTo            != null ? dateTo            : &quot;&quot;;</span>
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * Backward-compatible 9-argument constructor.
+     * New fields default to empty strings / zero.
+     */
+    public ClassEntry(String classId, String type, LocalDate date,
+                      LocalTime startTime, LocalTime endTime,
+                      DayOfWeek day, String building, String room, String courseCode) {
+<span class="fc" id="L57">        this(classId, type, date, startTime, endTime, day, building, room, courseCode,</span>
+             &quot;&quot;, 0, 0, &quot;&quot;, &quot;&quot;);
+<span class="fc" id="L59">    }</span>
+
+    /** Returns the duration of this class in whole minutes. */
+    public int durationMinutes() {
+<span class="fc" id="L63">        return (int) Duration.between(startTime, endTime).toMinutes();</span>
+    }
+
+    /** Returns true when this class is a lecture (case-insensitive). */
+    public boolean isLecture() {
+<span class="fc" id="L68">        return &quot;lecture&quot;.equalsIgnoreCase(type);</span>
+    }
+
+    /**
+     * Parses a CSV row (minimum 9 columns) into a ClassEntry.
+     * Column order: classId, type, date (yyyy-MM-dd or empty), startTime (HH:mm),
+     * endTime (HH:mm), day (e.g. MONDAY), building, room, courseCode.
+     * Optional extended columns 9–13: attendanceMode, availabilityNumber,
+     * classInstance, dateFrom, dateTo.
+     * Throws IllegalArgumentException with a descriptive message on bad input.
+     */
+    public static ClassEntry fromCsvRow(String[] cols) {
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (cols.length &lt; 9) {</span>
+<span class="fc" id="L81">            throw new IllegalArgumentException(</span>
+                &quot;Expected at least 9 columns but got &quot; + cols.length);
+        }
+
+<span class="fc" id="L85">        String classId = cols[0].trim();</span>
+<span class="fc" id="L86">        String type    = cols[1].trim();</span>
+
+<span class="fc" id="L88">        LocalDate date = null;</span>
+<span class="fc" id="L89">        String rawDate = cols[2].trim();</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (!rawDate.isEmpty()) {</span>
+            try {
+<span class="fc" id="L92">                date = LocalDate.parse(rawDate);</span>
+<span class="fc" id="L93">            } catch (DateTimeParseException e) {</span>
+<span class="fc" id="L94">                throw new IllegalArgumentException(</span>
+                    &quot;Invalid date '&quot; + rawDate + &quot;' in column 3. Expected yyyy-MM-dd.&quot;);
+<span class="fc" id="L96">            }</span>
+        }
+
+        LocalTime startTime;
+        try {
+<span class="fc" id="L101">            startTime = LocalTime.parse(cols[3].trim());</span>
+<span class="fc" id="L102">        } catch (DateTimeParseException e) {</span>
+<span class="fc" id="L103">            throw new IllegalArgumentException(</span>
+<span class="fc" id="L104">                &quot;Invalid startTime '&quot; + cols[3].trim() + &quot;' in column 4. Expected HH:mm.&quot;);</span>
+<span class="fc" id="L105">        }</span>
+
+        LocalTime endTime;
+        try {
+<span class="fc" id="L109">            endTime = LocalTime.parse(cols[4].trim());</span>
+<span class="fc" id="L110">        } catch (DateTimeParseException e) {</span>
+<span class="fc" id="L111">            throw new IllegalArgumentException(</span>
+<span class="fc" id="L112">                &quot;Invalid endTime '&quot; + cols[4].trim() + &quot;' in column 5. Expected HH:mm.&quot;);</span>
+<span class="fc" id="L113">        }</span>
+
+        DayOfWeek day;
+        try {
+<span class="fc" id="L117">            day = DayOfWeek.valueOf(cols[5].trim().toUpperCase());</span>
+<span class="fc" id="L118">        } catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L119">            throw new IllegalArgumentException(</span>
+<span class="fc" id="L120">                &quot;Invalid day '&quot; + cols[5].trim() + &quot;' in column 6. Expected e.g. MONDAY.&quot;);</span>
+<span class="fc" id="L121">        }</span>
+
+<span class="fc" id="L123">        String building   = cols[6].trim();</span>
+<span class="fc" id="L124">        String room       = cols[7].trim();</span>
+<span class="fc" id="L125">        String courseCode = cols[8].trim();</span>
+
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        if (courseCode.isEmpty()) {</span>
+<span class="fc" id="L128">            throw new IllegalArgumentException(&quot;courseCode (column 9) cannot be blank.&quot;);</span>
+        }
+
+        // Optional extended columns
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        String attendanceMode    = cols.length &gt; 9  ? cols[9].trim()  : &quot;&quot;;</span>
+<span class="fc" id="L133">        int    availabilityNumber = 0;</span>
+<span class="fc bfc" id="L134" title="All 4 branches covered.">        if (cols.length &gt; 10 &amp;&amp; !cols[10].trim().isEmpty()) {</span>
+<span class="fc" id="L135">            try { availabilityNumber = Integer.parseInt(cols[10].trim()); }</span>
+<span class="fc" id="L136">            catch (NumberFormatException ignored) {}</span>
+        }
+<span class="fc" id="L138">        int classInstance = 0;</span>
+<span class="fc bfc" id="L139" title="All 4 branches covered.">        if (cols.length &gt; 11 &amp;&amp; !cols[11].trim().isEmpty()) {</span>
+<span class="fc" id="L140">            try { classInstance = Integer.parseInt(cols[11].trim()); }</span>
+<span class="fc" id="L141">            catch (NumberFormatException ignored) {}</span>
+        }
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        String dateFrom = cols.length &gt; 12 ? cols[12].trim() : &quot;&quot;;</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        String dateTo   = cols.length &gt; 13 ? cols[13].trim() : &quot;&quot;;</span>
+
+<span class="fc" id="L146">        return new ClassEntry(classId, type, date, startTime, endTime,</span>
+                              day, building, room, courseCode,
+                              attendanceMode, availabilityNumber, classInstance,
+                              dateFrom, dateTo);
+    }
+
+    // ── Getters ───────────────────────────────────────────────────────────────
+
+    /** Returns the class ID (primary key). */
+<span class="fc" id="L155">    public String    getClassId()            { return classId; }</span>
+    /** Returns the class type, e.g. &quot;Lecture&quot; or &quot;Tutorial&quot;. */
+<span class="fc" id="L157">    public String    getType()               { return type; }</span>
+    /** Returns the calendar date of this class, or null for recurring classes. */
+<span class="fc" id="L159">    public LocalDate getDate()               { return date; }</span>
+    /** Returns the scheduled start time. */
+<span class="fc" id="L161">    public LocalTime getStartTime()          { return startTime; }</span>
+    /** Returns the scheduled end time. */
+<span class="fc" id="L163">    public LocalTime getEndTime()            { return endTime; }</span>
+    /** Returns the day of the week this class runs. */
+<span class="fc" id="L165">    public DayOfWeek getDay()               { return day; }</span>
+    /** Returns the building identifier. */
+<span class="fc" id="L167">    public String    getBuilding()           { return building; }</span>
+    /** Returns the room identifier. */
+<span class="fc" id="L169">    public String    getRoom()               { return room; }</span>
+    /** Returns the course code (foreign key to Topic). */
+<span class="fc" id="L171">    public String    getCourseCode()         { return courseCode; }</span>
+    /** Returns the attendance mode, e.g. &quot;In person&quot;. */
+<span class="fc" id="L173">    public String    getAttendanceMode()     { return attendanceMode; }</span>
+    /** Returns the availability number from the timetable file (e.g. 1). */
+<span class="fc" id="L175">    public int       getAvailabilityNumber() { return availabilityNumber; }</span>
+    /** Returns the class instance (group number, e.g. 1, 2, 3). */
+<span class="fc" id="L177">    public int       getClassInstance()      { return classInstance; }</span>
+    /** Returns the start of the date range, e.g. &quot;02 Mar&quot;. */
+<span class="fc" id="L179">    public String    getDateFrom()           { return dateFrom; }</span>
+    /** Returns the end of the date range, e.g. &quot;16 Mar&quot;. */
+<span class="fc" id="L181">    public String    getDateTo()             { return dateTo; }</span>
+
+    /** Returns a readable single-line summary of this class entry. */
+    @Override
+    public String toString() {
+<span class="fc bfc" id="L186" title="All 2 branches covered.">        String dateStr = (date != null) ? date.toString() : &quot;recurring&quot;;</span>
+<span class="fc" id="L187">        return String.format(&quot;[%s] %s | %s grp%d | %s %s | %s-%s | %s %s | %s avail#%d | %s--%s&quot;,</span>
+<span class="fc" id="L188">            classId, courseCode, type, classInstance, day, dateStr,</span>
+            startTime, endTime, building, room,
+<span class="fc" id="L190">            attendanceMode, availabilityNumber, dateFrom, dateTo);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

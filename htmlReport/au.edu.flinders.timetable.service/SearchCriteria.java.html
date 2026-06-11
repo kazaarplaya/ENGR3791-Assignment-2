@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SearchCriteria.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in timetable Coverage Results</a> &gt; <a href="index.source.html" class="el_package">au.edu.flinders.timetable.service</a> &gt; <span class="el_source">SearchCriteria.java</span></div><h1>SearchCriteria.java</h1><pre class="source lang-java linenums">package au.edu.flinders.timetable.service;
+
+import java.time.LocalTime;
+
+/**
+ * Holds structured search criteria for class queries.
+ * String fields use case-insensitive partial matching; null or blank means &quot;any&quot;.
+ * Integer fields use exact matching; -1 means &quot;any&quot;.
+ * LocalTime fields use exact matching; null means &quot;any&quot;.
+ */
+<span class="fc" id="L11">public class SearchCriteria {</span>
+
+    /** Partial match on course code (e.g. &quot;COMP&quot;). */
+    public String    courseCode;
+
+    /** Partial match on topic name. */
+    public String    topicName;
+
+    /** Partial match on attendance mode (e.g. &quot;In person&quot;). */
+    public String    attendanceMode;
+
+    /** Partial match on campus name (e.g. &quot;Bedford Park&quot;). */
+    public String    campus;
+
+    /** Exact semester number; -1 = any. */
+<span class="fc" id="L26">    public int       semester        = -1;</span>
+
+    /** Exact availability number; -1 = any. */
+<span class="fc" id="L29">    public int       availabilityNumber = -1;</span>
+
+    /** Partial match on class type (e.g. &quot;Lecture&quot;). */
+    public String    classType;
+
+    /** Exact class instance number; -1 = any. */
+<span class="fc" id="L35">    public int       classInstance   = -1;</span>
+
+    /** Partial match on start of date range (e.g. &quot;02 Mar&quot;). */
+    public String    dateFrom;
+
+    /** Partial match on end of date range (e.g. &quot;16 Mar&quot;). */
+    public String    dateTo;
+
+    /** Partial match on day of week (e.g. &quot;Monday&quot;). */
+    public String    day;
+
+    /** Exact start time; null = any. */
+    public LocalTime startTime;
+
+    /** Exact end time; null = any. */
+    public LocalTime endTime;
+
+    /** Partial match on building name. */
+    public String    building;
+
+    /** Partial match on room identifier. */
+    public String    room;
+
+    /** Returns true when no criteria have been set (all are &quot;any&quot;). */
+    public boolean isEmpty() {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        return isBlank(courseCode)</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            &amp;&amp; isBlank(topicName)</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            &amp;&amp; isBlank(attendanceMode)</span>
+<span class="fc bfc" id="L63" title="All 6 branches covered.">            &amp;&amp; isBlank(campus)</span>
+            &amp;&amp; semester             == -1
+            &amp;&amp; availabilityNumber   == -1
+<span class="fc bfc" id="L66" title="All 4 branches covered.">            &amp;&amp; isBlank(classType)</span>
+            &amp;&amp; classInstance        == -1
+<span class="fc bfc" id="L68" title="All 2 branches covered.">            &amp;&amp; isBlank(dateFrom)</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">            &amp;&amp; isBlank(dateTo)</span>
+<span class="fc bfc" id="L70" title="All 6 branches covered.">            &amp;&amp; isBlank(day)</span>
+            &amp;&amp; startTime            == null
+            &amp;&amp; endTime              == null
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            &amp;&amp; isBlank(building)</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">            &amp;&amp; isBlank(room);</span>
+    }
+
+    private static boolean isBlank(String s) {
+<span class="pc bpc" id="L78" title="1 of 4 branches missed.">        return s == null || s.isBlank();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

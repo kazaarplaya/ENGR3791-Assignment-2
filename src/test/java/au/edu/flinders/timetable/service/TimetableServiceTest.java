@@ -56,8 +56,7 @@ class TimetableServiceTest {
     }
 
     @Test
-    @DisplayName("Save timetable stores timetable by name")
-    @Tag("TC 5.01")
+    @DisplayName("TC 5.01 - Save timetable stores timetable by name")
     @Tag("Seth")
     @Tag("Critical")
     void saveTimetable_storesByName() {
@@ -70,8 +69,7 @@ class TimetableServiceTest {
     }
 
     @Test
-    @DisplayName("Save timetable rejects duplicate timetable name")
-    @Tag("TC 5.02")
+    @DisplayName("TC 5.02 - Save timetable rejects duplicate timetable name")
     @Tag("Seth")
     @Tag("Critical")
     void saveTimetable_rejectsDuplicateName() {
@@ -84,8 +82,7 @@ class TimetableServiceTest {
     }
 
     @Test
-    @DisplayName("Get all timetables returns saved timetables")
-    @Tag("TC 5.03")
+    @DisplayName("TC 5.03 - Get all timetables returns saved timetables")
     @Tag("Seth")
     @Tag("Core")
     void getAll_returnsSavedTimetables() {
@@ -102,8 +99,7 @@ class TimetableServiceTest {
     }
 
     @Test
-    @DisplayName("Delete timetable removes existing timetable")
-    @Tag("TC 5.04")
+    @DisplayName("TC 5.04 - Delete timetable removes existing timetable")
     @Tag("Seth")
     @Tag("Core")
     void deleteTimetable_removesExisting() {
@@ -117,8 +113,7 @@ class TimetableServiceTest {
     }
 
     @Test
-    @DisplayName("Delete missing timetable throws exception")
-    @Tag("TC 5.05")
+    @DisplayName("TC 5.05 - Delete missing timetable throws exception")
     @Tag("Seth")
     @Tag("Core")
     void deleteTimetable_missingThrowsException() {
@@ -126,8 +121,7 @@ class TimetableServiceTest {
     }
 
     @Test
-    @DisplayName("Swap class instance replaces old class ID with new class ID")
-    @Tag("TC 5.06")
+    @DisplayName("TC 5.06 - Swap class instance replaces old class ID with new class ID")
     @Tag("Seth")
     @Tag("Critical")
     void swapClassInstance_replacesClassId() {
@@ -147,8 +141,7 @@ class TimetableServiceTest {
     }
 
     @Test
-    @DisplayName("Swap class instance rejects different course code")
-    @Tag("TC 5.07")
+    @DisplayName("TC 5.07 - Swap class instance rejects different course code")
     @Tag("Seth")
     @Tag("Critical")
     void swapClassInstance_rejectsDifferentCourseCode() {
@@ -166,8 +159,7 @@ class TimetableServiceTest {
     }
 
     @Test
-    @DisplayName("Swap class instance rejects different class type")
-    @Tag("TC 5.08")
+    @DisplayName("TC 5.08 - Swap class instance rejects different class type")
     @Tag("Seth")
     @Tag("Critical")
     void swapClassInstance_rejectsDifferentClassType() {

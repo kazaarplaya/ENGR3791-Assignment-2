@@ -68,7 +68,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.01 printMenu renders all supplied options")
+    @DisplayName("TC 10.01 - printMenu renders all supplied options")
     @Tag("Hans")
     @Tag("Core")
     void printMenuRendersAllSuppliedOptions() {
@@ -84,7 +84,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.02 printSuccess, printError and printWarning include message text")
+    @DisplayName("TC 10.02 - printSuccess, printError and printWarning include message text")
     @Tag("Hans")
     @Tag("Core")
     void printNotificationsIncludeMessageText() {
@@ -101,7 +101,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.03 printClassList renders no-results state for empty list")
+    @DisplayName("TC 10.03 - printClassList renders no-results state for empty list")
     @Tag("Hans")
     @Tag("Core")
     void printClassListRendersNoResultsStateForEmptyList() {
@@ -111,7 +111,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.04 printClassList renders compact class details")
+    @DisplayName("TC 10.04 - printClassList renders compact class details")
     @Tag("Hans")
     @Tag("Core")
     void printClassListRendersCompactClassDetails() {
@@ -136,7 +136,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.05 printBrowseList renders topic names from topic map")
+    @DisplayName("TC 10.05 - printBrowseList renders topic names from topic map")
     @Tag("Hans")
     @Tag("Core")
     void printBrowseListRendersTopicNamesFromTopicMap() {
@@ -162,7 +162,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.06 printBrowseList handles empty class list with warning")
+    @DisplayName("TC 10.06 - printBrowseList handles empty class list with warning")
     @Tag("Hans")
     @Tag("Core")
     void printBrowseListHandlesEmptyClassListWithWarning() {
@@ -172,7 +172,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.07 printViewList renders unknown topic when topic map has no entry")
+    @DisplayName("TC 10.07 - printViewList renders unknown topic when topic map has no entry")
     @Tag("Hans")
     @Tag("Core")
     void printViewListRendersUnknownTopicWhenTopicMapHasNoEntry() {
@@ -196,7 +196,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.08 printTimetable renders empty timetable grid without class legend")
+    @DisplayName("TC 10.08 - printTimetable renders empty timetable grid without class legend")
     @Tag("Hans")
     @Tag("Core")
     void printTimetableRendersEmptyTimetableGridWithoutClassLegend() {
@@ -214,7 +214,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.09 printTimetable marks overlapping classes with clash indicator")
+    @DisplayName("TC 10.09 - printTimetable marks overlapping classes with clash indicator")
     @Tag("Hans")
     @Tag("Critical")
     void printTimetableMarksOverlappingClassesWithClashIndicator() {
@@ -249,8 +249,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.10 – printBanner outputs ASCII art box with STUDENT text")
-    @Tag("TC 10.10")
+    @DisplayName("TC 10.10 - printBanner outputs ASCII art box with STUDENT text")
     @Tag("Luke")
     @Tag("Core")
     void printBannerOutputsAsciiArtBox() {
@@ -266,8 +265,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.11 – printClassList truncates entry longer than 60 chars")
-    @Tag("TC 10.11")
+    @DisplayName("TC 10.11 - printClassList truncates entry longer than 60 chars")
     @Tag("Luke")
     @Tag("Core")
     void printClassListTruncatesLongEntry() {
@@ -286,8 +284,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.12 – printViewList shows warning for empty class list")
-    @Tag("TC 10.12")
+    @DisplayName("TC 10.12 - printViewList shows warning for empty class list")
     @Tag("Luke")
     @Tag("Core")
     void printViewListShowsWarningForEmptyList() {
@@ -297,8 +294,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.13 – printViewList renders topic name, campus and semester when topic present")
-    @Tag("TC 10.13")
+    @DisplayName("TC 10.13 - printViewList renders topic name, campus and semester when topic present")
     @Tag("Luke")
     @Tag("Core")
     void printViewListRenderTopicDetailsWhenTopicPresent() {
@@ -317,8 +313,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.14 – printViewList renders blank room without comma separator")
-    @Tag("TC 10.14")
+    @DisplayName("TC 10.14 - printViewList renders blank room without comma separator")
     @Tag("Luke")
     @Tag("Core")
     void printViewListBlankRoomOmitsCommaSeparator() {
@@ -336,8 +331,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.15 – printViewList renders separator between multiple entries")
-    @Tag("TC 10.15")
+    @DisplayName("TC 10.15 - printViewList renders separator between multiple entries")
     @Tag("Luke")
     @Tag("Core")
     void printViewListRendersSeparatorBetweenMultipleEntries() {
@@ -353,8 +347,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.16 – printTimetable shows yes for overlap and preference flags")
-    @Tag("TC 10.16")
+    @DisplayName("TC 10.16 - printTimetable shows yes for overlap and preference flags")
     @Tag("Luke")
     @Tag("Core")
     void printTimetableShowsYesForOverlapAndPreferenceFlags() {
@@ -370,8 +363,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.17 – printBrowseList uses empty string when topic not in map")
-    @Tag("TC 10.17")
+    @DisplayName("TC 10.17 - printBrowseList uses empty string when topic not in map")
     @Tag("Luke")
     @Tag("Core")
     void printBrowseListUsesEmptyTopicWhenNotInMap() {
@@ -384,8 +376,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.18 – printBrowseList truncates topic name longer than 17 chars")
-    @Tag("TC 10.18")
+    @DisplayName("TC 10.18 - printBrowseList truncates topic name longer than 17 chars")
     @Tag("Luke")
     @Tag("Core")
     void printBrowseListTruncatesLongTopicName() {
@@ -399,8 +390,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.19 – printBrowseList truncates type+group longer than 10 chars")
-    @Tag("TC 10.19")
+    @DisplayName("TC 10.19 - printBrowseList truncates type+group longer than 10 chars")
     @Tag("Luke")
     @Tag("Core")
     void printBrowseListTruncatesLongTypeGroup() {
@@ -416,8 +406,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.20 – printBrowseList shows --- for null day")
-    @Tag("TC 10.20")
+    @DisplayName("TC 10.20 - printBrowseList shows --- for null day")
     @Tag("Luke")
     @Tag("Core")
     void printBrowseListShowsDashesForNullDay() {
@@ -433,8 +422,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.21 – printBrowseList shows empty time when startTime is null")
-    @Tag("TC 10.21")
+    @DisplayName("TC 10.21 - printBrowseList shows empty time when startTime is null")
     @Tag("Luke")
     @Tag("Core")
     void printBrowseListShowsEmptyTimeWhenStartTimeNull() {
@@ -451,8 +439,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.22 – printBrowseList shows empty location when building is null")
-    @Tag("TC 10.22")
+    @DisplayName("TC 10.22 - printBrowseList shows empty location when building is null")
     @Tag("Luke")
     @Tag("Core")
     void printBrowseListShowsEmptyLocationWhenBuildingNull() {
@@ -466,8 +453,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.23 – printBrowseList truncates location longer than 9 chars")
-    @Tag("TC 10.23")
+    @DisplayName("TC 10.23 - printBrowseList truncates location longer than 9 chars")
     @Tag("Luke")
     @Tag("Core")
     void printBrowseListTruncatesLongLocation() {
@@ -483,8 +469,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.24 – printTimetable shows --- for class with null day in legend")
-    @Tag("TC 10.24")
+    @DisplayName("TC 10.24 - printTimetable shows --- for class with null day in legend")
     @Tag("Luke")
     @Tag("Core")
     void printTimetableShowsDashesForNullDayInLegend() {
@@ -501,8 +486,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.25 – printTimetable shows empty fields for null startTime endTime building room in legend")
-    @Tag("TC 10.25")
+    @DisplayName("TC 10.25 - printTimetable shows empty fields for null startTime endTime building room in legend")
     @Tag("Luke")
     @Tag("Core")
     void printTimetableHandlesNullTimesBuildingRoomInLegend() {
@@ -517,8 +501,7 @@ class ConsoleViewTest {
     }
 
     @Test
-    @DisplayName("TC 10.26 – printTimetable excludes class with null times from grid slots")
-    @Tag("TC 10.26")
+    @DisplayName("TC 10.26 - printTimetable excludes class with null times from grid slots")
     @Tag("Luke")
     @Tag("Core")
     void printTimetableExcludesNullTimeClassFromGridSlots() {

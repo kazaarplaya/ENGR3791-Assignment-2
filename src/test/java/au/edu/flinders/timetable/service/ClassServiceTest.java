@@ -45,7 +45,7 @@ class ClassServiceTest {
     //TC 2.01
     @Test
     @Order(1)
-    @DisplayName("Save Class stores by Class ID")
+    @DisplayName("TC 2.01 - Save Class stores by Class ID")
     @Tag("Thomas")
     @Tag("Critical")
     void save_storesClassByClassId() {
@@ -63,7 +63,7 @@ class ClassServiceTest {
     //TC 2.02
     @Test
     @Order(2)
-    @DisplayName("Find class by ID returns the stored class")
+    @DisplayName("TC 2.02 - Find class by ID returns the stored class")
     @Tag("Thomas")
     @Tag("Critical")
     void findClassbyID() {
@@ -84,7 +84,7 @@ class ClassServiceTest {
     //TC 2.03
     @Test
     @Order(3)
-    @DisplayName("Find class by ID returns empty when class is empty")
+    @DisplayName("TC 2.03 - Find class by ID returns empty when class is empty")
     @Tag("Thomas")
     @Tag("Core")
     void emptyClasreturnsEmpty() {
@@ -95,7 +95,7 @@ class ClassServiceTest {
     //Tc 2.04
     @Test
     @Order(4)
-    @DisplayName("Find classes by course code returns matching classes only")
+    @DisplayName("TC 2.04 - Find classes by course code returns matching classes only")
     @Tag("Thomas")
     @Tag("Critical")
     void getClassesForTopic_returnsMatchingCourseOnly() {
@@ -120,7 +120,7 @@ class ClassServiceTest {
     //TC 2.05
     @Test
     @Order(5)
-    @DisplayName("Update class replaces exisitng class details")
+    @DisplayName("TC 2.05 - Update class replaces exisitng class details")
     @Tag("Thomas")
     @Tag("Core")
     void updateClassReplacesOriginal() {
@@ -157,7 +157,7 @@ class ClassServiceTest {
     //TC 2.06
     @Test
     @Order(6)
-    @DisplayName("Update missing class throws IllegalArgumentException")
+    @DisplayName("TC 2.06 - Update missing class throws IllegalArgumentException")
     @Tag("Thomas")
     @Tag("Core")
     void updateClass_nonExistentClass_throwsIllegalArgumentException() {
@@ -173,7 +173,7 @@ class ClassServiceTest {
     //TC 2.07
     @Test
     @Order(7)
-    @DisplayName("Delete class removes it from the repository")
+    @DisplayName("TC 2.07 - Delete class removes it from the repository")
     @Tag("Thomas")
     @Tag("Critical")
     void deleteClass_removesExistingClass() {
@@ -191,7 +191,7 @@ class ClassServiceTest {
     //TC 2,08
     @Test
     @Order(8)
-    @DisplayName("Delete missing class throws IllegalArgumentException")
+    @DisplayName("TC 2.08 - Delete missing class throws IllegalArgumentException")
     @Tag("Thomas")
     @Tag("Core")
     void deleteClass_nonExistentClass_throwsIllegalArgumentException() {
@@ -201,7 +201,7 @@ class ClassServiceTest {
 
     @Test
     @Order(9)
-    @DisplayName("Grouped Classes combine related date ranges")
+    @DisplayName("TC 2.09 - Grouped Classes combine related date ranges")
     @Tag("Thomas")
     @Tag("Critical")
     void getGroupedClasses_sameGroup_mergesDateRange() {
@@ -225,7 +225,7 @@ class ClassServiceTest {
 
     @Test
     @Order(10)
-    @DisplayName("Grouped classes keep seperate class instances apart")
+    @DisplayName("TC 2.10 - Grouped classes keep seperate class instances apart")
     @Tag("Thomas")
     @Tag("Core")
     void getGroupedClasses_differentInstances_remainSeparate() {
@@ -248,7 +248,7 @@ class ClassServiceTest {
 
     @Test
     @Order(11)
-    @DisplayName("TC 2.11 – getAllClasses returns all stored classes")
+    @DisplayName("TC 2.11 - getAllClasses returns all stored classes")
     @Tag("Luke")
     @Tag("Core")
     void getAllClassesReturnsAllStoredClasses() {
@@ -266,7 +266,7 @@ class ClassServiceTest {
 
     @Test
     @Order(12)
-    @DisplayName("TC 2.12 – getClassesByCampus returns classes whose topic campus matches")
+    @DisplayName("TC 2.12 - getClassesByCampus returns classes whose topic campus matches")
     @Tag("Luke")
     @Tag("Core")
     void getClassesByCampusReturnsCampusMatchingClasses() {
@@ -283,7 +283,7 @@ class ClassServiceTest {
 
     @Test
     @Order(13)
-    @DisplayName("TC 2.13 – getClassesByCampus returns empty when topic campus does not match")
+    @DisplayName("TC 2.13 - getClassesByCampus returns empty when topic campus does not match")
     @Tag("Luke")
     @Tag("Core")
     void getClassesByCampusReturnsEmptyWhenCampusDoesNotMatch() {
@@ -299,7 +299,7 @@ class ClassServiceTest {
 
     @Test
     @Order(14)
-    @DisplayName("TC 2.14 – getClassesByCampus returns empty when class has no matching topic")
+    @DisplayName("TC 2.14 - getClassesByCampus returns empty when class has no matching topic")
     @Tag("Luke")
     @Tag("Core")
     void getClassesByCampusReturnsEmptyWhenNoTopicExistsForClass() {
@@ -314,7 +314,7 @@ class ClassServiceTest {
 
     @Test
     @Order(15)
-    @DisplayName("TC 2.15 – getGroupedClassesForTopic returns only entries matching course code")
+    @DisplayName("TC 2.15 - getGroupedClassesForTopic returns only entries matching course code")
     @Tag("Luke")
     @Tag("Core")
     void getGroupedClassesForTopicReturnsMatchingCourseCodeOnly() {
@@ -333,7 +333,7 @@ class ClassServiceTest {
 
     @Test
     @Order(16)
-    @DisplayName("TC 2.16 – getGroupedClasses handles invalid date string without throwing")
+    @DisplayName("TC 2.16 - getGroupedClasses handles invalid date string without throwing")
     @Tag("Luke")
     @Tag("Core")
     void getGroupedClassesInvalidDateStringDoesNotThrow() {

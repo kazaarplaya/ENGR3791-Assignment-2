@@ -22,8 +22,7 @@ class UserTest {
 
     @Test
     @Order(1)
-    @DisplayName("TC X.01 – getUserId returns the user ID supplied at construction")
-    @Tag("TC X.01")
+    @DisplayName("TC 16.01 - getUserId returns the user ID supplied at construction")
     @Tag("Luke")
     @Tag("Core")
     void getUserIdReturnsConstructedId() {
@@ -32,8 +31,7 @@ class UserTest {
 
     @Test
     @Order(2)
-    @DisplayName("TC X.02 – getName returns the display name supplied at construction")
-    @Tag("TC X.02")
+    @DisplayName("TC 16.02 - getName returns the display name supplied at construction")
     @Tag("Luke")
     @Tag("Core")
     void getNameReturnsConstructedName() {
@@ -42,8 +40,7 @@ class UserTest {
 
     @Test
     @Order(3)
-    @DisplayName("TC X.03 – getEnrolledTopics returns empty list before any enrolment")
-    @Tag("TC X.03")
+    @DisplayName("TC 16.03 - getEnrolledTopics returns empty list before any enrolment")
     @Tag("Luke")
     @Tag("Core")
     void getEnrolledTopicsEmptyBeforeEnrolment() {
@@ -52,8 +49,7 @@ class UserTest {
 
     @Test
     @Order(4)
-    @DisplayName("TC X.04 – enrol adds course code to enrolled topics")
-    @Tag("TC X.04")
+    @DisplayName("TC 16.04 - enrol adds course code to enrolled topics")
     @Tag("Luke")
     @Tag("Core")
     void enrolAddsCourseCodeToEnrolledTopics() {
@@ -64,8 +60,7 @@ class UserTest {
 
     @Test
     @Order(5)
-    @DisplayName("TC X.05 – enrol is a no-op when course code already enrolled")
-    @Tag("TC X.05")
+    @DisplayName("TC 16.05 - enrol is a no-op when course code already enrolled")
     @Tag("Luke")
     @Tag("Core")
     void enrolDuplicateCourseCodeIsNoOp() {
@@ -77,8 +72,7 @@ class UserTest {
 
     @Test
     @Order(6)
-    @DisplayName("TC X.06 – withdraw removes course code from enrolled topics")
-    @Tag("TC X.06")
+    @DisplayName("TC 16.06 - withdraw removes course code from enrolled topics")
     @Tag("Luke")
     @Tag("Core")
     void withdrawRemovesCourseCode() {
@@ -90,8 +84,7 @@ class UserTest {
 
     @Test
     @Order(7)
-    @DisplayName("TC X.07 – withdraw is a no-op when course code not enrolled")
-    @Tag("TC X.07")
+    @DisplayName("TC 16.07 - withdraw is a no-op when course code not enrolled")
     @Tag("Luke")
     @Tag("Core")
     void withdrawNotEnrolledIsNoOp() {
@@ -101,8 +94,7 @@ class UserTest {
 
     @Test
     @Order(8)
-    @DisplayName("TC X.08 – isEnrolled returns false when course code not enrolled")
-    @Tag("TC X.08")
+    @DisplayName("TC 16.08 - isEnrolled returns false when course code not enrolled")
     @Tag("Luke")
     @Tag("Core")
     void isEnrolledReturnsFalseWhenNotEnrolled() {
@@ -111,8 +103,7 @@ class UserTest {
 
     @Test
     @Order(9)
-    @DisplayName("TC X.09 – getEnrolledTopics returns unmodifiable list")
-    @Tag("TC X.09")
+    @DisplayName("TC 16.09 - getEnrolledTopics returns unmodifiable list")
     @Tag("Luke")
     @Tag("Core")
     void getEnrolledTopicsReturnsUnmodifiableList() {
@@ -124,8 +115,7 @@ class UserTest {
 
     @Test
     @Order(10)
-    @DisplayName("TC X.10 – getEnrolledTopics reflects multiple enrolments in order")
-    @Tag("TC X.10")
+    @DisplayName("TC 16.10 - getEnrolledTopics reflects multiple enrolments in order")
     @Tag("Luke")
     @Tag("Core")
     void getEnrolledTopicsReflectsMultipleEnrolmentsInOrder() {
@@ -138,8 +128,7 @@ class UserTest {
 
     @Test
     @Order(11)
-    @DisplayName("TC X.11 – toString returns non-null string containing userId and name")
-    @Tag("TC X.11")
+    @DisplayName("TC 16.11 - toString returns non-null string containing userId and name")
     @Tag("Luke")
     @Tag("Core")
     void toStringContainsUserIdAndName() {

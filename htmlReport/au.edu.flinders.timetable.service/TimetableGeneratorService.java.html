@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TimetableGeneratorService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in timetable Coverage Results</a> &gt; <a href="index.source.html" class="el_package">au.edu.flinders.timetable.service</a> &gt; <span class="el_source">TimetableGeneratorService.java</span></div><h1>TimetableGeneratorService.java</h1><pre class="source lang-java linenums">package au.edu.flinders.timetable.service;
+
+import au.edu.flinders.timetable.model.ClassEntry;
+import au.edu.flinders.timetable.model.Preference;
+import au.edu.flinders.timetable.model.Timetable;
+import au.edu.flinders.timetable.model.Topic;
+import au.edu.flinders.timetable.model.User;
+import au.edu.flinders.timetable.repository.ClassRepository;
+import au.edu.flinders.timetable.repository.PreferenceRepository;
+import au.edu.flinders.timetable.repository.TopicRepository;
+
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+/**
+ * Generates an optimised Timetable for a user based on semester, campus selections,
+ * preferences, and clash detection rules.
+ */
+public class TimetableGeneratorService {
+
+    private static final String CITY         = &quot;city&quot;;
+    private static final String BEDFORD_PARK = &quot;bedford park&quot;;
+    private static final String TONSLEY      = &quot;tonsley&quot;;
+    private static final String FESTIVAL_TOWER = &quot;festival tower&quot;;
+    private static final String TONSLEY_PREFIX = &quot;tonsley&quot;;
+
+    private final ClassRepository      classRepository;
+    private final TopicRepository      topicRepository;
+    private final PreferenceRepository preferenceRepository;
+    private final TimetableService     timetableService;
+
+    /** Constructs the generator with all required dependencies. */
+    public TimetableGeneratorService(ClassRepository classRepository,
+                                     TopicRepository topicRepository,
+                                     PreferenceRepository preferenceRepository,
+<span class="fc" id="L41">                                     TimetableService timetableService) {</span>
+<span class="fc" id="L42">        this.classRepository     = classRepository;</span>
+<span class="fc" id="L43">        this.topicRepository     = topicRepository;</span>
+<span class="fc" id="L44">        this.preferenceRepository = preferenceRepository;</span>
+<span class="fc" id="L45">        this.timetableService    = timetableService;</span>
+<span class="fc" id="L46">    }</span>
+
+    // ── Public generate overloads ─────────────────────────────────────────────
+
+    /**
+     * Backward-compatible 5-argument overload (semester = 0 = both semesters).
+     * Preserved so existing unit tests continue to compile without modification.
+     */
+    public Timetable generate(User user,
+                              Map&lt;String, String&gt; campusSelections,
+                              boolean allowLectureOverlap,
+                              boolean applyPreferences,
+                              String optionalName) {
+<span class="fc" id="L59">        return generate(user, campusSelections, allowLectureOverlap,</span>
+                        applyPreferences, optionalName, 0);
+    }
+
+    /**
+     * Generates and saves an optimised Timetable for the given user.
+     *
+     * @param user                the student whose enrolled topics are used
+     * @param campusSelections    map of courseCode to the campus label chosen for that topic
+     * @param allowLectureOverlap whether back-to-back lectures between campuses are permitted
+     * @param applyPreferences    whether to filter using the user's saved preferences
+     * @param optionalName        desired timetable name; blank/null = auto-generate
+     * @param semester            1 = Sem 1 only, 2 = Sem 2 only, 0 = both
+     * @return the saved Timetable
+     * @throws IllegalStateException    when no valid classes remain for a topic after filtering
+     * @throws IllegalArgumentException when the timetable name already exists
+     */
+    public Timetable generate(User user,
+                              Map&lt;String, String&gt; campusSelections,
+                              boolean allowLectureOverlap,
+                              boolean applyPreferences,
+                              String optionalName,
+                              int semester) {
+
+<span class="pc bpc" id="L83" title="1 of 4 branches missed.">        String name = (optionalName != null &amp;&amp; !optionalName.isBlank())</span>
+<span class="fc" id="L84">            ? optionalName : timetableService.generateUniqueName();</span>
+
+<span class="fc" id="L86">        Timetable timetable = new Timetable(name,</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">            semester == 0 ? &quot;&quot; : &quot;Semester &quot; + semester,</span>
+            allowLectureOverlap, applyPreferences);
+
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        Optional&lt;Preference&gt; prefOpt = applyPreferences</span>
+<span class="fc" id="L91">            ? preferenceRepository.findByUserId(user.getUserId())</span>
+<span class="fc" id="L92">            : Optional.empty();</span>
+
+<span class="fc" id="L94">        List&lt;ClassEntry&gt; accepted = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        for (String courseCode : user.getEnrolledTopics()) {</span>
+<span class="fc" id="L97">            List&lt;ClassEntry&gt; candidates = classRepository.findByCourseCode(courseCode);</span>
+
+            // Semester filter
+<span class="fc bfc" id="L100" title="All 2 branches covered.">            if (semester != 0) {</span>
+<span class="fc" id="L101">                final int sem = semester;</span>
+<span class="fc" id="L102">                candidates = candidates.stream()</span>
+<span class="fc" id="L103">                    .filter(c -&gt; topicRepository.findByCourseCode(c.getCourseCode())</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">                        .map(t -&gt; t.getSemester() == sem).orElse(true))</span>
+<span class="fc" id="L105">                    .collect(Collectors.toList());</span>
+            }
+
+            // Campus constraint per topic (City/non-City exclusion rule)
+<span class="fc" id="L109">            String selectedCampus = campusSelections.getOrDefault(courseCode, &quot;&quot;);</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">            if (!selectedCampus.isBlank()) {</span>
+<span class="fc" id="L111">                candidates = applyCampusConstraint(candidates, courseCode, selectedCampus);</span>
+            }
+
+            // Preference filters
+<span class="fc bfc" id="L115" title="All 4 branches covered.">            if (applyPreferences &amp;&amp; prefOpt.isPresent()) {</span>
+<span class="fc" id="L116">                candidates = applyPreferenceFilters(candidates, prefOpt.get());</span>
+            }
+
+<span class="fc bfc" id="L119" title="All 2 branches covered.">            if (candidates.isEmpty()) {</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">                String campusMsg = selectedCampus.isBlank() ? &quot;any campus&quot; : selectedCampus;</span>
+<span class="fc" id="L121">                throw new IllegalStateException(</span>
+                    &quot;No classes available for topic &quot; + courseCode + &quot; at &quot; + campusMsg + &quot;.&quot;);
+            }
+
+<span class="fc bfc" id="L125" title="All 2 branches covered.">            for (ClassEntry candidate : candidates) {</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">                if (!hasClash(candidate, accepted, allowLectureOverlap)) {</span>
+<span class="fc" id="L127">                    accepted.add(candidate);</span>
+<span class="fc" id="L128">                    timetable.addClass(candidate.getClassId());</span>
+                }
+<span class="fc" id="L130">            }</span>
+<span class="fc" id="L131">        }</span>
+
+<span class="fc" id="L133">        timetableService.save(timetable);</span>
+<span class="fc" id="L134">        return timetable;</span>
+    }
+
+    /**
+     * Builds and saves a timetable from an explicitly supplied list of ClassEntry objects.
+     * Unlike generate(), no candidate filtering is applied — the caller has already chosen
+     * the specific class instances. Clash detection still runs; clashing classes are added
+     * to the timetable AND a warning is printed so the student can see the conflict in the grid.
+     *
+     * @param user                 the student (used only for name generation)
+     * @param selectedClasses      the exact ClassEntry instances chosen by the student
+     * @param allowLectureOverlap  forwarded to the clash detection rules
+     * @param applyPreferences     stored in the Timetable metadata flag only
+     * @param optionalName         desired name; blank/null = auto-generate
+     * @param semester             stored in the Timetable metadata string only
+     * @return the saved Timetable
+     * @throws IllegalArgumentException when the timetable name already exists
+     */
+    public Timetable generateFromSelections(User user,
+                                            List&lt;ClassEntry&gt; selectedClasses,
+                                            boolean allowLectureOverlap,
+                                            boolean applyPreferences,
+                                            String optionalName,
+                                            int semester) {
+<span class="pc bpc" id="L158" title="1 of 4 branches missed.">        String name = (optionalName != null &amp;&amp; !optionalName.isBlank())</span>
+<span class="fc" id="L159">            ? optionalName : timetableService.generateUniqueName();</span>
+
+<span class="fc" id="L161">        Timetable timetable = new Timetable(name,</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">            semester == 0 ? &quot;&quot; : &quot;Semester &quot; + semester,</span>
+            allowLectureOverlap, applyPreferences);
+
+<span class="fc" id="L165">        List&lt;ClassEntry&gt; accepted = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L167" title="All 2 branches covered.">        for (ClassEntry candidate : selectedClasses) {</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">            if (hasClash(candidate, accepted, allowLectureOverlap)) {</span>
+<span class="fc" id="L169">                System.err.println(&quot;[WARN] Clash detected for &quot;</span>
+<span class="fc" id="L170">                    + candidate.getCourseCode() + &quot; &quot; + candidate.getType()</span>
+<span class="fc" id="L171">                    + &quot; #&quot; + candidate.getClassInstance()</span>
+                    + &quot; — included in timetable; check the grid for conflicts.&quot;);
+            }
+            // Always add the student's explicit selection, clash or not.
+<span class="fc" id="L175">            timetable.addClass(candidate.getClassId());</span>
+<span class="fc" id="L176">            accepted.add(candidate);</span>
+<span class="fc" id="L177">        }</span>
+
+<span class="fc" id="L179">        timetableService.save(timetable);</span>
+<span class="fc" id="L180">        return timetable;</span>
+    }
+
+    // ── Campus constraint ─────────────────────────────────────────────────────
+
+    /**
+     * Enforces the City / non-City exclusion rule for a single topic.
+     * City selected   → keep only classes in Festival Tower (City campus).
+     * Non-City selected → exclude classes in Festival Tower; Bedford Park/Tonsley may coexist.
+     */
+    private List&lt;ClassEntry&gt; applyCampusConstraint(List&lt;ClassEntry&gt; candidates,
+                                                    String courseCode,
+                                                    String selectedCampus) {
+<span class="fc bfc" id="L193" title="All 2 branches covered.">        boolean citySelected = selectedCampus.equalsIgnoreCase(&quot;City&quot;)</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">                            || selectedCampus.equalsIgnoreCase(&quot;Flinders City Campus&quot;);</span>
+
+<span class="fc" id="L196">        List&lt;ClassEntry&gt; filtered = candidates.stream()</span>
+<span class="fc" id="L197">            .filter(c -&gt; {</span>
+<span class="fc" id="L198">                String classCampus = inferCampusFromBuilding(c.getBuilding());</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">                return citySelected</span>
+<span class="fc" id="L200">                    ? classCampus.equalsIgnoreCase(&quot;City&quot;)</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">                    : !classCampus.equalsIgnoreCase(&quot;City&quot;);</span>
+            })
+<span class="fc" id="L203">            .collect(Collectors.toList());</span>
+
+        // Fallback: match by Topic.campus when building inference yields nothing.
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        if (filtered.isEmpty()) {</span>
+<span class="fc" id="L207">            filtered = candidates.stream()</span>
+<span class="fc" id="L208">                .filter(c -&gt; topicRepository.findByCourseCode(c.getCourseCode())</span>
+<span class="pc" id="L209">                    .map(t -&gt; t.getCampus().equalsIgnoreCase(selectedCampus)).orElse(false))</span>
+<span class="fc" id="L210">                .collect(Collectors.toList());</span>
+        }
+
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (filtered.isEmpty()) {</span>
+<span class="fc" id="L214">            throw new IllegalStateException(</span>
+                &quot;No classes available for topic &quot; + courseCode
+                    + &quot; at campus &quot; + selectedCampus + &quot;.&quot;);
+        }
+<span class="fc" id="L218">        return filtered;</span>
+    }
+
+    /** Infers the campus name from a building string. */
+    private String inferCampusFromBuilding(String building) {
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">        if (building == null) return &quot;Bedford Park&quot;;</span>
+<span class="fc" id="L224">        String b = building.toLowerCase();</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">        if (b.contains(FESTIVAL_TOWER)) return &quot;City&quot;;</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">        if (b.contains(TONSLEY_PREFIX)) return &quot;Tonsley&quot;;</span>
+<span class="fc" id="L227">        return &quot;Bedford Park&quot;;</span>
+    }
+
+    // ── Preference filters ────────────────────────────────────────────────────
+
+    /**
+     * Applies preference tokens in priority order.
+     * A token is skipped if applying it would empty the candidate list.
+     */
+    private List&lt;ClassEntry&gt; applyPreferenceFilters(List&lt;ClassEntry&gt; candidates,
+                                                     Preference pref) {
+<span class="fc" id="L238">        List&lt;ClassEntry&gt; result = new ArrayList&lt;&gt;(candidates);</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">        for (String token : pref.getPriorityOrder()) {</span>
+<span class="fc" id="L240">            List&lt;ClassEntry&gt; filtered = applyToken(token, result);</span>
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">            if (!filtered.isEmpty()) result = filtered;</span>
+<span class="fc" id="L242">        }</span>
+<span class="fc" id="L243">        return result;</span>
+    }
+
+    /** Applies a single preference token as a filter. */
+    private List&lt;ClassEntry&gt; applyToken(String token, List&lt;ClassEntry&gt; candidates) {
+<span class="pc bpc" id="L248" title="7 of 12 branches missed.">        switch (token) {</span>
+            case Preference.CAMPUS_BEDFORD_PARK:
+<span class="fc" id="L250">                return candidates.stream()</span>
+<span class="fc" id="L251">                    .filter(c -&gt; inferCampusFromBuilding(c.getBuilding()).equalsIgnoreCase(&quot;Bedford Park&quot;))</span>
+<span class="fc" id="L252">                    .collect(Collectors.toList());</span>
+            case Preference.CAMPUS_TONSLEY:
+<span class="fc" id="L254">                return candidates.stream()</span>
+<span class="fc" id="L255">                    .filter(c -&gt; inferCampusFromBuilding(c.getBuilding()).equalsIgnoreCase(&quot;Tonsley&quot;))</span>
+<span class="fc" id="L256">                    .collect(Collectors.toList());</span>
+            case Preference.CAMPUS_CITY:
+<span class="fc" id="L258">                return candidates.stream()</span>
+<span class="fc" id="L259">                    .filter(c -&gt; inferCampusFromBuilding(c.getBuilding()).equalsIgnoreCase(&quot;City&quot;))</span>
+<span class="fc" id="L260">                    .collect(Collectors.toList());</span>
+            case Preference.TIME_MORNING:
+<span class="fc" id="L262">                return candidates.stream()</span>
+<span class="fc" id="L263">                    .filter(c -&gt; c.getStartTime().isBefore(LocalTime.of(12, 0)))</span>
+<span class="fc" id="L264">                    .collect(Collectors.toList());</span>
+            case Preference.TIME_AFTERNOON:
+<span class="nc" id="L266">                return candidates.stream()</span>
+<span class="nc" id="L267">                    .filter(c -&gt; {</span>
+<span class="nc" id="L268">                        LocalTime s = c.getStartTime();</span>
+<span class="nc bnc" id="L269" title="All 4 branches missed.">                        return !s.isBefore(LocalTime.of(12, 0)) &amp;&amp; s.isBefore(LocalTime.of(17, 0));</span>
+                    })
+<span class="nc" id="L271">                    .collect(Collectors.toList());</span>
+            case Preference.TIME_EVENING:
+<span class="nc" id="L273">                return candidates.stream()</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">                    .filter(c -&gt; !c.getStartTime().isBefore(LocalTime.of(17, 0)))</span>
+<span class="nc" id="L275">                    .collect(Collectors.toList());</span>
+            case Preference.DAY_MONDAY:
+<span class="nc bnc" id="L277" title="All 2 branches missed.">                return candidates.stream().filter(c -&gt; c.getDay() == DayOfWeek.MONDAY).collect(Collectors.toList());</span>
+            case Preference.DAY_TUESDAY:
+<span class="nc bnc" id="L279" title="All 2 branches missed.">                return candidates.stream().filter(c -&gt; c.getDay() == DayOfWeek.TUESDAY).collect(Collectors.toList());</span>
+            case Preference.DAY_WEDNESDAY:
+<span class="nc bnc" id="L281" title="All 2 branches missed.">                return candidates.stream().filter(c -&gt; c.getDay() == DayOfWeek.WEDNESDAY).collect(Collectors.toList());</span>
+            case Preference.DAY_THURSDAY:
+<span class="nc bnc" id="L283" title="All 2 branches missed.">                return candidates.stream().filter(c -&gt; c.getDay() == DayOfWeek.THURSDAY).collect(Collectors.toList());</span>
+            case Preference.DAY_FRIDAY:
+<span class="nc bnc" id="L285" title="All 2 branches missed.">                return candidates.stream().filter(c -&gt; c.getDay() == DayOfWeek.FRIDAY).collect(Collectors.toList());</span>
+            // CAMPUS_SAME, SPREAD, COMPACT: ordering hints only — no exclusion.
+            default:
+<span class="fc" id="L288">                return new ArrayList&lt;&gt;(candidates);</span>
+        }
+    }
+
+    // ── Clash detection ───────────────────────────────────────────────────────
+
+    /**
+     * Public clash check used by TimetableController when editing timetables.
+     * Returns true when candidate clashes with any class in the accepted list.
+     */
+    public boolean wouldClash(ClassEntry candidate,
+                               List&lt;ClassEntry&gt; accepted,
+                               boolean allowLectureOverlap) {
+<span class="nc" id="L301">        return hasClash(candidate, accepted, allowLectureOverlap);</span>
+    }
+
+    private boolean hasClash(ClassEntry candidate,
+                              List&lt;ClassEntry&gt; accepted,
+                              boolean allowLectureOverlap) {
+<span class="fc bfc" id="L307" title="All 2 branches covered.">        for (ClassEntry existing : accepted) {</span>
+<span class="pc bpc" id="L308" title="1 of 2 branches missed.">            if (existing.getDay() != candidate.getDay()) continue;</span>
+<span class="fc" id="L309">            String campusA = resolveCampus(existing);</span>
+<span class="fc" id="L310">            String campusB = resolveCampus(candidate);</span>
+<span class="fc bfc" id="L311" title="All 2 branches covered.">            if (clashes(existing, candidate, campusA, campusB, allowLectureOverlap)) return true;</span>
+<span class="fc" id="L312">        }</span>
+<span class="fc" id="L313">        return false;</span>
+    }
+
+    /**
+     * Rule evaluation order:
+     *   a. Same campus          → only direct time overlap is a clash.
+     *   g. City + any other     → unconditional 30-minute gap required.
+     *   b–f. Bedford + Tonsley  → gap varies by class type and overlap flag.
+     *   default                 → 30-minute gap required.
+     */
+    private boolean clashes(ClassEntry a, ClassEntry b,
+                            String campusA, String campusB,
+                            boolean allowLectureOverlap) {
+<span class="fc bfc" id="L326" title="All 2 branches covered.">        if (campusA.equalsIgnoreCase(campusB)) return timesOverlap(a, b);</span>
+
+<span class="pc bpc" id="L328" title="1 of 4 branches missed.">        boolean aCityOther = campusA.equalsIgnoreCase(CITY) &amp;&amp; !campusB.equalsIgnoreCase(CITY);</span>
+<span class="pc bpc" id="L329" title="3 of 4 branches missed.">        boolean bCityOther = campusB.equalsIgnoreCase(CITY) &amp;&amp; !campusA.equalsIgnoreCase(CITY);</span>
+<span class="pc bpc" id="L330" title="2 of 6 branches missed.">        if (aCityOther || bCityOther) return !hasGap(a, b, 30);</span>
+
+        // Bedford + Tonsley pair (or any other cross-campus combination)
+<span class="pc bpc" id="L333" title="3 of 4 branches missed.">        boolean bothNonLect  = !a.isLecture() &amp;&amp; !b.isLecture();</span>
+<span class="pc bpc" id="L334" title="2 of 4 branches missed.">        boolean bothLectures = a.isLecture() &amp;&amp; b.isLecture();</span>
+<span class="pc bpc" id="L335" title="3 of 4 branches missed.">        if (bothNonLect)  return !hasGap(a, b, 30);</span>
+<span class="pc bpc" id="L336" title="3 of 6 branches missed.">        if (bothLectures) return allowLectureOverlap ? timesOverlap(a, b) : !hasGap(a, b, 30);</span>
+<span class="nc bnc" id="L337" title="All 4 branches missed.">        return allowLectureOverlap ? timesOverlap(a, b) : !hasGap(a, b, 30);</span>
+    }
+
+    private boolean timesOverlap(ClassEntry a, ClassEntry b) {
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">        return a.getStartTime().isBefore(b.getEndTime())</span>
+<span class="fc bfc" id="L342" title="All 2 branches covered.">            &amp;&amp; b.getStartTime().isBefore(a.getEndTime());</span>
+    }
+
+    private boolean hasGap(ClassEntry a, ClassEntry b, int minGapMinutes) {
+<span class="fc" id="L346">        long gapAtoB = java.time.Duration.between(a.getEndTime(), b.getStartTime()).toMinutes();</span>
+<span class="fc" id="L347">        long gapBtoA = java.time.Duration.between(b.getEndTime(), a.getStartTime()).toMinutes();</span>
+<span class="pc bpc" id="L348" title="2 of 4 branches missed.">        return gapAtoB &gt;= minGapMinutes || gapBtoA &gt;= minGapMinutes;</span>
+    }
+
+
+    /** Resolves campus by building inference first, then Topic fallback. */
+    private String resolveCampus(ClassEntry c) {
+<span class="fc" id="L354">        String fromBuilding = inferCampusFromBuilding(c.getBuilding());</span>
+<span class="fc bfc" id="L355" title="All 2 branches covered.">        if (!fromBuilding.equalsIgnoreCase(&quot;Bedford Park&quot;)</span>
+<span class="pc bpc" id="L356" title="2 of 4 branches missed.">                || c.getBuilding() == null || c.getBuilding().isBlank()) {</span>
+<span class="fc" id="L357">            return fromBuilding.toLowerCase();</span>
+        }
+<span class="fc" id="L359">        return topicRepository.findByCourseCode(c.getCourseCode())</span>
+<span class="pc" id="L360">                .map(t -&gt; t.getCampus().toLowerCase())</span>
+<span class="fc" id="L361">                .orElse(&quot;bedford park&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

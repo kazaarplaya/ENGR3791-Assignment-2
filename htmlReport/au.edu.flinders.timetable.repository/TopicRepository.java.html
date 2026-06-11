@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TopicRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in timetable Coverage Results</a> &gt; <a href="index.source.html" class="el_package">au.edu.flinders.timetable.repository</a> &gt; <span class="el_source">TopicRepository.java</span></div><h1>TopicRepository.java</h1><pre class="source lang-java linenums">package au.edu.flinders.timetable.repository;
+
+import au.edu.flinders.timetable.model.Topic;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+/** In-memory store for Topic objects, keyed by courseCode. */
+<span class="fc" id="L12">public class TopicRepository {</span>
+
+<span class="fc" id="L14">    private final Map&lt;String, Topic&gt; store = new HashMap&lt;&gt;();</span>
+
+    /** Saves or overwrites the given Topic. */
+    public void save(Topic t) {
+<span class="fc" id="L18">        store.put(t.getCourseCode(), t);</span>
+<span class="fc" id="L19">    }</span>
+
+    /** Returns the Topic with the given course code, or empty if not found. */
+    public Optional&lt;Topic&gt; findByCourseCode(String courseCode) {
+<span class="fc" id="L23">        return Optional.ofNullable(store.get(courseCode));</span>
+    }
+
+    /** Returns all stored Topics as a new list. */
+    public List&lt;Topic&gt; findAll() {
+<span class="fc" id="L28">        return new ArrayList&lt;&gt;(store.values());</span>
+    }
+
+    /** Removes all stored Topics. */
+    public void clear() {
+<span class="fc" id="L33">        store.clear();</span>
+<span class="fc" id="L34">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

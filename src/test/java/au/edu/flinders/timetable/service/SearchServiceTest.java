@@ -123,8 +123,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("Keyword search matches course code")
-    @Tag("TC 3.01")
+    @DisplayName("TC 3.01 - Keyword search matches course code")
     @Tag("Hans")
     @Tag("Critical")
     void keywordSearchMatchesCourseCode() {
@@ -141,8 +140,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("Keyword search matches class type")
-    @Tag("TC 3.02")
+    @DisplayName("TC 3.02 - Keyword search matches class type")
     @Tag("Hans")
     @Tag("Core")
     void keywordSearchMatchesClassType() {
@@ -172,8 +170,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("Keyword search returns no classes with no valid matches")
-    @Tag("TC 3.03")
+    @DisplayName("TC 3.37 - Keyword search returns no classes with no valid matches")
     @Tag("Hans")
     @Tag("Critical")
     void keywordSearchMatchesClassesWithNoValidCriteria() {
@@ -219,8 +216,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("Criteria search with no criteria returns all classes")
-    @Tag("TC 3.04")
+    @DisplayName("TC 3.03 - Criteria search with no criteria returns all classes")
     @Tag("Hans")
     @Tag("Critical")
     void criteriaSearchWithNoCriteriaReturnsAllClasses() {
@@ -268,8 +264,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("Criteria search filters by course code")
-    @Tag("TC 3.04b")
+    @DisplayName("TC 3.04 - Criteria search filters by course code")
     @Tag("Hans")
     @Tag("Critical")
     void criteriaSearchFiltersByCourseCode() {
@@ -318,8 +313,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("Criteria search filters by topic name")
-    @Tag("TC 3.05")
+    @DisplayName("TC 3.05 - Criteria search filters by topic name")
     @Tag("Hans")
     @Tag("Core")
     void criteriaSearchFiltersByTopicName() {
@@ -345,8 +339,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("Criteria search filters by attendance mode")
-    @Tag("TC 3.06")
+    @DisplayName("TC 3.06 - Criteria search filters by attendance mode")
     @Tag("Hans")
     @Tag("Core")
     void criteriaSearchFiltersByAttendanceMode() {
@@ -397,8 +390,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("Criteria search filters by campus")
-    @Tag("TC 3.07")
+    @DisplayName("TC 3.07 - Criteria search filters by campus")
     @Tag("Hans")
     @Tag("Core")
     void criteriaSearchFiltersByCampus() {
@@ -441,8 +433,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("Criteria search filters by semester")
-    @Tag("TC 3.08")
+    @DisplayName("TC 3.08 - Criteria search filters by semester")
     @Tag("Hans")
     @Tag("Core")
     void criteriaSearchFiltersBySemester() {
@@ -485,8 +476,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("Criteria search filters by day")
-    @Tag("TC 3.09")
+    @DisplayName("TC 3.09 - Criteria search filters by day")
     @Tag("Hans")
     @Tag("Core")
     void criteriaSearchFiltersByDay() {
@@ -537,8 +527,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("Criteria search applies multiple criteria")
-    @Tag("TC 3.10")
+    @DisplayName("TC 3.10 - Criteria search applies multiple criteria")
     @Tag("Hans")
     @Tag("Critical")
     void criteriaSearchAppliesMultipleCriteria() {
@@ -569,8 +558,7 @@ class SearchServiceTest {
 
 
     @Test
-    @DisplayName("TC 3.11 – Keyword search with null query returns all classes")
-    @Tag("TC 3.11")
+    @DisplayName("TC 3.11 - Keyword search with null query returns all classes")
     @Tag("Luke")
     @Tag("Core")
     void keywordSearchNullQueryReturnsAllClasses() {
@@ -583,8 +571,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.12 – Keyword search with blank query returns all classes")
-    @Tag("TC 3.12")
+    @DisplayName("TC 3.12 - Keyword search with blank query returns all classes")
     @Tag("Luke")
     @Tag("Core")
     void keywordSearchBlankQueryReturnsAllClasses() {
@@ -597,8 +584,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.13 – Criteria search with null SearchCriteria returns all classes")
-    @Tag("TC 3.13")
+    @DisplayName("TC 3.13 - Criteria search with null SearchCriteria returns all classes")
     @Tag("Luke")
     @Tag("Core")
     void criteriaSearchNullCriteriaReturnsAllClasses() {
@@ -611,8 +597,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.14 – Keyword search matches class ID")
-    @Tag("TC 3.14")
+    @DisplayName("TC 3.14 - Keyword search matches class ID")
     @Tag("Luke")
     @Tag("Core")
     void keywordSearchMatchesClassId() {
@@ -625,8 +610,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.15 – Keyword search matches building")
-    @Tag("TC 3.15")
+    @DisplayName("TC 3.15 - Keyword search matches building")
     @Tag("Luke")
     @Tag("Core")
     void keywordSearchMatchesBuilding() {
@@ -639,8 +623,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.16 – Keyword search matches room")
-    @Tag("TC 3.16")
+    @DisplayName("TC 3.16 - Keyword search matches room")
     @Tag("Luke")
     @Tag("Core")
     void keywordSearchMatchesRoom() {
@@ -653,8 +636,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.17 – Keyword search matches day of week")
-    @Tag("TC 3.17")
+    @DisplayName("TC 3.17 - Keyword search matches day of week")
     @Tag("Luke")
     @Tag("Core")
     void keywordSearchMatchesDay() {
@@ -667,8 +649,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.18 – Keyword search matches attendance mode")
-    @Tag("TC 3.18")
+    @DisplayName("TC 3.18 - Keyword search matches attendance mode")
     @Tag("Luke")
     @Tag("Core")
     void keywordSearchMatchesAttendanceMode() {
@@ -681,8 +662,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.19 – Keyword search matches dateFrom")
-    @Tag("TC 3.19")
+    @DisplayName("TC 3.19 - Keyword search matches dateFrom")
     @Tag("Luke")
     @Tag("Core")
     void keywordSearchMatchesDateFrom() {
@@ -695,8 +675,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.20 – Keyword search matches dateTo")
-    @Tag("TC 3.20")
+    @DisplayName("TC 3.20 - Keyword search matches dateTo")
     @Tag("Luke")
     @Tag("Core")
     void keywordSearchMatchesDateTo() {
@@ -709,8 +688,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.21 – Keyword search matches topic campus")
-    @Tag("TC 3.21")
+    @DisplayName("TC 3.21 - Keyword search matches topic campus")
     @Tag("Luke")
     @Tag("Core")
     void keywordSearchMatchesTopicCampus() {
@@ -723,8 +701,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.22 – Keyword search matches topic name")
-    @Tag("TC 3.22")
+    @DisplayName("TC 3.22 - Keyword search matches topic name")
     @Tag("Luke")
     @Tag("Core")
     void keywordSearchMatchesTopicName() {
@@ -737,8 +714,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.23 – Keyword search matches topic delivery")
-    @Tag("TC 3.23")
+    @DisplayName("TC 3.23 - Keyword search matches topic delivery")
     @Tag("Luke")
     @Tag("Core")
     void keywordSearchMatchesTopicDelivery() {
@@ -752,8 +728,7 @@ class SearchServiceTest {
 
 
     @Test
-    @DisplayName("TC 3.24 – Criteria topicName filter excludes class with no linked topic")
-    @Tag("TC 3.24")
+    @DisplayName("TC 3.24 - Criteria topicName filter excludes class with no linked topic")
     @Tag("Luke")
     @Tag("Core")
     void criteriaTopicNameExcludesClassWithNoTopic() {
@@ -766,8 +741,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.25 – Criteria campus filter excludes class with no linked topic")
-    @Tag("TC 3.25")
+    @DisplayName("TC 3.25 - Criteria campus filter excludes class with no linked topic")
     @Tag("Luke")
     @Tag("Core")
     void criteriaCampusExcludesClassWithNoTopic() {
@@ -780,8 +754,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.26 – Criteria semester filter excludes class with no linked topic")
-    @Tag("TC 3.26")
+    @DisplayName("TC 3.26 - Criteria semester filter excludes class with no linked topic")
     @Tag("Luke")
     @Tag("Core")
     void criteriaSemesterExcludesClassWithNoTopic() {
@@ -795,8 +768,7 @@ class SearchServiceTest {
 
 
     @Test
-    @DisplayName("TC 3.27 – Criteria search filters by availability number")
-    @Tag("TC 3.27")
+    @DisplayName("TC 3.27 - Criteria search filters by availability number")
     @Tag("Luke")
     @Tag("Core")
     void criteriaSearchFiltersByAvailabilityNumber() {
@@ -814,8 +786,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.28 – Criteria search filters by class type")
-    @Tag("TC 3.28")
+    @DisplayName("TC 3.28 - Criteria search filters by class type")
     @Tag("Luke")
     @Tag("Core")
     void criteriaSearchFiltersByClassType() {
@@ -833,8 +804,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.29 – Criteria search filters by class instance")
-    @Tag("TC 3.29")
+    @DisplayName("TC 3.29 - Criteria search filters by class instance")
     @Tag("Luke")
     @Tag("Core")
     void criteriaSearchFiltersByClassInstance() {
@@ -852,8 +822,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.30 – Criteria search filters by dateFrom")
-    @Tag("TC 3.30")
+    @DisplayName("TC 3.30 - Criteria search filters by dateFrom")
     @Tag("Luke")
     @Tag("Core")
     void criteriaSearchFiltersByDateFrom() {
@@ -871,8 +840,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.31 – Criteria search filters by dateTo")
-    @Tag("TC 3.31")
+    @DisplayName("TC 3.31 - Criteria search filters by dateTo")
     @Tag("Luke")
     @Tag("Core")
     void criteriaSearchFiltersByDateTo() {
@@ -890,8 +858,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.32 – Criteria day filter excludes class with null day")
-    @Tag("TC 3.32")
+    @DisplayName("TC 3.32 - Criteria day filter excludes class with null day")
     @Tag("Luke")
     @Tag("Core")
     void criteriaDayFilterExcludesNullDayClass() {
@@ -908,8 +875,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.33 – Criteria search filters by start time")
-    @Tag("TC 3.33")
+    @DisplayName("TC 3.33 - Criteria search filters by start time")
     @Tag("Luke")
     @Tag("Core")
     void criteriaSearchFiltersByStartTime() {
@@ -927,8 +893,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.34 – Criteria search filters by end time")
-    @Tag("TC 3.34")
+    @DisplayName("TC 3.34 - Criteria search filters by end time")
     @Tag("Luke")
     @Tag("Core")
     void criteriaSearchFiltersByEndTime() {
@@ -946,8 +911,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.35 – Criteria search filters by building")
-    @Tag("TC 3.35")
+    @DisplayName("TC 3.35 - Criteria search filters by building")
     @Tag("Luke")
     @Tag("Core")
     void criteriaSearchFiltersByBuilding() {
@@ -965,8 +929,7 @@ class SearchServiceTest {
     }
 
     @Test
-    @DisplayName("TC 3.36 – Criteria search filters by room")
-    @Tag("TC 3.36")
+    @DisplayName("TC 3.36 - Criteria search filters by room")
     @Tag("Luke")
     @Tag("Core")
     void criteriaSearchFiltersByRoom() {

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in timetable Coverage Results</a> &gt; <a href="index.source.html" class="el_package">au.edu.flinders.timetable.model</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package au.edu.flinders.timetable.model;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/** Represents a student user of the timetable application. */
+public class User {
+
+    private final String     userId;
+    private final String     name;
+    private final List&lt;String&gt; enrolledTopics;
+
+    /** Constructs a User with the given ID and display name. */
+<span class="fc" id="L15">    public User(String userId, String name) {</span>
+<span class="fc" id="L16">        this.userId         = userId;</span>
+<span class="fc" id="L17">        this.name           = name;</span>
+<span class="fc" id="L18">        this.enrolledTopics = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L19">    }</span>
+
+    /** Enrols this user in the topic identified by courseCode (no-op if already enrolled). */
+    public void enrol(String courseCode) {
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        if (!enrolledTopics.contains(courseCode)) {</span>
+<span class="fc" id="L24">            enrolledTopics.add(courseCode);</span>
+        }
+<span class="fc" id="L26">    }</span>
+
+    /** Withdraws this user from the topic identified by courseCode. */
+    public void withdraw(String courseCode) {
+<span class="fc" id="L30">        enrolledTopics.remove(courseCode);</span>
+<span class="fc" id="L31">    }</span>
+
+    /** Returns true when this user is enrolled in the given courseCode. */
+    public boolean isEnrolled(String courseCode) {
+<span class="fc" id="L35">        return enrolledTopics.contains(courseCode);</span>
+    }
+
+    /** Returns the user's unique ID. */
+<span class="fc" id="L39">    public String getUserId() { return userId; }</span>
+
+    /** Returns the user's display name. */
+<span class="fc" id="L42">    public String getName() { return name; }</span>
+
+    /** Returns an unmodifiable view of the enrolled course codes. */
+    public List&lt;String&gt; getEnrolledTopics() {
+<span class="fc" id="L46">        return Collections.unmodifiableList(enrolledTopics);</span>
+    }
+
+    /** Returns a readable summary of this user. */
+    @Override
+    public String toString() {
+<span class="fc" id="L52">        return String.format(&quot;User[id=%s, name=%s, topics=%s]&quot;, userId, name, enrolledTopics);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassServiceTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in timetable Coverage Results</a> &gt; <a href="index.source.html" class="el_package">au.edu.flinders.timetable.service</a> &gt; <span class="el_source">ClassServiceTest.java</span></div><h1>ClassServiceTest.java</h1><pre class="source lang-java linenums">package au.edu.flinders.timetable.service;
+
+import au.edu.flinders.timetable.model.ClassEntry;
+import au.edu.flinders.timetable.repository.ClassRepository;
+import au.edu.flinders.timetable.repository.TopicRepository;
+import au.edu.flinders.timetable.model.Topic;
+import org.junit.jupiter.api.*;
+
+
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+
+<span class="fc" id="L19">class ClassServiceTest {</span>
+
+    //Fields declared at class level, shared across all tests
+        private ClassRepository classRepo;
+        private TopicRepository topicRepo;
+        private ClassService classService;
+
+        //runs before each tests, giving clean empty repository
+        @BeforeEach
+        void setUp() {
+<span class="fc" id="L29">            classRepo = new ClassRepository();</span>
+<span class="fc" id="L30">            topicRepo = new TopicRepository();</span>
+<span class="fc" id="L31">            classService = new ClassService(classRepo, topicRepo);</span>
+<span class="fc" id="L32">        }</span>
+
+
+        //Convenience
+        private ClassEntry makeEntry(String classId, String courseCode, String type,
+                                     int instance, DayOfWeek day, LocalTime start,
+                                     LocalTime end, String dateFrom, String dateTo) {
+<span class="fc" id="L39">            return new ClassEntry(classId, type, null, start, end, day,</span>
+                    &quot;T1&quot;, &quot;G42&quot;, courseCode, &quot;In Person&quot;, 1, instance,
+                    dateFrom, dateTo);
+        }
+
+
+    //TC 2.01
+    @Test
+    @Order(1)
+    @DisplayName(&quot;TC 2.01 - Save Class stores by Class ID&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    void save_storesClassByClassId() {
+<span class="fc" id="L52">        ClassEntry entry = new ClassEntry(</span>
+                &quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;Lecture&quot;, null,
+<span class="fc" id="L54">                LocalTime.of(9, 0), LocalTime.of(11, 0),</span>
+                DayOfWeek.MONDAY, &quot;Registry&quot;, &quot;R101&quot;, &quot;COMP1001&quot;,
+                &quot;In person&quot;, 1, 1, &quot;01 Mar&quot;, &quot;01 Mar&quot;);
+
+<span class="fc" id="L58">        classRepo.save(entry);</span>
+
+<span class="fc" id="L60">        assertTrue(classRepo.exists(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;));</span>
+<span class="fc" id="L61">    }</span>
+
+    //TC 2.02
+    @Test
+    @Order(2)
+    @DisplayName(&quot;TC 2.02 - Find class by ID returns the stored class&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    void findClassbyID() {
+<span class="fc" id="L70">        ClassEntry entry = makeEntry(</span>
+                &quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;, &quot;Lecture&quot;,
+<span class="fc" id="L72">                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0),</span>
+                &quot;01 Mar&quot;, &quot;01 Mar&quot;);
+<span class="fc" id="L74">        classRepo.save(entry);</span>
+
+<span class="fc" id="L76">        Optional&lt;ClassEntry&gt; result = classService.getClassById(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;);</span>
+
+<span class="fc" id="L78">        assertTrue(result.isPresent());</span>
+<span class="fc" id="L79">        assertEquals(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, result.get().getClassId());</span>
+<span class="fc" id="L80">        assertEquals(&quot;COMP1001&quot;, result.get().getCourseCode());</span>
+<span class="fc" id="L81">    }</span>
+
+
+    //TC 2.03
+    @Test
+    @Order(3)
+    @DisplayName(&quot;TC 2.03 - Find class by ID returns empty when class is empty&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    void emptyClasreturnsEmpty() {
+<span class="fc" id="L91">            Optional&lt;ClassEntry&gt; result = classService.getClassById(&quot;&quot;);</span>
+<span class="fc" id="L92">            assertTrue(result.isEmpty());</span>
+<span class="fc" id="L93">    }</span>
+
+    //Tc 2.04
+    @Test
+    @Order(4)
+    @DisplayName(&quot;TC 2.04 - Find classes by course code returns matching classes only&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    void getClassesForTopic_returnsMatchingCourseOnly() {
+<span class="fc" id="L102">        ClassEntry comp = makeEntry(</span>
+                &quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;, &quot;Lecture&quot;,
+<span class="fc" id="L104">                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0),</span>
+                &quot;01 Mar&quot;, &quot;01 Mar&quot;);
+<span class="fc" id="L106">        ClassEntry math = makeEntry(</span>
+                &quot;MATH1001-LEC-1-TUE-1000-01Mar&quot;, &quot;MATH1001&quot;, &quot;Lecture&quot;,
+<span class="fc" id="L108">                1, DayOfWeek.TUESDAY, LocalTime.of(10, 0), LocalTime.of(12, 0),</span>
+                &quot;01 Mar&quot;, &quot;01 Mar&quot;);
+<span class="fc" id="L110">        classRepo.save(comp);</span>
+<span class="fc" id="L111">        classRepo.save(math);</span>
+
+<span class="fc" id="L113">        List&lt;ClassEntry&gt; result = classService.getClassesForTopic(&quot;COMP1001&quot;);</span>
+
+<span class="fc" id="L115">        assertEquals(1, result.size());</span>
+<span class="fc" id="L116">        assertEquals(&quot;COMP1001&quot;, result.get(0).getCourseCode());</span>
+<span class="fc" id="L117">    }</span>
+
+
+    //TC 2.05
+    @Test
+    @Order(5)
+    @DisplayName(&quot;TC 2.05 - Update class replaces exisitng class details&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    void updateClassReplacesOriginal() {
+<span class="fc" id="L127">        ClassEntry original = makeEntry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;,</span>
+                &quot;COMP1001&quot;, &quot;Lecture&quot;, 1, DayOfWeek.MONDAY,
+<span class="fc" id="L129">                LocalTime.of(9,0), LocalTime.of(11,0),</span>
+                &quot;01 Mar&quot;, &quot;01 Mar&quot;);
+<span class="fc" id="L131">        classRepo.save(original);</span>
+
+        //changing the time
+<span class="fc" id="L134">        ClassEntry updated = new ClassEntry(</span>
+<span class="fc" id="L135">                original.getClassId(),</span>
+<span class="fc" id="L136">                original.getType(),</span>
+<span class="fc" id="L137">                original.getDate(),</span>
+<span class="fc" id="L138">                LocalTime.of(14, 0),</span>
+<span class="fc" id="L139">                LocalTime.of(16, 0),</span>
+<span class="fc" id="L140">                original.getDay(),</span>
+<span class="fc" id="L141">                original.getBuilding(),</span>
+<span class="fc" id="L142">                original.getRoom(),</span>
+<span class="fc" id="L143">                original.getCourseCode(),</span>
+<span class="fc" id="L144">                original.getAttendanceMode(),</span>
+<span class="fc" id="L145">                original.getAvailabilityNumber(),</span>
+<span class="fc" id="L146">                original.getClassInstance(),</span>
+<span class="fc" id="L147">                original.getDateFrom(),</span>
+<span class="fc" id="L148">                original.getDateTo());</span>
+
+<span class="fc" id="L150">        classService.updateClass(updated);</span>
+
+<span class="fc" id="L152">        ClassEntry stored = classService.getClassById(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;).get();</span>
+<span class="fc" id="L153">        assertEquals(LocalTime.of(14, 0), stored.getStartTime());</span>
+<span class="fc" id="L154">        assertEquals(LocalTime.of(16, 0), stored.getEndTime());</span>
+<span class="fc" id="L155">    }</span>
+
+    //TC 2.06
+    @Test
+    @Order(6)
+    @DisplayName(&quot;TC 2.06 - Update missing class throws IllegalArgumentException&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    void updateClass_nonExistentClass_throwsIllegalArgumentException() {
+<span class="fc" id="L164">        ClassEntry unknown = makeEntry(</span>
+                &quot;Nothing-001&quot;, &quot;COMP1000&quot;, &quot;Lecture&quot;,
+<span class="fc" id="L166">                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0),</span>
+                &quot;01 Mar&quot;, &quot;01 Mar&quot;);
+
+<span class="fc" id="L169">        assertThrows(IllegalArgumentException.class,</span>
+<span class="nc" id="L170">                () -&gt; classService.updateClass(unknown));</span>
+<span class="fc" id="L171">    }</span>
+
+    //TC 2.07
+    @Test
+    @Order(7)
+    @DisplayName(&quot;TC 2.07 - Delete class removes it from the repository&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    void deleteClass_removesExistingClass() {
+<span class="fc" id="L180">        ClassEntry entry = makeEntry(</span>
+                &quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;, &quot;Lecture&quot;,
+<span class="fc" id="L182">                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0),</span>
+                &quot;01 Mar&quot;, &quot;01 Mar&quot;);
+<span class="fc" id="L184">        classRepo.save(entry);</span>
+
+<span class="fc" id="L186">        classService.deleteClass(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;);</span>
+
+<span class="fc" id="L188">        assertTrue(classService.getClassById(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;).isEmpty());</span>
+<span class="fc" id="L189">    }</span>
+
+    //TC 2,08
+    @Test
+    @Order(8)
+    @DisplayName(&quot;TC 2.08 - Delete missing class throws IllegalArgumentException&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    void deleteClass_nonExistentClass_throwsIllegalArgumentException() {
+<span class="fc" id="L198">        assertThrows(IllegalArgumentException.class,</span>
+<span class="nc" id="L199">                () -&gt; classService.deleteClass(&quot;DOES-NOT-EXIST&quot;));</span>
+<span class="fc" id="L200">    }</span>
+
+    @Test
+    @Order(9)
+    @DisplayName(&quot;TC 2.09 - Grouped Classes combine related date ranges&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    void getGroupedClasses_sameGroup_mergesDateRange() {
+<span class="fc" id="L208">        ClassEntry early = makeEntry(</span>
+                &quot;COMP1000-Lab-1-WED-1400-05Mar&quot;, &quot;COMP1000&quot;, &quot;Laboratory&quot;,
+<span class="fc" id="L210">                1, DayOfWeek.WEDNESDAY, LocalTime.of(14, 0), LocalTime.of(16, 0),</span>
+                &quot;05 Mar&quot;, &quot;05 Mar&quot;);
+<span class="fc" id="L212">        ClassEntry late = makeEntry(</span>
+                &quot;COMP1000-Lab-1-WED-1400-19Mar&quot;, &quot;COMP1000&quot;, &quot;Laboratory&quot;,
+<span class="fc" id="L214">                1, DayOfWeek.WEDNESDAY, LocalTime.of(14, 0), LocalTime.of(16, 0),</span>
+                &quot;19 Mar&quot;, &quot;19 Mar&quot;);
+<span class="fc" id="L216">        classRepo.save(early);</span>
+<span class="fc" id="L217">        classRepo.save(late);</span>
+
+<span class="fc" id="L219">        List&lt;ClassEntry&gt; grouped = classService.getGroupedClasses();</span>
+
+<span class="fc" id="L221">        assertEquals(1, grouped.size());</span>
+<span class="fc" id="L222">        assertEquals(&quot;05 Mar&quot;, grouped.get(0).getDateFrom());</span>
+<span class="fc" id="L223">        assertEquals(&quot;19 Mar&quot;, grouped.get(0).getDateTo());</span>
+<span class="fc" id="L224">    }</span>
+
+    @Test
+    @Order(10)
+    @DisplayName(&quot;TC 2.10 - Grouped classes keep seperate class instances apart&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    void getGroupedClasses_differentInstances_remainSeparate() {
+<span class="fc" id="L232">        ClassEntry inst1 = makeEntry(</span>
+                &quot;COMP1000-Lab-1-WED-1400-05Mar&quot;, &quot;COMP1000&quot;, &quot;Laboratory&quot;,
+<span class="fc" id="L234">                1, DayOfWeek.WEDNESDAY, LocalTime.of(14, 0), LocalTime.of(16, 0),</span>
+                &quot;05 Mar&quot;, &quot;05 Mar&quot;);
+<span class="fc" id="L236">        ClassEntry inst2 = makeEntry(</span>
+                &quot;COMP1000-Lab-2-FRI-1000-05Mar&quot;, &quot;COMP1000&quot;, &quot;Laboratory&quot;,
+<span class="fc" id="L238">                2, DayOfWeek.FRIDAY, LocalTime.of(10, 0), LocalTime.of(12, 0),</span>
+                &quot;05 Mar&quot;, &quot;05 Mar&quot;);
+<span class="fc" id="L240">        classRepo.save(inst1);</span>
+<span class="fc" id="L241">        classRepo.save(inst2);</span>
+
+<span class="fc" id="L243">        List&lt;ClassEntry&gt; grouped = classService.getGroupedClasses();</span>
+
+<span class="fc" id="L245">        assertEquals(2, grouped.size());</span>
+<span class="fc" id="L246">    }</span>
+
+
+    @Test
+    @Order(11)
+    @DisplayName(&quot;TC 2.11 - getAllClasses returns all stored classes&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void getAllClassesReturnsAllStoredClasses() {
+<span class="fc" id="L255">        ClassEntry a = makeEntry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;, &quot;Lecture&quot;,</span>
+<span class="fc" id="L256">                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0), &quot;01 Mar&quot;, &quot;01 Mar&quot;);</span>
+<span class="fc" id="L257">        ClassEntry b = makeEntry(&quot;MATH1001-LEC-1-TUE-1000-01Mar&quot;, &quot;MATH1001&quot;, &quot;Lecture&quot;,</span>
+<span class="fc" id="L258">                1, DayOfWeek.TUESDAY, LocalTime.of(10, 0), LocalTime.of(12, 0), &quot;01 Mar&quot;, &quot;01 Mar&quot;);</span>
+<span class="fc" id="L259">        classRepo.save(a);</span>
+<span class="fc" id="L260">        classRepo.save(b);</span>
+
+<span class="fc" id="L262">        List&lt;ClassEntry&gt; result = classService.getAllClasses();</span>
+
+<span class="fc" id="L264">        assertEquals(2, result.size());</span>
+<span class="fc" id="L265">    }</span>
+
+    @Test
+    @Order(12)
+    @DisplayName(&quot;TC 2.12 - getClassesByCampus returns classes whose topic campus matches&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void getClassesByCampusReturnsCampusMatchingClasses() {
+<span class="fc" id="L273">        ClassEntry entry = makeEntry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;, &quot;Lecture&quot;,</span>
+<span class="fc" id="L274">                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0), &quot;01 Mar&quot;, &quot;01 Mar&quot;);</span>
+<span class="fc" id="L275">        classRepo.save(entry);</span>
+<span class="fc" id="L276">        topicRepo.save(new Topic(&quot;COMP1001&quot;, &quot;Computing 1&quot;, &quot;Bedford Park&quot;, 1, &quot;In Person&quot;, 2));</span>
+
+<span class="fc" id="L278">        List&lt;ClassEntry&gt; result = classService.getClassesByCampus(&quot;Bedford Park&quot;);</span>
+
+<span class="fc" id="L280">        assertEquals(1, result.size());</span>
+<span class="fc" id="L281">        assertEquals(&quot;COMP1001&quot;, result.get(0).getCourseCode());</span>
+<span class="fc" id="L282">    }</span>
+
+    @Test
+    @Order(13)
+    @DisplayName(&quot;TC 2.13 - getClassesByCampus returns empty when topic campus does not match&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void getClassesByCampusReturnsEmptyWhenCampusDoesNotMatch() {
+<span class="fc" id="L290">        ClassEntry entry = makeEntry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;, &quot;Lecture&quot;,</span>
+<span class="fc" id="L291">                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0), &quot;01 Mar&quot;, &quot;01 Mar&quot;);</span>
+<span class="fc" id="L292">        classRepo.save(entry);</span>
+<span class="fc" id="L293">        topicRepo.save(new Topic(&quot;COMP1001&quot;, &quot;Computing 1&quot;, &quot;Bedford Park&quot;, 1, &quot;In Person&quot;, 2));</span>
+
+<span class="fc" id="L295">        List&lt;ClassEntry&gt; result = classService.getClassesByCampus(&quot;Tonsley&quot;);</span>
+
+<span class="fc" id="L297">        assertTrue(result.isEmpty());</span>
+<span class="fc" id="L298">    }</span>
+
+    @Test
+    @Order(14)
+    @DisplayName(&quot;TC 2.14 - getClassesByCampus returns empty when class has no matching topic&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void getClassesByCampusReturnsEmptyWhenNoTopicExistsForClass() {
+<span class="fc" id="L306">        ClassEntry entry = makeEntry(&quot;COMP9999-LEC-1-MON-0900-01Mar&quot;, &quot;COMP9999&quot;, &quot;Lecture&quot;,</span>
+<span class="fc" id="L307">                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0), &quot;01 Mar&quot;, &quot;01 Mar&quot;);</span>
+<span class="fc" id="L308">        classRepo.save(entry);</span>
+
+<span class="fc" id="L310">        List&lt;ClassEntry&gt; result = classService.getClassesByCampus(&quot;Bedford Park&quot;);</span>
+
+<span class="fc" id="L312">        assertTrue(result.isEmpty());</span>
+<span class="fc" id="L313">    }</span>
+
+    @Test
+    @Order(15)
+    @DisplayName(&quot;TC 2.15 - getGroupedClassesForTopic returns only entries matching course code&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void getGroupedClassesForTopicReturnsMatchingCourseCodeOnly() {
+<span class="fc" id="L321">        ClassEntry comp = makeEntry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;, &quot;Lecture&quot;,</span>
+<span class="fc" id="L322">                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0), &quot;01 Mar&quot;, &quot;01 Mar&quot;);</span>
+<span class="fc" id="L323">        ClassEntry math = makeEntry(&quot;MATH1001-LEC-1-TUE-1000-01Mar&quot;, &quot;MATH1001&quot;, &quot;Lecture&quot;,</span>
+<span class="fc" id="L324">                1, DayOfWeek.TUESDAY, LocalTime.of(10, 0), LocalTime.of(12, 0), &quot;01 Mar&quot;, &quot;01 Mar&quot;);</span>
+<span class="fc" id="L325">        classRepo.save(comp);</span>
+<span class="fc" id="L326">        classRepo.save(math);</span>
+
+<span class="fc" id="L328">        List&lt;ClassEntry&gt; result = classService.getGroupedClassesForTopic(&quot;COMP1001&quot;);</span>
+
+<span class="fc" id="L330">        assertEquals(1, result.size());</span>
+<span class="fc" id="L331">        assertEquals(&quot;COMP1001&quot;, result.get(0).getCourseCode());</span>
+<span class="fc" id="L332">    }</span>
+
+    @Test
+    @Order(16)
+    @DisplayName(&quot;TC 2.16 - getGroupedClasses handles invalid date string without throwing&quot;)
+    @Tag(&quot;Luke&quot;)
+    @Tag(&quot;Core&quot;)
+    void getGroupedClassesInvalidDateStringDoesNotThrow() {
+<span class="fc" id="L340">        ClassEntry invalid = makeEntry(&quot;COMP1001-LEC-1-MON-0900-BAD&quot;, &quot;COMP1001&quot;, &quot;Lecture&quot;,</span>
+<span class="fc" id="L341">                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0), &quot;INVALID&quot;, &quot;INVALID&quot;);</span>
+<span class="fc" id="L342">        ClassEntry valid = makeEntry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;, &quot;Lecture&quot;,</span>
+<span class="fc" id="L343">                1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(11, 0), &quot;01 Mar&quot;, &quot;01 Mar&quot;);</span>
+<span class="fc" id="L344">        classRepo.save(invalid);</span>
+<span class="fc" id="L345">        classRepo.save(valid);</span>
+
+<span class="fc" id="L347">        assertDoesNotThrow(() -&gt; classService.getGroupedClasses());</span>
+<span class="fc" id="L348">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

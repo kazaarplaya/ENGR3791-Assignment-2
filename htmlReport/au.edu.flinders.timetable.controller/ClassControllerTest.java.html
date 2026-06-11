@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassControllerTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in timetable Coverage Results</a> &gt; <a href="index.source.html" class="el_package">au.edu.flinders.timetable.controller</a> &gt; <span class="el_source">ClassControllerTest.java</span></div><h1>ClassControllerTest.java</h1><pre class="source lang-java linenums">package au.edu.flinders.timetable.controller;
+
+import au.edu.flinders.timetable.model.ClassEntry;
+import au.edu.flinders.timetable.model.Topic;
+import au.edu.flinders.timetable.repository.ClassRepository;
+import au.edu.flinders.timetable.repository.TopicRepository;
+import au.edu.flinders.timetable.service.ClassService;
+import au.edu.flinders.timetable.service.SearchService;
+import au.edu.flinders.timetable.ui.ConsoleView;
+import au.edu.flinders.timetable.ui.EarlyExitException;
+import au.edu.flinders.timetable.ui.InputHelper;
+import org.junit.jupiter.api.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.Scanner;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+<span class="fc" id="L25">class ClassControllerTest {</span>
+
+    // Shared state
+    private ClassRepository  classRepo;
+    private TopicRepository  topicRepo;
+    private ClassService     classService;
+    private SearchService    searchService;
+    private ConsoleView      view;
+
+    private ByteArrayOutputStream outContent;
+    private PrintStream           originalOut;
+
+    // Lifecycle
+
+    @BeforeEach
+    void setUp() {
+<span class="fc" id="L41">        classRepo     = new ClassRepository();</span>
+<span class="fc" id="L42">        topicRepo     = new TopicRepository();</span>
+<span class="fc" id="L43">        classService  = new ClassService(classRepo, topicRepo);</span>
+<span class="fc" id="L44">        searchService = new SearchService(classRepo, topicRepo);</span>
+<span class="fc" id="L45">        view          = new ConsoleView();</span>
+
+<span class="fc" id="L47">        originalOut = System.out;</span>
+<span class="fc" id="L48">        outContent  = new ByteArrayOutputStream();</span>
+<span class="fc" id="L49">        System.setOut(new PrintStream(outContent));</span>
+<span class="fc" id="L50">    }</span>
+
+    @AfterEach
+    void tearDown() {
+<span class="fc" id="L54">        System.setOut(originalOut);</span>
+<span class="fc" id="L55">    }</span>
+
+    // Builder helpers
+
+    private ClassController controller(String simulatedInput) {
+<span class="fc" id="L60">        Scanner sc = new Scanner(new ByteArrayInputStream(simulatedInput.getBytes()));</span>
+<span class="fc" id="L61">        return new ClassController(classService, searchService, topicRepo,</span>
+                view, new InputHelper(), sc);
+    }
+
+    private ClassController controllerNullTopicRepo(String simulatedInput) {
+<span class="fc" id="L66">        Scanner sc = new Scanner(new ByteArrayInputStream(simulatedInput.getBytes()));</span>
+<span class="fc" id="L67">        return new ClassController(classService, searchService, null,</span>
+                view, new InputHelper(), sc);
+    }
+
+    /** Creates a minimal ClassEntry with sensible defaults. */
+    private ClassEntry entry(String classId, String courseCode) {
+<span class="fc" id="L73">        return new ClassEntry(classId, &quot;Lecture&quot;, null,</span>
+<span class="fc" id="L74">                LocalTime.of(9, 0), LocalTime.of(11, 0),</span>
+                DayOfWeek.MONDAY, &quot;T1&quot;, &quot;G42&quot;, courseCode,
+                &quot;In Person&quot;, 1, 1, &quot;01 Mar&quot;, &quot;01 Mar&quot;);
+    }
+
+    private Topic topic(String courseCode, String name) {
+<span class="fc" id="L80">        return new Topic(courseCode, name, &quot;Bedford Park&quot;, 1, &quot;In Person&quot;, 10);</span>
+    }
+
+    private String out() {
+<span class="fc" id="L84">        return outContent.toString();</span>
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // showAll()
+    // ══════════════════════════════════════════════════════════════════════════
+
+    @Test
+    @Order(1)
+    @DisplayName(&quot;TC 11.01 - showAll – empty repository prints warning&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void showAll_emptyRepo_printsWarning() {
+<span class="fc" id="L98">        controller(&quot;&quot;).showAll();</span>
+<span class="fc" id="L99">        assertTrue(out().contains(&quot;No classes have been imported yet.&quot;));</span>
+<span class="fc" id="L100">    }</span>
+
+    @Test
+    @Order(2)
+    @DisplayName(&quot;TC 11.02 - showAll – classes present outputs course code&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void showAll_withClasses_outputsCourseCode() {
+<span class="fc" id="L109">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L110">        controller(&quot;&quot;).showAll();</span>
+<span class="fc" id="L111">        assertTrue(out().contains(&quot;COMP1001&quot;));</span>
+<span class="fc" id="L112">    }</span>
+
+    @Test
+    @Order(3)
+    @DisplayName(&quot;TC 11.03 - showAll – matching topic name appears in browse list&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void showAll_withMatchingTopic_showsTopicName() {
+<span class="fc" id="L121">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L122">        topicRepo.save(topic(&quot;COMP1001&quot;, &quot;Programming&quot;));</span>
+<span class="fc" id="L123">        controller(&quot;&quot;).showAll();</span>
+<span class="fc" id="L124">        assertTrue(out().contains(&quot;Programming&quot;));</span>
+<span class="fc" id="L125">    }</span>
+
+    @Test
+    @Order(4)
+    @DisplayName(&quot;TC 11.04 - showAll – null topicRepository produces empty topic map without crashing&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void showAll_nullTopicRepo_doesNotCrash() {
+<span class="fc" id="L134">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L135">        assertDoesNotThrow(() -&gt; controllerNullTopicRepo(&quot;&quot;).showAll());</span>
+<span class="fc" id="L136">        assertTrue(out().contains(&quot;COMP1001&quot;));</span>
+<span class="fc" id="L137">    }</span>
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // viewAllDetailed()
+    // ══════════════════════════════════════════════════════════════════════════
+
+    @Test
+    @Order(5)
+    @DisplayName(&quot;TC 11.05 - viewAllDetailed – empty repository prints warning&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void viewAllDetailed_emptyRepo_printsWarning() {
+<span class="fc" id="L150">        controller(&quot;&quot;).viewAllDetailed();</span>
+<span class="fc" id="L151">        assertTrue(out().contains(&quot;No classes have been imported yet.&quot;));</span>
+<span class="fc" id="L152">    }</span>
+
+    @Test
+    @Order(6)
+    @DisplayName(&quot;TC 11.06 - viewAllDetailed – classes present outputs course code&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void viewAllDetailed_withClasses_outputsCourseCode() {
+<span class="fc" id="L161">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L162">        controller(&quot;&quot;).viewAllDetailed();</span>
+<span class="fc" id="L163">        assertTrue(out().contains(&quot;COMP1001&quot;));</span>
+<span class="fc" id="L164">    }</span>
+
+    @Test
+    @Order(7)
+    @DisplayName(&quot;TC 11.07 - viewAllDetailed – topic details shown when topic is present&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void viewAllDetailed_withTopic_showsTopicDetails() {
+<span class="fc" id="L173">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L174">        topicRepo.save(topic(&quot;COMP1001&quot;, &quot;Computer Programming 1&quot;));</span>
+<span class="fc" id="L175">        controller(&quot;&quot;).viewAllDetailed();</span>
+<span class="fc" id="L176">        assertTrue(out().contains(&quot;Bedford Park&quot;));</span>
+<span class="fc" id="L177">    }</span>
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // viewAll()
+    // ══════════════════════════════════════════════════════════════════════════
+
+    @Test
+    @Order(8)
+    @DisplayName(&quot;TC 11.08 - viewAll – null topicRepository prints warning&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void viewAll_nullTopicRepo_printsWarning() {
+<span class="fc" id="L190">        controllerNullTopicRepo(&quot;&quot;).viewAll();</span>
+<span class="fc" id="L191">        assertTrue(out().contains(&quot;No course data available.&quot;));</span>
+<span class="fc" id="L192">    }</span>
+
+    @Test
+    @Order(9)
+    @DisplayName(&quot;TC 11.09 - viewAll – empty topic repository prints warning&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void viewAll_emptyTopicRepo_printsWarning() {
+<span class="fc" id="L201">        controller(&quot;&quot;).viewAll();</span>
+<span class="fc" id="L202">        assertTrue(out().contains(&quot;No courses have been imported yet.&quot;));</span>
+<span class="fc" id="L203">    }</span>
+
+    @Test
+    @Order(10)
+    @DisplayName(&quot;TC 11.10 - viewAll – topics present prints numbered list with count&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void viewAll_withTopics_printsNumberedList() {
+<span class="fc" id="L212">        topicRepo.save(topic(&quot;COMP1001&quot;, &quot;Computer Programming 1&quot;));</span>
+<span class="fc" id="L213">        topicRepo.save(topic(&quot;MATH1001&quot;, &quot;Mathematics 1&quot;));</span>
+<span class="fc" id="L214">        controller(&quot;&quot;).viewAll();</span>
+<span class="fc" id="L215">        String o = out();</span>
+<span class="fc" id="L216">        assertTrue(o.contains(&quot;COMP1001&quot;));</span>
+<span class="fc" id="L217">        assertTrue(o.contains(&quot;MATH1001&quot;));</span>
+<span class="fc" id="L218">        assertTrue(o.contains(&quot;2 course(s) imported&quot;));</span>
+<span class="fc" id="L219">    }</span>
+
+    @Test
+    @Order(11)
+    @DisplayName(&quot;TC 11.11 - viewAll – courses sorted alphabetically by course code&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Additional&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void viewAll_multipleTopics_sortedAlphabetically() {
+<span class="fc" id="L228">        topicRepo.save(topic(&quot;MATH1001&quot;, &quot;Mathematics 1&quot;));</span>
+<span class="fc" id="L229">        topicRepo.save(topic(&quot;COMP1001&quot;, &quot;Computer Programming 1&quot;));</span>
+<span class="fc" id="L230">        controller(&quot;&quot;).viewAll();</span>
+<span class="fc" id="L231">        String o = out();</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">        assertTrue(o.indexOf(&quot;COMP1001&quot;) &lt; o.indexOf(&quot;MATH1001&quot;));</span>
+<span class="fc" id="L233">    }</span>
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // search(String) — keyword search
+    // ══════════════════════════════════════════════════════════════════════════
+
+    @Test
+    @Order(12)
+    @DisplayName(&quot;TC 11.12 - search(String) – matching keyword shows results&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void searchKeyword_matchFound_showsResults() {
+<span class="fc" id="L246">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L247">        controller(&quot;&quot;).search(&quot;COMP1001&quot;);</span>
+<span class="fc" id="L248">        assertTrue(out().contains(&quot;COMP1001&quot;));</span>
+<span class="fc" id="L249">    }</span>
+
+    @Test
+    @Order(13)
+    @DisplayName(&quot;TC 11.13 - search(String) – no match reports 0 found&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void searchKeyword_noMatch_reportsZeroFound() {
+<span class="fc" id="L258">        controller(&quot;&quot;).search(&quot;ZZZZ9999&quot;);</span>
+<span class="fc" id="L259">        assertTrue(out().contains(&quot;0 found&quot;));</span>
+<span class="fc" id="L260">    }</span>
+
+    @Test
+    @Order(14)
+    @DisplayName(&quot;TC 11.14 - search(String) – empty query returns all classes&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void searchKeyword_emptyQuery_returnsAllClasses() {
+<span class="fc" id="L269">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L270">        classRepo.save(entry(&quot;MATH1001-LEC-1-TUE-1000-01Mar&quot;, &quot;MATH1001&quot;));</span>
+<span class="fc" id="L271">        controller(&quot;&quot;).search(&quot;&quot;);</span>
+<span class="fc" id="L272">        assertTrue(out().contains(&quot;2 found&quot;));</span>
+<span class="fc" id="L273">    }</span>
+
+    @Test
+    @Order(15)
+    @DisplayName(&quot;TC 11.15 - search(String) – result count matches number of stored matching classes&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Additional&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void searchKeyword_multipleMatches_correctCount() {
+<span class="fc" id="L282">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L283">        classRepo.save(entry(&quot;COMP1001-LAB-1-WED-1400-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L284">        controller(&quot;&quot;).search(&quot;COMP1001&quot;);</span>
+<span class="fc" id="L285">        assertTrue(out().contains(&quot;2 found&quot;));</span>
+<span class="fc" id="L286">    }</span>
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // search() — interactive structured search
+    //
+    // The method issues 8 promptOptional() calls in order:
+    //   1. courseCode  2. topicName  3. classType  4. attendanceMode
+    //   5. campus      6. day        7. startTime  8. semester
+    // Blank input (empty line) skips that criterion.
+    // ══════════════════════════════════════════════════════════════════════════
+
+    @Test
+    @Order(16)
+    @DisplayName(&quot;TC 11.16 - search() interactive – all blank, empty repo prints no-match warning&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void searchInteractive_allBlank_emptyRepo_noMatchWarning() {
+<span class="fc" id="L304">        controller(&quot;\n\n\n\n\n\n\n\n&quot;).search();</span>
+<span class="fc" id="L305">        assertTrue(out().contains(&quot;No classes matched those criteria.&quot;));</span>
+<span class="fc" id="L306">    }</span>
+
+    @Test
+    @Order(17)
+    @DisplayName(&quot;TC 11.17 - search() interactive – matching courseCode criterion shows results&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void searchInteractive_courseCodeCriterion_showsResults() {
+<span class="fc" id="L315">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+        // courseCode=COMP1001, rest blank
+<span class="fc" id="L317">        controller(&quot;COMP1001\n\n\n\n\n\n\n\n&quot;).search();</span>
+<span class="fc" id="L318">        assertTrue(out().contains(&quot;COMP1001&quot;));</span>
+<span class="fc" id="L319">    }</span>
+
+    @Test
+    @Order(18)
+    @DisplayName(&quot;TC 11.18 - search() interactive – no matching results prints warning&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void searchInteractive_noMatch_printsWarning() {
+<span class="fc" id="L328">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+        // courseCode=MATH9999 — no match
+<span class="fc" id="L330">        controller(&quot;MATH9999\n\n\n\n\n\n\n\n&quot;).search();</span>
+<span class="fc" id="L331">        assertTrue(out().contains(&quot;No classes matched those criteria.&quot;));</span>
+<span class="fc" id="L332">    }</span>
+
+    @Test
+    @Order(19)
+    @DisplayName(&quot;TC 11.19 - search() interactive – invalid start time warns and skips field&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void searchInteractive_invalidStartTime_warnsAndSkipsField() {
+<span class="fc" id="L341">        controller(&quot;\n\n\n\n\n\nNOT_A_TIME\n\n&quot;).search();</span>
+<span class="fc" id="L342">        assertTrue(out().contains(&quot;Invalid start time&quot;));</span>
+<span class="fc" id="L343">    }</span>
+
+    @Test
+    @Order(20)
+    @DisplayName(&quot;TC 11.20 - search() interactive – valid start time filters correctly&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void searchInteractive_validStartTime_filtersResults() {
+<span class="fc" id="L352">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+        // all blank except startTime=09:00
+<span class="fc" id="L354">        controller(&quot;\n\n\n\n\n\n09:00\n\n&quot;).search();</span>
+<span class="fc" id="L355">        assertTrue(out().contains(&quot;COMP1001&quot;));</span>
+<span class="fc" id="L356">    }</span>
+
+    @Test
+    @Order(21)
+    @DisplayName(&quot;TC 11.21 - search() interactive – invalid semester warns and skips field&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void searchInteractive_invalidSemester_warnsAndSkipsField() {
+<span class="fc" id="L365">        controller(&quot;\n\n\n\n\n\n\nABC\n&quot;).search();</span>
+<span class="fc" id="L366">        assertTrue(out().contains(&quot;Invalid semester&quot;));</span>
+<span class="fc" id="L367">    }</span>
+
+    @Test
+    @Order(22)
+    @DisplayName(&quot;TC 11.22 - search() interactive – valid semester filters correctly&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Additional&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void searchInteractive_validSemester_filtersResults() {
+<span class="fc" id="L376">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L377">        topicRepo.save(topic(&quot;COMP1001&quot;, &quot;Computer Programming 1&quot;));</span>
+        // all blank except semester=1
+<span class="fc" id="L379">        controller(&quot;\n\n\n\n\n\n\n1\n&quot;).search();</span>
+<span class="fc" id="L380">        assertTrue(out().contains(&quot;COMP1001&quot;));</span>
+<span class="fc" id="L381">    }</span>
+
+
+    @Test
+    @Order(23)
+    @DisplayName(&quot;TC 11.23 - deleteClass – unknown ID prints error&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void deleteClass_unknownId_printsError() {
+<span class="fc" id="L391">        controller(&quot;DOES-NOT-EXIST\n&quot;).deleteClass();</span>
+<span class="fc" id="L392">        assertTrue(out().contains(&quot;not found&quot;));</span>
+<span class="fc" id="L393">    }</span>
+
+    @Test
+    @Order(24)
+    @DisplayName(&quot;TC 11.24 - deleteClass – confirmed removes class from repository&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void deleteClass_confirmed_removesClass() {
+<span class="fc" id="L402">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L403">        controller(&quot;COMP1001-LEC-1-MON-0900-01Mar\ny\n&quot;).deleteClass();</span>
+<span class="fc" id="L404">        assertTrue(classService.getClassById(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;).isEmpty());</span>
+<span class="fc" id="L405">    }</span>
+
+    @Test
+    @Order(25)
+    @DisplayName(&quot;TC 11.25 - deleteClass – confirmed prints success message&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void deleteClass_confirmed_printsSuccess() {
+<span class="fc" id="L414">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L415">        controller(&quot;COMP1001-LEC-1-MON-0900-01Mar\ny\n&quot;).deleteClass();</span>
+<span class="fc" id="L416">        assertTrue(out().contains(&quot;deleted&quot;));</span>
+<span class="fc" id="L417">    }</span>
+
+    @Test
+    @Order(26)
+    @DisplayName(&quot;TC 11.26 - deleteClass – cancelled keeps class in repository&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void deleteClass_cancelled_keepsClass() {
+<span class="fc" id="L426">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L427">        controller(&quot;COMP1001-LEC-1-MON-0900-01Mar\nn\n&quot;).deleteClass();</span>
+<span class="fc" id="L428">        assertTrue(classService.getClassById(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;).isPresent());</span>
+<span class="fc" id="L429">    }</span>
+
+    @Test
+    @Order(27)
+    @DisplayName(&quot;TC 11.27 - deleteClass – cancelled prints cancelled message&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Additional&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void deleteClass_cancelled_printsCancelledMessage() {
+<span class="fc" id="L438">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L439">        controller(&quot;COMP1001-LEC-1-MON-0900-01Mar\nn\n&quot;).deleteClass();</span>
+<span class="fc" id="L440">        assertTrue(out().contains(&quot;cancelled&quot;));</span>
+<span class="fc" id="L441">    }</span>
+
+
+    @Test
+    @Order(28)
+    @DisplayName(&quot;TC 11.28 - editClass – unknown ID prints error&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void editClass_unknownId_printsError() {
+<span class="fc" id="L451">        controller(&quot;DOES-NOT-EXIST\n&quot;).editClass();</span>
+<span class="fc" id="L452">        assertTrue(out().contains(&quot;not found&quot;));</span>
+<span class="fc" id="L453">    }</span>
+
+    @Test
+    @Order(29)
+    @DisplayName(&quot;TC 11.29 - editClass – all blank inputs keeps all original field values&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void editClass_allBlankInputs_keepsOriginalValues() {
+<span class="fc" id="L462">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L463">        controller(&quot;COMP1001-LEC-1-MON-0900-01Mar\n\n\n\n\n\ny\n&quot;).editClass();</span>
+<span class="fc" id="L464">        ClassEntry stored = classService.getClassById(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;).get();</span>
+<span class="fc" id="L465">        assertEquals(LocalTime.of(9, 0),    stored.getStartTime());</span>
+<span class="fc" id="L466">        assertEquals(LocalTime.of(11, 0),   stored.getEndTime());</span>
+<span class="fc" id="L467">        assertEquals(DayOfWeek.MONDAY,      stored.getDay());</span>
+<span class="fc" id="L468">        assertEquals(&quot;T1&quot;,                  stored.getBuilding());</span>
+<span class="fc" id="L469">        assertEquals(&quot;G42&quot;,                 stored.getRoom());</span>
+<span class="fc" id="L470">    }</span>
+
+    @Test
+    @Order(30)
+    @DisplayName(&quot;TC 11.30 - editClass – new building and room saved correctly&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void editClass_newBuildingAndRoom_savedCorrectly() {
+<span class="fc" id="L479">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L480">        controller(&quot;COMP1001-LEC-1-MON-0900-01Mar\nBuilding2\nR999\n\n\n\ny\n&quot;).editClass();</span>
+<span class="fc" id="L481">        ClassEntry stored = classService.getClassById(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;).get();</span>
+<span class="fc" id="L482">        assertEquals(&quot;Building2&quot;, stored.getBuilding());</span>
+<span class="fc" id="L483">        assertEquals(&quot;R999&quot;,      stored.getRoom());</span>
+<span class="fc" id="L484">    }</span>
+
+    @Test
+    @Order(31)
+    @DisplayName(&quot;TC 11.31 - editClass – valid new start and end times saved correctly&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void editClass_validNewTimes_savedCorrectly() {
+<span class="fc" id="L493">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L494">        controller(&quot;COMP1001-LEC-1-MON-0900-01Mar\n\n\n14:00\n16:00\n\ny\n&quot;).editClass();</span>
+<span class="fc" id="L495">        ClassEntry stored = classService.getClassById(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;).get();</span>
+<span class="fc" id="L496">        assertEquals(LocalTime.of(14, 0), stored.getStartTime());</span>
+<span class="fc" id="L497">        assertEquals(LocalTime.of(16, 0), stored.getEndTime());</span>
+<span class="fc" id="L498">    }</span>
+
+    @Test
+    @Order(32)
+    @DisplayName(&quot;TC 11.32 - editClass – invalid start time warns and keeps original&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void editClass_invalidStartTime_warnsAndKeepsOriginal() {
+<span class="fc" id="L507">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L508">        controller(&quot;COMP1001-LEC-1-MON-0900-01Mar\n\n\nBAD_TIME\n\n\ny\n&quot;).editClass();</span>
+<span class="fc" id="L509">        ClassEntry stored = classService.getClassById(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;).get();</span>
+<span class="fc" id="L510">        assertEquals(LocalTime.of(9, 0), stored.getStartTime());</span>
+<span class="fc" id="L511">        assertTrue(out().contains(&quot;Invalid time&quot;));</span>
+<span class="fc" id="L512">    }</span>
+
+    @Test
+    @Order(33)
+    @DisplayName(&quot;TC 11.33 - editClass – invalid end time warns and keeps original&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void editClass_invalidEndTime_warnsAndKeepsOriginal() {
+<span class="fc" id="L521">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L522">        controller(&quot;COMP1001-LEC-1-MON-0900-01Mar\n\n\n\nBAD_TIME\n\ny\n&quot;).editClass();</span>
+<span class="fc" id="L523">        ClassEntry stored = classService.getClassById(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;).get();</span>
+<span class="fc" id="L524">        assertEquals(LocalTime.of(11, 0), stored.getEndTime());</span>
+<span class="fc" id="L525">        assertTrue(out().contains(&quot;Invalid time&quot;));</span>
+<span class="fc" id="L526">    }</span>
+
+    @Test
+    @Order(34)
+    @DisplayName(&quot;TC 11.34 - editClass – valid new day saved correctly&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void editClass_validNewDay_savedCorrectly() {
+<span class="fc" id="L535">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L536">        controller(&quot;COMP1001-LEC-1-MON-0900-01Mar\n\n\n\n\nFRIDAY\ny\n&quot;).editClass();</span>
+<span class="fc" id="L537">        ClassEntry stored = classService.getClassById(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;).get();</span>
+<span class="fc" id="L538">        assertEquals(DayOfWeek.FRIDAY, stored.getDay());</span>
+<span class="fc" id="L539">    }</span>
+
+    @Test
+    @Order(35)
+    @DisplayName(&quot;TC 11.35 - editClass – invalid day warns and keeps original&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void editClass_invalidDay_warnsAndKeepsOriginal() {
+<span class="fc" id="L548">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L549">        controller(&quot;COMP1001-LEC-1-MON-0900-01Mar\n\n\n\n\nBADDAY\ny\n&quot;).editClass();</span>
+<span class="fc" id="L550">        ClassEntry stored = classService.getClassById(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;).get();</span>
+<span class="fc" id="L551">        assertEquals(DayOfWeek.MONDAY, stored.getDay());</span>
+<span class="fc" id="L552">        assertTrue(out().contains(&quot;Invalid day&quot;));</span>
+<span class="fc" id="L553">    }</span>
+
+    @Test
+    @Order(36)
+    @DisplayName(&quot;TC 11.36 - editClass – save confirmed prints success message&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Core&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void editClass_saveConfirmed_printsSuccess() {
+<span class="fc" id="L562">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L563">        controller(&quot;COMP1001-LEC-1-MON-0900-01Mar\n\n\n\n\n\ny\n&quot;).editClass();</span>
+<span class="fc" id="L564">        assertTrue(out().contains(&quot;updated&quot;));</span>
+<span class="fc" id="L565">    }</span>
+
+    @Test
+    @Order(37)
+    @DisplayName(&quot;TC 11.37 - editClass – cancelled does not persist any changes&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Critical&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void editClass_cancelled_doesNotPersistChanges() {
+<span class="fc" id="L574">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+        // Provide new values for every field but cancel
+<span class="fc" id="L576">        controller(&quot;COMP1001-LEC-1-MON-0900-01Mar\nNewBuilding\nR999\n14:00\n16:00\nFRIDAY\nn\n&quot;).editClass();</span>
+<span class="fc" id="L577">        ClassEntry stored = classService.getClassById(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;).get();</span>
+<span class="fc" id="L578">        assertEquals(&quot;T1&quot;,                stored.getBuilding());</span>
+<span class="fc" id="L579">        assertEquals(&quot;G42&quot;,               stored.getRoom());</span>
+<span class="fc" id="L580">        assertEquals(LocalTime.of(9, 0),  stored.getStartTime());</span>
+<span class="fc" id="L581">        assertEquals(LocalTime.of(11, 0), stored.getEndTime());</span>
+<span class="fc" id="L582">        assertEquals(DayOfWeek.MONDAY,    stored.getDay());</span>
+<span class="fc" id="L583">    }</span>
+
+    @Test
+    @Order(38)
+    @DisplayName(&quot;TC 11.38 - editClass – cancelled prints cancelled message&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Additional&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void editClass_cancelled_printsCancelledMessage() {
+<span class="fc" id="L592">        classRepo.save(entry(&quot;COMP1001-LEC-1-MON-0900-01Mar&quot;, &quot;COMP1001&quot;));</span>
+<span class="fc" id="L593">        controller(&quot;COMP1001-LEC-1-MON-0900-01Mar\n\n\n\n\n\nn\n&quot;).editClass();</span>
+<span class="fc" id="L594">        assertTrue(out().contains(&quot;cancelled&quot;));</span>
+<span class="fc" id="L595">    }</span>
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // EarlyExitException — typing &quot;q&quot; exits any prompt immediately
+    // ══════════════════════════════════════════════════════════════════════════
+
+    @Test
+    @Order(39)
+    @DisplayName(&quot;TC 11.39 - deleteClass – exit sentinel 'q' at ID prompt throws EarlyExitException&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Additional&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void deleteClass_exitSentinel_throwsEarlyExitException() {
+<span class="fc" id="L608">        assertThrows(EarlyExitException.class,</span>
+<span class="nc" id="L609">                () -&gt; controller(&quot;q\n&quot;).deleteClass());</span>
+<span class="fc" id="L610">    }</span>
+
+    @Test
+    @Order(40)
+    @DisplayName(&quot;TC 11.40 - editClass – exit sentinel 'q' at ID prompt throws EarlyExitException&quot;)
+    @Tag(&quot;Thomas&quot;)
+    @Tag(&quot;Additional&quot;)
+    @Tag(&quot;ClassController&quot;)
+    void editClass_exitSentinel_throwsEarlyExitException() {
+<span class="fc" id="L619">        assertThrows(EarlyExitException.class,</span>
+<span class="nc" id="L620">                () -&gt; controller(&quot;q\n&quot;).editClass());</span>
+<span class="fc" id="L621">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

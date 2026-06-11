@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CSVImportServiceTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in timetable Coverage Results</a> &gt; <a href="index.source.html" class="el_package">au.edu.flinders.timetable.service</a> &gt; <span class="el_source">CSVImportServiceTest.java</span></div><h1>CSVImportServiceTest.java</h1><pre class="source lang-java linenums">package au.edu.flinders.timetable.service;
+
+import au.edu.flinders.timetable.model.ClassEntry;
+import au.edu.flinders.timetable.model.Topic;
+import au.edu.flinders.timetable.repository.ClassRepository;
+import au.edu.flinders.timetable.repository.TopicRepository;
+
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.*;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+<span class="fc" id="L26">class CSVImportServiceTest {</span>
+
+    private static final String HEADER_TT =
+            &quot;Topic,Availability,Class,Class instance,Date,Day,Time,Location&quot;;
+
+    private static final String VALID_ROW =
+            &quot;COMP1234 Introduction to Programming,&quot;
+                    + &quot;In person - Flinders City Campus - S1 - 1,&quot;
+                    + &quot;Lecture,1,03 Mar - 09 Jun,Monday,09:00 - 11:00,&quot;
+                    + &quot;\&quot;Building A, Room 101\&quot;&quot;;
+    
+    @TempDir
+    Path tempDir;
+
+    private TopicRepository topicRepo;
+    private ClassRepository classRepo;
+    private CSVImportService service;
+
+    @BeforeAll
+    static void initSuite() {
+<span class="fc" id="L46">    }</span>
+
+    @AfterAll
+    static void endSuite() {
+<span class="fc" id="L50">    }</span>
+
+    @BeforeEach
+    void setUp() {
+<span class="fc" id="L54">        topicRepo = new TopicRepository();</span>
+<span class="fc" id="L55">        classRepo = new ClassRepository();</span>
+<span class="fc" id="L56">        service   = new CSVImportService(topicRepo, classRepo);</span>
+<span class="fc" id="L57">    }</span>
+
+    @AfterEach
+    void tearDown() {
+<span class="fc" id="L61">        topicRepo.clear();</span>
+<span class="fc" id="L62">        classRepo.clear();</span>
+<span class="fc" id="L63">    }</span>
+
+    // Helper – writes timetable header + data rows to a temp file, returns its path
+    private String timetableFile(String... dataRows) throws IOException {
+<span class="fc" id="L67">        Path file = tempDir.resolve(&quot;timetable.csv&quot;);</span>
+<span class="fc" id="L68">        List&lt;String&gt; lines = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L69">        lines.add(HEADER_TT);</span>
+<span class="fc" id="L70">        Collections.addAll(lines, dataRows);</span>
+<span class="fc" id="L71">        Files.write(file, lines);</span>
+<span class="fc" id="L72">        return file.toString();</span>
+    }
+
+    // Helper – valid row with a custom Availability field
+    private String rowWithAvailability(String availability) {
+<span class="fc" id="L77">        return &quot;COMP1234 Introduction to Programming,&quot; + availability</span>
+                + &quot;,Lecture,1,03 Mar - 09 Jun,Monday,09:00 - 11:00,\&quot;Building A, Room 101\&quot;&quot;;
+    }
+
+    // Helper – valid row with a custom Day field
+    private String rowWithDay(String day) {
+<span class="fc" id="L83">        return &quot;COMP1234 Introduction to Programming,&quot;</span>
+                + &quot;In person - Flinders City Campus - S1 - 1,Lecture,1,03 Mar - 09 Jun,&quot;
+                + day + &quot;,09:00 - 11:00,\&quot;Building A, Room 101\&quot;&quot;;
+    }
+
+    //TC 1.01
+    @Test
+    @Order(1)
+    @DisplayName(&quot;TC 1.01 - Import timetable file creates class entries for valid rows&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Critical&quot;)
+    void importCreatesClassEntriesForValidRows() throws IOException {
+<span class="fc" id="L95">        service.importFromTimetableFile(timetableFile(VALID_ROW));</span>
+
+<span class="fc" id="L97">        List&lt;ClassEntry&gt; all = classRepo.findAll();</span>
+<span class="fc" id="L98">        assertNotNull(all);</span>
+<span class="fc" id="L99">        assertEquals(1, all.size());</span>
+<span class="fc" id="L100">        assertTrue(classRepo.exists(all.get(0).getClassId()));</span>
+<span class="fc" id="L101">    }</span>
+
+    //TC 1.02
+    @Test
+    @Order(2)
+    @DisplayName(&quot;TC 1.02 - Import timetable file extracts topic code and topic name&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Critical&quot;)
+    void importExtractsTopicCodeAndName() throws IOException {
+<span class="fc" id="L110">        service.importFromTimetableFile(timetableFile(VALID_ROW));</span>
+
+<span class="fc" id="L112">        Topic topic = topicRepo.findByCourseCode(&quot;COMP1234&quot;).orElseThrow();</span>
+<span class="fc" id="L113">        assertAll(&quot;topic code and name&quot;,</span>
+<span class="fc" id="L114">                () -&gt; assertEquals(&quot;COMP1234&quot;, topic.getCourseCode()),</span>
+<span class="fc" id="L115">                () -&gt; assertEquals(&quot;Introduction to Programming&quot;, topic.getTopicName()));</span>
+<span class="fc" id="L116">    }</span>
+
+    //TC 1.03
+    @Test
+    @Order(3)
+    @DisplayName(&quot;TC 1.03 - Import timetable file extracts attendance mode&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void importExtractsAttendanceMode() throws IOException {
+<span class="fc" id="L125">        service.importFromTimetableFile(timetableFile(VALID_ROW));</span>
+
+<span class="fc" id="L127">        Topic topic = topicRepo.findByCourseCode(&quot;COMP1234&quot;).orElseThrow();</span>
+<span class="fc" id="L128">        assertEquals(&quot;In person&quot;, topic.getAttendanceMode());</span>
+<span class="fc" id="L129">    }</span>
+
+    //TC 1.04
+    @ParameterizedTest(name = &quot;TC 1.04 [{index}] {0} -&gt; {1}&quot;)
+    @Order(4)
+    @DisplayName(&quot;TC 1.04 Import timetable file normalises Flinders City Campus to City&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    @CsvSource({
+            &quot;Flinders City Campus, City&quot;,
+            &quot;Bedford Park,         Bedford Park&quot;,
+            &quot;Tonsley,              Tonsley&quot;,
+            &quot;Sturt,                Sturt&quot;
+    })
+    void importNormalisesCampus(String rawCampus, String expectedCampus) throws IOException {
+<span class="fc" id="L144">        String availability = &quot;In person - &quot; + rawCampus + &quot; - S1 - 1&quot;;</span>
+<span class="fc" id="L145">        service.importFromTimetableFile(timetableFile(rowWithAvailability(availability)));</span>
+
+<span class="fc" id="L147">        Topic topic = topicRepo.findByCourseCode(&quot;COMP1234&quot;).orElseThrow();</span>
+<span class="fc" id="L148">        assertEquals(expectedCampus, topic.getCampus());</span>
+<span class="fc" id="L149">    }</span>
+
+    //TC 1.05
+    @ParameterizedTest(name = &quot;TC 1.05 [{index}] {0} -&gt; semester {1}&quot;)
+    @Order(5)
+    @DisplayName(&quot;TC 1.05 - Import timetable file extracts semester from availability&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Critical&quot;)
+    @CsvSource({ &quot;S1, 1&quot;, &quot;S2, 2&quot; })
+    void importExtractsSemester(String semesterCode, int expectedSemester) throws IOException {
+<span class="fc" id="L159">        String availability = &quot;In person - Flinders City Campus - &quot; + semesterCode + &quot; - 1&quot;;</span>
+<span class="fc" id="L160">        service.importFromTimetableFile(timetableFile(rowWithAvailability(availability)));</span>
+
+<span class="fc" id="L162">        Topic topic = topicRepo.findByCourseCode(&quot;COMP1234&quot;).orElseThrow();</span>
+<span class="fc" id="L163">        assertEquals(expectedSemester, topic.getSemester());</span>
+<span class="fc" id="L164">    }</span>
+
+    //TC 1.06
+    @Test
+    @Order(6)
+    @DisplayName(&quot;TC 1.06 - Import timetable file extracts availability number&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void importExtractsAvailabilityNumber() throws IOException {
+<span class="fc" id="L173">        service.importFromTimetableFile(timetableFile(VALID_ROW));</span>
+
+<span class="fc" id="L175">        ClassEntry entry = classRepo.findAll().get(0);</span>
+<span class="fc" id="L176">        assertEquals(1, entry.getAvailabilityNumber());</span>
+<span class="fc" id="L177">    }</span>
+
+    //TC 1.07
+    @Test
+    @Order(7)
+    @DisplayName(&quot;TC 1.07 - Import timetable file parses date range into dateFrom and dateTo&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void importParsesDateRange() throws IOException {
+<span class="fc" id="L186">        service.importFromTimetableFile(timetableFile(VALID_ROW));</span>
+
+<span class="fc" id="L188">        ClassEntry entry = classRepo.findAll().get(0);</span>
+<span class="fc" id="L189">        assertAll(&quot;date range&quot;,</span>
+<span class="fc" id="L190">                () -&gt; assertEquals(&quot;03 Mar&quot;, entry.getDateFrom()),</span>
+<span class="fc" id="L191">                () -&gt; assertEquals(&quot;09 Jun&quot;, entry.getDateTo()));</span>
+<span class="fc" id="L192">    }</span>
+
+    //TC 1.08
+    @ParameterizedTest(name = &quot;TC 1.08 [{index}] {0} -&gt; {1}&quot;)
+    @Order(8)
+    @DisplayName(&quot;TC 1.08 Import timetable file strips day qualifier from once-only day values&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    @CsvSource({
+            &quot;Monday (once-only),    MONDAY&quot;,
+            &quot;Friday,                FRIDAY&quot;,
+            &quot;Wednesday (once-only), WEDNESDAY&quot;,
+            &quot;Tuesday,               TUESDAY&quot;
+    })
+    void importStripsDayQualifier(String rawDay, String expectedDay) throws IOException {
+<span class="fc" id="L207">        service.importFromTimetableFile(timetableFile(rowWithDay(rawDay)));</span>
+
+<span class="fc" id="L209">        ClassEntry entry = classRepo.findAll().get(0);</span>
+<span class="fc" id="L210">        assertEquals(DayOfWeek.valueOf(expectedDay), entry.getDay());</span>
+<span class="fc" id="L211">    }</span>
+
+    //TC 1.09
+    @Test
+    @Order(9)
+    @DisplayName(&quot;TC 1.09 - Import timetable file parses start and end time&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Critical&quot;)
+    void importParsesStartAndEndTime() throws IOException {
+<span class="fc" id="L220">        service.importFromTimetableFile(timetableFile(VALID_ROW));</span>
+
+<span class="fc" id="L222">        ClassEntry entry = classRepo.findAll().get(0);</span>
+<span class="fc" id="L223">        assertAll(&quot;start and end time&quot;,</span>
+<span class="fc" id="L224">                () -&gt; assertEquals(LocalTime.of(9, 0),  entry.getStartTime()),</span>
+<span class="fc" id="L225">                () -&gt; assertEquals(LocalTime.of(11, 0), entry.getEndTime()));</span>
+<span class="fc" id="L226">    }</span>
+
+    //TC 1.10
+    @Test
+    @Order(10)
+    @DisplayName(&quot;TC 1.10 - Import timetable file splits location into building and room&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void importSplitsLocation() throws IOException {
+<span class="fc" id="L235">        service.importFromTimetableFile(timetableFile(VALID_ROW));</span>
+
+<span class="fc" id="L237">        ClassEntry entry = classRepo.findAll().get(0);</span>
+<span class="fc" id="L238">        assertAll(&quot;location split&quot;,</span>
+<span class="fc" id="L239">                () -&gt; assertEquals(&quot;Building A&quot;, entry.getBuilding()),</span>
+<span class="fc" id="L240">                () -&gt; assertEquals(&quot;Room 101&quot;,   entry.getRoom()));</span>
+<span class="fc" id="L241">    }</span>
+
+    //TC 1.11
+    @Test
+    @Order(11)
+    @DisplayName(&quot;TC 1.11 - Import timetable file skips invalid rows without stopping import&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Critical&quot;)
+    void importSkipsInvalidRowsAndContinues() throws IOException {
+<span class="fc" id="L250">        String badRow = &quot;COMP9999 Broken Topic,&quot;</span>
+                + &quot;In person - Flinders City Campus - S1 - 1,&quot;
+                + &quot;Lecture,NOT_A_NUMBER,03 Mar - 09 Jun,Monday,09:00 - 11:00,&quot;
+                + &quot;\&quot;Building A, Room 101\&quot;&quot;;
+
+<span class="fc" id="L255">        CSVImportService.ImportResult result = assertDoesNotThrow(</span>
+<span class="fc" id="L256">                () -&gt; service.importFromTimetableFile(timetableFile(badRow, VALID_ROW)));</span>
+
+<span class="pc bpc" id="L258" title="1 of 2 branches missed.">        assumeTrue(result != null, &quot;import should return a result&quot;);</span>
+<span class="fc" id="L259">        assertAll(&quot;only the valid row was imported&quot;,</span>
+<span class="fc" id="L260">                () -&gt; assertEquals(1, result.newCount()),</span>
+<span class="fc" id="L261">                () -&gt; assertEquals(1, classRepo.findAll().size()));</span>
+<span class="fc" id="L262">    }</span>
+
+    //TC 1.12
+    @Test
+    @Order(12)
+    @DisplayName(&quot;TC 1.12 - Import topics skips rows with invalid numeric fields&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void importTopicsSkipsInvalidNumericFields() throws IOException {
+<span class="fc" id="L271">        String header = &quot;CourseCode,TopicName,Campus,Semester,Delivery,Num_of_Classes&quot;;</span>
+<span class="fc" id="L272">        String bad    = &quot;COMP5678,Data Structures,Bedford Park,NOT_A_NUMBER,In Person,12&quot;;</span>
+<span class="fc" id="L273">        String good   = &quot;COMP1234,Introduction to Programming,Bedford Park,1,In Person,12&quot;;</span>
+
+<span class="fc" id="L275">        Path file = tempDir.resolve(&quot;topics.csv&quot;);</span>
+<span class="fc" id="L276">        Files.write(file, List.of(header, bad, good));</span>
+
+<span class="fc" id="L278">        List&lt;Topic&gt; imported = service.importTopics(file.toString());</span>
+<span class="fc" id="L279">        assertAll(&quot;invalid numeric row skipped&quot;,</span>
+<span class="fc" id="L280">                () -&gt; assertEquals(1, imported.size()),</span>
+<span class="fc" id="L281">                () -&gt; assertEquals(&quot;COMP1234&quot;, imported.get(0).getCourseCode()));</span>
+<span class="fc" id="L282">    }</span>
+
+    //TC 1.13
+    @Test
+    @Order(13)
+    @DisplayName(&quot;TC 1.13 - Import classes skips rows with missing course code&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void importClassesSkipsMissingCourseCode() throws IOException {
+<span class="fc" id="L291">        String header        = &quot;Class_ID,Type,Date,StartTime,EndTime,Day,Building,Room,CourseCode&quot;;</span>
+<span class="fc" id="L292">        String missingCourse = &quot;CL002,Lecture,2026-03-03,09:00,11:00,Monday,Building A,Room 101,&quot;;</span>
+<span class="fc" id="L293">        String good          = &quot;CL001,Lecture,2026-03-03,09:00,11:00,Monday,Building A,Room 101,COMP1234&quot;;</span>
+
+<span class="fc" id="L295">        Path file = tempDir.resolve(&quot;classes.csv&quot;);</span>
+<span class="fc" id="L296">        Files.write(file, List.of(header, missingCourse, good));</span>
+
+<span class="fc" id="L298">        List&lt;ClassEntry&gt; imported = service.importClasses(file.toString());</span>
+<span class="fc" id="L299">        assertEquals(1, imported.size());</span>
+<span class="fc" id="L300">    }</span>
+
+    //TC 1.14
+    @Test
+    @Order(14)
+    @DisplayName(&quot;TC 1.14 - Import timetable file with only a header imports nothing&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Additional&quot;)
+    void importHeaderOnlyImportsNothing() throws IOException {
+<span class="fc" id="L309">        service.importFromTimetableFile(timetableFile());</span>
+
+<span class="fc" id="L311">        assertAll(&quot;nothing stored&quot;,</span>
+<span class="fc" id="L312">                () -&gt; assertEquals(0, classRepo.findAll().size()),</span>
+<span class="fc" id="L313">                () -&gt; assertTrue(topicRepo.findAll().isEmpty()));</span>
+<span class="fc" id="L314">    }</span>
+
+    //TC 1.19
+    @Test
+    @Order(19)
+    @DisplayName(&quot;TC 1.19 - importFromPath with single file imports correctly&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void importFromPathSingleFile() throws IOException {
+<span class="fc" id="L323">        String path = timetableFile(VALID_ROW);</span>
+
+<span class="fc" id="L325">        CSVImportService.ImportResult result = service.importFromPath(path);</span>
+
+<span class="fc" id="L327">        assertEquals(1, result.newCount());</span>
+<span class="fc" id="L328">        assertEquals(1, classRepo.findAll().size());</span>
+<span class="fc" id="L329">    }</span>
+
+    //TC 1.20
+    @Test
+    @Order(20)
+    @DisplayName(&quot;TC 1.20 - importFromPath with directory imports all CSVs&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void importFromPathDirectory() throws IOException {
+        // write two separate CSV files into tempDir
+<span class="fc" id="L339">        Files.write(tempDir.resolve(&quot;one.csv&quot;), List.of(HEADER_TT, VALID_ROW));</span>
+<span class="fc" id="L340">        String secondRow = &quot;MATH1001 Calculus,&quot;</span>
+                + &quot;In person - Bedford Park - S1 - 1,&quot;
+                + &quot;Lecture,1,03 Mar - 09 Jun,Tuesday,10:00 - 12:00,Library&quot;;
+<span class="fc" id="L343">        Files.write(tempDir.resolve(&quot;two.csv&quot;), List.of(HEADER_TT, secondRow));</span>
+
+<span class="fc" id="L345">        CSVImportService.ImportResult result = service.importFromPath(tempDir.toString());</span>
+
+<span class="fc" id="L347">        assertEquals(2, result.newCount());</span>
+<span class="fc" id="L348">    }</span>
+
+    //TC 1.21
+    @Test
+    @Order(21)
+    @DisplayName(&quot;TC 1.21 - importFromPath with empty directory returns zero&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void importFromPathEmptyDirectory() throws IOException {
+<span class="fc" id="L357">        Path emptyDir = tempDir.resolve(&quot;empty&quot;);</span>
+<span class="fc" id="L358">        Files.createDirectory(emptyDir);</span>
+
+<span class="fc" id="L360">        CSVImportService.ImportResult result = service.importFromPath(emptyDir.toString());</span>
+
+<span class="fc" id="L362">        assertEquals(0, result.newCount());</span>
+<span class="fc" id="L363">    }</span>
+
+    //TC 1.22
+    @Test
+    @Order(22)
+    @DisplayName(&quot;TC 1.22 - Location without comma sets building only and room empty&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void locationWithoutCommaGivesBuildingOnly() throws IOException {
+<span class="fc" id="L372">        String row = &quot;COMP1234 Programming,&quot;</span>
+                + &quot;In person - Flinders City Campus - S1 - 1,&quot;
+                + &quot;Lecture,1,03 Mar - 09 Jun,Monday,09:00 - 11:00,Library&quot;;
+
+<span class="fc" id="L376">        service.importFromTimetableFile(timetableFile(row));</span>
+
+<span class="fc" id="L378">        ClassEntry entry = classRepo.findAll().get(0);</span>
+<span class="fc" id="L379">        assertAll(&quot;building only, no room&quot;,</span>
+<span class="fc" id="L380">                () -&gt; assertEquals(&quot;Library&quot;, entry.getBuilding()),</span>
+<span class="fc" id="L381">                () -&gt; assertEquals(&quot;&quot;, entry.getRoom()));</span>
+<span class="fc" id="L382">    }</span>
+
+    //TC 1.23
+    @Test
+    @Order(23)
+    @DisplayName(&quot;TC 1.23 - Single date with no range sets dateFrom and dateTo equal&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void singleDateSetsBothFromAndTo() throws IOException {
+<span class="fc" id="L391">        String row = &quot;COMP1234 Programming,&quot;</span>
+                + &quot;In person - Flinders City Campus - S1 - 1,&quot;
+                + &quot;Lecture,1,03 Mar,Monday,09:00 - 11:00,\&quot;Building A, Room 101\&quot;&quot;;
+
+<span class="fc" id="L395">        service.importFromTimetableFile(timetableFile(row));</span>
+
+<span class="fc" id="L397">        ClassEntry entry = classRepo.findAll().get(0);</span>
+<span class="fc" id="L398">        assertAll(&quot;single date&quot;,</span>
+<span class="fc" id="L399">                () -&gt; assertEquals(&quot;03 Mar&quot;, entry.getDateFrom()),</span>
+<span class="fc" id="L400">                () -&gt; assertEquals(&quot;03 Mar&quot;, entry.getDateTo()));</span>
+<span class="fc" id="L401">    }</span>
+
+    //TC 1.24
+    @Test
+    @Order(24)
+    @DisplayName(&quot;TC 1.24 - Topic with course code only and no name stores empty name&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Additional&quot;)
+    void topicCodeOnlyStoresEmptyName() throws IOException {
+<span class="fc" id="L410">        String row = &quot;COMP1234,&quot;</span>
+                + &quot;In person - Flinders City Campus - S1 - 1,&quot;
+                + &quot;Lecture,1,03 Mar - 09 Jun,Monday,09:00 - 11:00,\&quot;Building A, Room 101\&quot;&quot;;
+
+<span class="fc" id="L414">        service.importFromTimetableFile(timetableFile(row));</span>
+
+<span class="fc" id="L416">        Topic topic = topicRepo.findByCourseCode(&quot;COMP1234&quot;).orElseThrow();</span>
+<span class="fc" id="L417">        assertEquals(&quot;&quot;, topic.getTopicName());</span>
+<span class="fc" id="L418">    }</span>
+
+    //TC 1.25
+    @Test
+    @Order(25)
+    @DisplayName(&quot;TC 1.25 - Duplicate course code rows save topic only once&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Core&quot;)
+    void duplicateCourseCodeSavesTopicOnce() throws IOException {
+<span class="fc" id="L427">        String row2 = &quot;COMP1234 Programming,&quot;</span>
+                + &quot;In person - Flinders City Campus - S1 - 1,&quot;
+                + &quot;Tutorial,2,03 Mar - 09 Jun,Tuesday,14:00 - 16:00,\&quot;Building A, Room 102\&quot;&quot;;
+
+<span class="fc" id="L431">        service.importFromTimetableFile(timetableFile(VALID_ROW, row2));</span>
+
+<span class="fc" id="L433">        assertEquals(2, classRepo.findAll().size());</span>
+<span class="fc" id="L434">        assertEquals(1, topicRepo.findAll().size());</span>
+<span class="fc" id="L435">    }</span>
+
+    //TC 1.26
+    @Test
+    @Order(26)
+    @DisplayName(&quot;TC 1.26 - Blank lines in middle of file are skipped&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Additional&quot;)
+    void blankLinesAreSkipped() throws IOException {
+<span class="fc" id="L444">        Path file = tempDir.resolve(&quot;blanks.csv&quot;);</span>
+<span class="fc" id="L445">        Files.write(file, List.of(HEADER_TT, &quot;&quot;, VALID_ROW, &quot;&quot;, &quot;&quot;));</span>
+
+<span class="fc" id="L447">        CSVImportService.ImportResult result = service.importFromTimetableFile(file.toString());</span>
+
+<span class="fc" id="L449">        assertEquals(1, result.newCount());</span>
+<span class="fc" id="L450">    }</span>
+
+    //TC 1.27
+    @Test
+    @Order(27)
+    @DisplayName(&quot;TC 1.27 - CSV tokeniser handles embedded double quotes&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Additional&quot;)
+    void csvTokeniserHandlesEmbeddedQuotes() throws IOException {
+        // Building field contains a double quote: The &quot;Main&quot; Hall
+        // In CSV this is: &quot;The &quot;&quot;Main&quot;&quot; Hall&quot;
+<span class="fc" id="L461">        String row = &quot;COMP1234 Programming,&quot;</span>
+                + &quot;In person - Flinders City Campus - S1 - 1,&quot;
+                + &quot;Lecture,1,03 Mar - 09 Jun,Monday,09:00 - 11:00,&quot;
+                + &quot;\&quot;The \&quot;\&quot;Main\&quot;\&quot; Hall, Room 101\&quot;&quot;;
+
+<span class="fc" id="L466">        service.importFromTimetableFile(timetableFile(row));</span>
+
+<span class="fc" id="L468">        ClassEntry entry = classRepo.findAll().get(0);</span>
+<span class="fc" id="L469">        assertAll(&quot;embedded quotes parsed&quot;,</span>
+<span class="fc" id="L470">                () -&gt; assertEquals(&quot;The \&quot;Main\&quot; Hall&quot;, entry.getBuilding()),</span>
+<span class="fc" id="L471">                () -&gt; assertEquals(&quot;Room 101&quot;, entry.getRoom()));</span>
+<span class="fc" id="L472">    }</span>
+
+    //TC 1.28
+    @Test
+    @Order(28)
+    @DisplayName(&quot;TC 1.28 - Availability with no semester token defaults to semester 1&quot;)
+    @Tag(&quot;Oscar&quot;)
+    @Tag(&quot;Additional&quot;)
+    void noSemesterTokenDefaultsToOne() throws IOException {
+<span class="fc" id="L481">        String row = rowWithAvailability(&quot;In person - Flinders City Campus - 1&quot;);</span>
+
+<span class="fc" id="L483">        service.importFromTimetableFile(timetableFile(row));</span>
+
+<span class="fc" id="L485">        Topic topic = topicRepo.findByCourseCode(&quot;COMP1234&quot;).orElseThrow();</span>
+<span class="fc" id="L486">        assertEquals(1, topic.getSemester());</span>
+<span class="fc" id="L487">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
